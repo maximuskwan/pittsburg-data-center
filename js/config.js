@@ -20,7 +20,7 @@
 
 export default {
   // Where the published interactive lives, and where the article lives.
-  siteUrl: 'https://scotscoop.github.io/pittsburg-data-center/',
+  siteUrl: 'https://maximuskwan.github.io/pittsburg-data-center/',
   storyUrl: 'https://scotscoop.com/', // TK: replace with the article URL once it's live
 
   // Map tiles. OpenFreeMap needs no key and has no usage caps.

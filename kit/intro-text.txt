@@ -26,4 +26,4 @@ Most residents didn’t learn about it until June 2026 — about 19 months later
 
 This is the story of how that happened — and whether a city that learns of a decision after it has been made can still change anything.
 
-Interactive version: https://scotscoop.github.io/pittsburg-data-center/
+Interactive version: https://maximuskwan.github.io/pittsburg-data-center/
