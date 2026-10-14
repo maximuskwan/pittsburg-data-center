@@ -1,0 +1,384 @@
+{
+ "type": "FeatureCollection",
+ "features": [
+  {
+   "type": "Feature",
+   "properties": {
+    "name": "Northern Virginia (Ashburn)",
+    "placeholder": true
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -77.4874,
+     39.0438
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "name": "Richmond, Va.",
+    "placeholder": true
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -77.436,
+     37.5407
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "name": "Atlanta",
+    "placeholder": true
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -84.388,
+     33.749
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "name": "Charlotte, N.C.",
+    "placeholder": true
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -80.8431,
+     35.2271
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "name": "Columbus, Ohio (New Albany)",
+    "placeholder": true
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -82.8088,
+     40.0812
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "name": "Chicago",
+    "placeholder": true
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -87.6298,
+     41.8781
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "name": "Dallas\u2013Fort Worth",
+    "placeholder": true
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -96.797,
+     32.7767
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "name": "Abilene, Texas",
+    "placeholder": true
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -99.7331,
+     32.4487
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "name": "Houston",
+    "placeholder": true
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -95.3698,
+     29.7604
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "name": "San Antonio",
+    "placeholder": true
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -98.4936,
+     29.4241
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "name": "Phoenix",
+    "placeholder": true
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -112.074,
+     33.4484
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "name": "Las Vegas",
+    "placeholder": true
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -115.1398,
+     36.1699
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "name": "Reno, Nev.",
+    "placeholder": true
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -119.8138,
+     39.5296
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "name": "Salt Lake City",
+    "placeholder": true
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -111.891,
+     40.7608
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "name": "Denver",
+    "placeholder": true
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -104.9903,
+     39.7392
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "name": "Council Bluffs, Iowa",
+    "placeholder": true
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -95.8608,
+     41.2619
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "name": "Omaha, Neb.",
+    "placeholder": true
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -95.9345,
+     41.2565
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "name": "Minneapolis",
+    "placeholder": true
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -93.265,
+     44.9778
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "name": "Hillsboro, Ore.",
+    "placeholder": true
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -122.9898,
+     45.5229
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "name": "Prineville, Ore.",
+    "placeholder": true
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -120.8345,
+     44.2999
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "name": "Quincy, Wash.",
+    "placeholder": true
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -119.8526,
+     47.2343
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "name": "Seattle",
+    "placeholder": true
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -122.3321,
+     47.6062
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "name": "Santa Clara, Calif.",
+    "placeholder": true
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -121.9552,
+     37.3541
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "name": "Los Angeles",
+    "placeholder": true
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -118.2437,
+     34.0522
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "name": "New York\u2013New Jersey",
+    "placeholder": true
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -74.0565,
+     40.7895
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "name": "Boston",
+    "placeholder": true
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -71.0589,
+     42.3601
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "name": "Pittsburg, Calif.",
+    "placeholder": true
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -121.8847,
+     38.028
+    ]
+   }
+  }
+ ],
+ "name": "PLACEHOLDER: major U.S. data center markets (city centroids). Replace by running `npm run fetch:datacenters`."
+}

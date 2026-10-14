@@ -1,0 +1,38 @@
+{
+ "type": "FeatureCollection",
+ "features": [
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "santa-clara",
+    "name": "Santa Clara cluster",
+    "status": "existing",
+    "placeholder": true
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -121.963,
+     37.3746
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "perseus",
+    "name": "Perseus (proposed)",
+    "status": "approved",
+    "placeholder": true
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -121.933,
+     38.0045
+    ]
+   }
+  }
+ ],
+ "name": "Bay Area sites. Hand-verify every point; delete placeholder:true once checked."
+}

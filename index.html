@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Power Hungry | Scot Scoop</title>
+  <meta name="description" content="Interactive map: from the national data center boom to one former golf course in Pittsburg, California.">
+  <meta property="og:title" content="Power Hungry: The Data Center Fight">
+  <meta property="og:description" content="How a Bay Area city approved an $800 million data center on its old golf course — and why almost no one noticed.">
+  <meta property="og:image" content="https://scotscoop.github.io/pittsburg-data-center/kit/media/hero.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="vendor/maplibre-gl/maplibre-gl.css">
+  <link rel="stylesheet" href="css/story.css">
+  <link rel="modulepreload" href="vendor/maplibre-gl/maplibre-gl.mjs">
+  <script>
+    // Choose the mode before first paint so there's no flash of the wrong layout.
+    (function () {
+      var q = new URLSearchParams(location.search);
+      var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var framed = window.self !== window.top;
+      var narrowFrame = framed && window.innerWidth < 700;
+      var c = document.documentElement.classList;
+      if (q.has('static') || reduce || narrowFrame) c.add('static');
+      if (q.has('record')) c.add('record');
+      if (q.get('captions') === '1') c.add('captions');
+      if (framed) c.add('framed');
+    })();
+  </script>
+</head>
+<body>
+  <a class="skip" href="#end">Skip the interactive map</a>
+  <div id="draft-banner" hidden></div>
+
+  <div id="graphic" aria-hidden="true">
+    <div id="map"></div>
+    <div id="video-layer">
+      <video id="drone" muted playsinline loop preload="none"></video>
+    </div>
+    <div id="caption" aria-hidden="true"></div>
+  </div>
+
+  <main id="story">
+    <!-- ── CHAPTERS ──────────────────────────────────────────────────────────
+         Each <section class="step"> is one scroll stop. data-chapter must match
+         a key in js/config.js. data-alt describes the map for screen readers
+         and becomes the alt text of the still image in the no-map version.
+         Anything in <mark class="tk"> is unfinished and shows the DRAFT banner.
+    ─────────────────────────────────────────────────────────────────────── -->
+
+    <section class="step step--title" data-chapter="opener"
+             data-alt="A dark map of the United States dotted with data center locations.">
+      <div class="card card--title">
+        <p class="kicker">A Scot Scoop Investigation</p>
+        <h1>Power Hungry</h1>
+        <p class="dek">How a Bay Area city approved an $800 million data center on its old golf course — and why almost no one noticed.</p>
+        <p class="byline">By <mark class="tk">TK reporter name</mark> · <mark class="tk">TK publish date</mark></p>
+        <p class="scroll-cue" aria-hidden="true">Scroll <span>↓</span></p>
+      </div>
+    </section>
+
+    <section class="step" data-chapter="national"
+             data-alt="Map of the United States with data center locations clustered around Northern Virginia, Texas, Arizona, the Midwest and the West Coast.">
+      <div class="card">
+        <p>Data centers — the warehouses of servers behind every search, stream and AI chatbot — are spreading across the country.</p>
+        <p>In 2023, they used about 4.4% of all U.S. electricity. By 2028, that share could reach 6.7% to 12%, according to a 2024 report from Lawrence Berkeley National Laboratory.</p>
+        <p><mark class="tk">TK: number of data centers proposed or under construction nationally, from one named, dated source (“as of [month] 2026”).</mark></p>
+        <p class="source">Map: <mark class="tk">OpenStreetMap contributors (incomplete), as of TK</mark>. Energy figures: Lawrence Berkeley National Laboratory, 2024 United States Data Center Energy Usage Report.</p>
+      </div>
+    </section>
+
+    <section class="step" data-chapter="california"
+             data-alt="Map zooming into California, with data centers concentrated in the San Francisco Bay Area and Los Angeles.">
+      <div class="card">
+        <p>California is home to <mark class="tk">TK</mark> of them, most packed into Silicon Valley.</p>
+        <p><mark class="tk">TK: one sentence on state-level action — legislation, utility rules, or the lack of either.</mark></p>
+      </div>
+    </section>
+
+    <section class="step" data-chapter="bay-area"
+             data-alt="Map of the San Francisco Bay Area highlighting the Santa Clara data center cluster in the south and Pittsburg in the northeast.">
+      <div class="card">
+        <p>Most of the Bay Area’s data centers sit in Santa Clara, at the heart of Silicon Valley.</p>
+        <p>The region’s newest one is planned somewhere else: Pittsburg, a city of about 76,000 on the Sacramento–San Joaquin River Delta.</p>
+      </div>
+    </section>
+
+    <section class="step" data-chapter="close-to-home"
+             data-alt="A line drawn on the map from Carlmont High School in Belmont to Pittsburg in Contra Costa County.">
+      <div class="card">
+        <p>It’s about an hour’s drive from Carlmont.</p>
+        <p><mark class="tk">TK: one or two sentences connecting a Carlmont student’s daily digital use to the electricity and water a data center consumes.</mark></p>
+      </div>
+    </section>
+
+    <section class="step" data-chapter="pittsburg"
+             data-alt="Aerial view of southwestern Pittsburg, with the former Delta View Golf Course south of Highway 4.">
+      <div class="card">
+        <p>In May 2018, Pittsburg’s City Council voted to permanently close the city-owned Delta View Golf Course.</p>
+        <p>A month later, the council agreed to begin bringing a “technology park” to the land.</p>
+        <p class="source">Imagery: U.S. Geological Survey, The National Map.</p>
+      </div>
+    </section>
+
+    <section class="step" data-chapter="parcel"
+             data-alt="Close aerial view of the former golf course with the boundary of the approved data center site outlined.">
+      <div class="card">
+        <p>In November 2024, the council voted 5–0 to approve what that technology park would hold: “Perseus,” a 92-megawatt hyperscale data center from AVAIO Digital Partners, which the developer valued at $800 million.</p>
+        <p class="source">Site boundary: <mark class="tk">Contra Costa County GIS / City of Pittsburg Vesting Tentative Map, Nov. 2024</mark>.</p>
+      </div>
+    </section>
+
+    <section class="step step--last" data-chapter="discovered"
+             data-alt="Drone footage over the former Delta View Golf Course.">
+      <div class="card">
+        <p>Most residents didn’t learn about it until June 2026 — about 19 months later.</p>
+        <p class="source">Drone footage: <mark class="tk">Cara Esten Hurtle</mark>.</p>
+      </div>
+    </section>
+
+    <section id="end" class="end">
+      <div class="end__inner">
+        <p class="end__lede">This is the story of how that happened — and whether a city that learns of a decision after it has been made can still change anything.</p>
+        <p class="end__continue end__continue--framed">Continue reading below <span aria-hidden="true">↓</span></p>
+        <p class="end__continue end__continue--standalone"><a id="story-link" href="https://scotscoop.com/">Read the full story on Scot Scoop <span aria-hidden="true">→</span></a></p>
+        <p class="credits">
+          Interactive by <mark class="tk">TK</mark> for Scot Scoop. Story text, photos and graphics licensed
+          <a href="https://creativecommons.org/licenses/by-nd/4.0/" rel="license">CC BY-ND 4.0</a>; drone footage © <mark class="tk">Cara Esten Hurtle</mark>, used with permission.
+          Map data © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>, <a href="https://openfreemap.org">OpenFreeMap</a>, <a href="https://openmaptiles.org">OpenMapTiles</a>; boundaries: U.S. Census Bureau; imagery: USGS The National Map.
+          <a href="https://github.com/scotscoop/pittsburg-data-center">Code (MIT)</a>.
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <script src="vendor/scrollama/scrollama.min.js"></script>
+  <script type="module" src="js/story.js"></script>
+</body>
+</html>
