@@ -19,6 +19,7 @@
 //   datacenters, sites, route, plan, canal, model
 // labels: which on-map labels to show (defined in `labels` below).
 // photo:  a photo that fades in over the map for this chapter.
+// popFrom: optional point the photo pops out of (map → photo transitions only).
 // scale:  true shows a miles/feet scale bar (skip it on the national view,
 //         where the map projection stretches distances too much for one bar).
 // ─────────────────────────────────────────────────────────────────────────────
@@ -106,17 +107,20 @@ export default {
     },
     'photo-towers': {
       site: 'phase1', zoom: 16.7, pitch: 62, bearing: -60, duration: 0,
-      layers: { aerial: 1, model: 1 },
+      layers: { aerial: 1, plan: 0.6, canal: 1, model: 1 },
       photo: 'media/photos/drone-07.jpg',
+      // The photo pops out of this point on the map, then fills the screen.
+      // { site: [metersEast, metersNorth] } from the site anchor, or [lng, lat].
+      popFrom: { site: [-28, 480] },
     },
     'photo-homes': {
       site: 'phase1', zoom: 16.7, pitch: 62, bearing: -60, duration: 0,
-      layers: { aerial: 1, model: 1 },
+      layers: { aerial: 1, plan: 0.6, canal: 1, model: 1 },
       photo: 'media/photos/drone-02.jpg',
     },
     'photo-ruins': {
       site: 'phase1', zoom: 16.7, pitch: 62, bearing: -60, duration: 0,
-      layers: { aerial: 1, model: 1 },
+      layers: { aerial: 1, plan: 0.6, canal: 1, model: 1 },
       photo: 'media/photos/drone-04.jpg',
     },
   },

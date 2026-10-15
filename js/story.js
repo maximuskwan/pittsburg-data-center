@@ -503,6 +503,75 @@ async function buildInteractive() {
     photoFrame = requestAnimationFrame(step);
   };
 
+  // Map-to-photo "pop": the photo grows out of a pin on the map as a framed card,
+  // then expands to fill the screen. One progress value drives it both ways:
+  // 0 = hidden, 1 = card above the pin, 2 = full screen. Scrolling back up runs
+  // it in reverse. Driven by requestAnimationFrame so the recorder captures it.
+  const pop = document.createElement('div');
+  pop.className = 'photo-pop';
+  pop.innerHTML = '<img alt=""><span class="photo-pop__tail"></span><span class="photo-pop__pin"></span>';
+  photoLayer.after(pop);
+  const popImg = pop.querySelector('img');
+  let popT = 0, popTarget = 0, popFrame = 0, popSrc = null, popLngLat = null;
+  const ease = (x) => (x < 0.5 ? 4 * x * x * x : 1 - (-2 * x + 2) ** 3 / 2);
+  const renderPop = () => {
+    if (popT <= 0.001 || !popLngLat) { pop.style.display = 'none'; return; }
+    const el = map.getContainer();
+    const W = el.clientWidth, H = el.clientHeight;
+    const p = map.project(popLngLat);
+    const cw = Math.min(340, W * 0.42), ch = cw * 0.68;
+    const card = { x: p.x - cw / 2, y: p.y - ch - 26, w: cw, h: ch };
+    card.x = Math.max(12, Math.min(W - cw - 12, card.x));
+    card.y = Math.max(12, card.y);
+    let r, scale = 1, frame = 3;
+    if (popT <= 1) {
+      r = card; scale = ease(popT);
+    } else {
+      const u = ease(popT - 1);
+      r = { x: card.x * (1 - u), y: card.y * (1 - u), w: card.w + (W - card.w) * u, h: card.h + (H - card.h) * u };
+      frame = 3 * (1 - u);
+    }
+    pop.style.display = 'block';
+    Object.assign(pop.style, { left: `${r.x}px`, top: `${r.y}px`, width: `${r.w}px`, height: `${r.h}px`, borderWidth: `${frame}px` });
+    pop.style.transformOrigin = `${p.x - r.x}px ${p.y - r.y}px`;
+    pop.style.transform = `scale(${scale})`;
+    pop.style.opacity = Math.min(1, popT * 1.5);
+    const tail = Math.max(0, 1 - (popT - 1) * 3); // tail and pin vanish as it grows
+    pop.style.setProperty('--tail', popT <= 1 ? 1 : tail);
+    pop.style.setProperty('--tail-x', `${Math.max(16, Math.min(r.w - 16, p.x - r.x))}px`);
+    pop.style.setProperty('--pin-y', `${p.y - r.y}px`);
+  };
+  const runPop = (target, src, lngLat, instant) => {
+    if (src) { popSrc = src; popImg.src = src; }
+    if (lngLat) popLngLat = lngLat;
+    popTarget = target;
+    cancelAnimationFrame(popFrame);
+    const done = () => {
+      // Hand over to the regular full-screen photo layer at the end of the way in.
+      if (popTarget === 2) { for (const p of Object.values(photos)) setOpacity(p, p === photos[popSrc] ? 1 : 0); popT = 0; }
+      renderPop();
+    };
+    if (instant) { popT = target; return done(); }
+    if (popT === 0 && target === 0) return renderPop();
+    let last = performance.now();
+    let holdUntil = 0;
+    const step = (now) => {
+      const dt = (now - last) / 1000; last = now;
+      if (holdUntil && now < holdUntil) { renderPop(); popFrame = requestAnimationFrame(step); return; }
+      // Pop up quickly (0.45 s), hold a beat as a card, then expand (0.9 s).
+      const speed = popT < 1 || (popT === 1 && popTarget < 1) ? 1 / 0.45 : 1 / 0.9;
+      const d = popTarget - popT;
+      let next = popT + Math.sign(d) * Math.min(Math.abs(d), dt * speed);
+      if (popTarget === 2 && popT < 1 && next >= 1) { next = 1; holdUntil = now + 450; }
+      popT = next;
+      renderPop();
+      if (Math.abs(popTarget - popT) > 0.0005) popFrame = requestAnimationFrame(step);
+      else { popT = popTarget; done(); }
+    };
+    popFrame = requestAnimationFrame(step);
+  };
+  map.on('move', () => { if (popT > 0) renderPop(); });
+
   const padding = () => {
     const w = map.getContainer().clientWidth;
     const h = map.getContainer().clientHeight;
@@ -557,7 +626,23 @@ async function buildInteractive() {
     if (ch.layers?.route && prev !== id) drawRoute(instant);
     showDistance(!!ch.layers?.route);
     scaleEl?.classList.toggle('on', !!ch.scale);
-    showPhoto(ch.photo);
+    const prevCh = config.chapters[prev] || {};
+    const popWhere = (c) => (c.popFrom ? resolve(c.popFrom) : null);
+    if (ch.photo && ch.popFrom && !prevCh.photo) {
+      // Map → photo: grow out of the pin.
+      for (const p of Object.values(photos)) setOpacity(p, 0);
+      runPop(2, ch.photo, popWhere(ch), instant);
+    } else if (!ch.photo && prevCh.photo && prevCh.popFrom) {
+      // Photo → map (scrolling back up): shrink back into the pin.
+      const shown = photos[prevCh.photo];
+      for (const p of Object.values(photos)) setOpacity(p, 0);
+      if (shown) { popImg.src = prevCh.photo; popSrc = prevCh.photo; }
+      popT = 2;
+      runPop(0, null, popWhere(prevCh), instant);
+    } else {
+      if (popT > 0) runPop(0, null, null, true);
+      showPhoto(ch.photo);
+    }
 
     if (recording) {
       const step = steps.find((s) => s.dataset.chapter === id);
