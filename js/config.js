@@ -40,7 +40,7 @@ export default {
   // `anchor` is the point where the Contra Costa Canal crosses the plan
   // area's straight east boundary.
   site: {
-    anchor: [-121.909332, 38.008791],
+    anchor: [-121.909298, 38.008833],
     placeholder: false,
   },
 
