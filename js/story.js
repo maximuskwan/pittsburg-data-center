@@ -406,6 +406,38 @@ async function buildInteractive() {
     routeAnim = requestAnimationFrame(tick);
   };
 
+  // Distance label riding along the Carlmont line, rotated to match it on screen.
+  const haversineMiles = ([lo1, la1], [lo2, la2]) => {
+    const r = Math.PI / 180;
+    const h = Math.sin(((la2 - la1) * r) / 2) ** 2 + Math.cos(la1 * r) * Math.cos(la2 * r) * Math.sin(((lo2 - lo1) * r) / 2) ** 2;
+    return 3958.8 * 2 * Math.asin(Math.sqrt(h));
+  };
+  const distEl = document.createElement('div');
+  const distInner = document.createElement('div');
+  distInner.className = 'route-distance';
+  distEl.append(distInner);
+  const distMarker = new maplibregl.Marker({ element: distEl, rotationAlignment: 'viewport', offset: [0, 0] }).setLngLat(carlmont).addTo(map);
+  const placeDistance = () => {
+    const b = site.at.phase1;
+    distInner.textContent = `${Math.round(haversineMiles(carlmont, b))} miles`;
+    distMarker.setLngLat([(carlmont[0] + b[0]) / 2, (carlmont[1] + b[1]) / 2]);
+    const p0 = map.project(carlmont), p1 = map.project(b);
+    let deg = (Math.atan2(p1.y - p0.y, p1.x - p0.x) * 180) / Math.PI;
+    if (deg > 90) deg -= 180;
+    if (deg < -90) deg += 180; // keep text upright
+    distMarker.setRotation(deg);
+  };
+  const showDistance = (on) => {
+    if (on) placeDistance();
+    distInner.classList.toggle('on', on);
+  };
+  map.on('move', () => { if (distInner.classList.contains('on')) placeDistance(); });
+
+  // Scale bar (miles/feet), shown only on chapters that ask for it.
+  const scale = new maplibregl.ScaleControl({ maxWidth: 110, unit: 'imperial' });
+  map.addControl(scale, 'bottom-right');
+  const scaleEl = map.getContainer().querySelector('.maplibregl-ctrl-scale');
+
   // Slow orbit around the model.
   let orbiting = false;
   let orbitFrame = 0;
@@ -523,6 +555,8 @@ async function buildInteractive() {
     activeLabels = ch.labels || [];
     requestAnimationFrame(declutter);
     if (ch.layers?.route && prev !== id) drawRoute(instant);
+    showDistance(!!ch.layers?.route);
+    scaleEl?.classList.toggle('on', !!ch.scale);
     showPhoto(ch.photo);
 
     if (recording) {

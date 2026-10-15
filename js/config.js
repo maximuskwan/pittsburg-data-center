@@ -19,6 +19,8 @@
 //   datacenters, sites, route, plan, canal, model
 // labels: which on-map labels to show (defined in `labels` below).
 // photo:  a photo that fades in over the map for this chapter.
+// scale:  true shows a miles/feet scale bar (skip it on the national view,
+//         where the map projection stretches distances too much for one bar).
 // ─────────────────────────────────────────────────────────────────────────────
 
 export default {
@@ -64,35 +66,41 @@ export default {
       bounds: [[-124.5, 32.5], [-114.1, 42.0]],
       pitch: 20, bearing: 0, duration: 3500,
       layers: { states: 0.6, california: 1, counties: 0.6, basemap: 1, datacenters: 1 },
+      scale: true,
     },
     'bay-area': {
       bounds: [[-122.55, 37.25], [-121.7, 38.12]],
       pitch: 30, bearing: -10, duration: 3500,
       layers: { california: 0.4, counties: 1, basemap: 1, sites: 1 },
+      scale: true,
       labels: ['santa-clara', 'pittsburg-city'],
     },
     'close-to-home': {
       bounds: [[-122.4, 37.45], [-121.85, 38.08]],
       pitch: 35, bearing: -20, duration: 2500,
       layers: { counties: 0.6, 'contra-costa': 1, basemap: 1, sites: 1, route: 1 },
+      scale: true,
       labels: ['carlmont', 'pittsburg-city'],
     },
     pittsburg: {
       site: 'plan', zoom: 13.2,
       pitch: 45, bearing: -20, duration: 4000,
       layers: { aerial: 1, basemap: 0.5, plan: 0.5 },
+      scale: true,
       labels: ['pittsburg-city', 'hwy-4'],
     },
     site: {
       site: 'plan', zoom: 15.2,
       pitch: 35, bearing: -15, duration: 3500,
       layers: { aerial: 1, plan: 1, canal: 1 },
+      scale: true,
       labels: ['phase1', 'future', 'canal'],
     },
     model: {
       site: 'phase1', zoom: 17.1,
       pitch: 62, bearing: 55, duration: 4000,
       layers: { aerial: 1, plan: 0.6, canal: 1, model: 1 },
+      scale: true,
       labels: ['building', 'generators', 'house', 'substation'],
       orbit: true, // slow rotation while the reader lingers
     },
