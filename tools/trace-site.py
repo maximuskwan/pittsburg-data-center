@@ -45,51 +45,73 @@ for src, dst in pairs:
     print(f'  residual {math.hypot(u - dst[0], v - dst[1]) * A1_M_PER_PX:5.1f} m')
 a2_to_m = lambda p: a1_to_m(a2_to_a1(p))
 
-# Phase 1 pad from the site plan: left edge (800,765)→(850,910), bottom edge (850,910)→(950,881.7)
-TL, BL, BR = (800, 765), (850, 910), (950, 881.7)
-def lerp(p, q, t): return (p[0] + (q[0] - p[0]) * t, p[1] + (q[1] - p[1]) * t)
-def quad(o, u, v, u0, u1, v0, v1):
-    """Rectangle in the pad's own frame: u along the short (west→east) axis, v along the long (north→south) axis."""
-    pt = lambda a, b: (o[0] + u[0] * a + v[0] * b, o[1] + u[1] * a + v[1] * b)
-    return [pt(u0, v0), pt(u1, v0), pt(u1, v1), pt(u0, v1), pt(u0, v0)]
+# ── Phase 1 model, from AVAIO's landscape plans ──────────────────────────────
+# Sheets L-202 to L-205 of the "Pittsburg Data Hub" 90% progress set (CI Design,
+# for AVAIO Digital Partners), stitched edge to edge into one image (2000 px
+# wide sheets; the viewports overlap by exactly 1129 px across and 817 px down).
+# Scale bar: 60 ft = 95 px. North points to the right of the sheet, so
+# east = down the page and north = right. The traced Phase 1 outline from
+# these sheets is 22.1 acres (NOP: 22.05) and fits the NOP outline above with
+# a mean error of 9 m after the shift below (closest-point fit).
+P_M_PER_PX = 18.288 / 95
+P_SHIFT = (-388.9, -48.7)
+def p_to_m(p):
+    return (p[1] * P_M_PER_PX + P_SHIFT[0], p[0] * P_M_PER_PX + P_SHIFT[1])
+def pm(points): return [p_to_m(p) for p in points]
 
-o = a2_to_m(TL)
-ux, uy = (a2_to_m(BR)[0] - a2_to_m(BL)[0], a2_to_m(BR)[1] - a2_to_m(BL)[1])
-vx, vy = (a2_to_m(BL)[0] - o[0], a2_to_m(BL)[1] - o[1])
-W, L = math.hypot(ux, uy), math.hypot(vx, vy)
-u = (ux / W, uy / W); v = (vx / L, vy / L)
-print(f'Phase 1 pad: {W:.0f} m × {L:.0f} m')
-
-# Split the pad: generator yard on the west side (per the Draft EIR), building to the east.
-# Building width chosen so three floors ≈ the NOP's 347,740 sq ft of Phase I development.
-floor_m2 = 347740 * 0.092903 / 3
-bw = floor_m2 / (L - 10)
-yard_w = W - bw - 8
 shapes = []
 def add(kind, ring, **props):
+    ring = list(ring)
+    if ring[0] != ring[-1]: ring.append(ring[0])
     shapes.append({'kind': kind, 'ring': [[round(x, 1), round(y, 1)] for x, y in ring], **props})
 
-add('building', quad(o, u, v, W - bw, W, 5, L - 5), height=21)
-# 37 generators in two rows along the yard, long side perpendicular to the building.
-rows = [(19, 2), (18, 2 + 14 + 4)]
-n = 0
-for count, u0 in rows:
-    pitch = (L - 10) / count
-    for i in range(count):
-        v0 = 5 + i * pitch + (pitch - 3.6) / 2
-        add('generator', quad(o, u, v, u0, u0 + 13, v0, v0 + 3.6), height=4.5)
-        n += 1
-print(f'{n} generators, yard {yard_w:.0f} m wide; building {bw:.0f} m × {L - 10:.0f} m = {bw * (L - 10) * 3 / 0.092903:,.0f} sq ft over 3 floors')
+# "Parcel 1, 3 story data center": the heavy outline, minus the gravel
+# ("Lyngso black La Paz pebbles") yard along its west side.
+building = [(1050, 1312), (1730, 1105), (1862, 1070), (1902, 1197), (1967, 1310),
+            (1972, 1415), (1840, 1460), (1157, 1656)]
+yard = [(995, 1132), (1652, 925), (1690, 997), (1730, 1105), (1050, 1312)]
+# Height is not in any document reviewed; 21 m (~70 ft) is typical for three
+# data-center floors plus rooftop equipment. Change it here if a filing says.
+BUILDING_HEIGHT = 21
+add('building', pm(building), height=BUILDING_HEIGHT)
+add('yard', pm(yard), height=0.3)
 
-# Substation: the block south of the pad in the site plan.
-so = a2_to_m(lerp(BL, BR, 0.0)); so = (so[0] + v[0] * 6, so[1] + v[1] * 6)
-SW, SL = 140 * A2_M_PER_PX, 62 * A2_M_PER_PX
-add('substation-pad', quad(so, u, v, 0, SW, 0, SL), height=0.4)
-for i, (a, b, h) in enumerate([(12, 14, 5), (34, 14, 5), (56, 14, 5), (12, 38, 4), (34, 38, 4), (56, 38, 4), (90, 20, 6), (110, 20, 6)]):
-    add('substation-equipment', quad(so, u, v, a, a + 10, b, b + 8), height=h, base=0.4)
-for a in (8, 80, 130):
-    for b in (6, 56):
-        add('substation-mast', quad(so, u, v, a, a + 1.2, b, b + 1.2), height=16, base=0.4)
+# 37 generators (Draft EIR / CEC: 37 × 3 MW, west side) in one row along the
+# 17 m-wide gravel band, each enclosure ~3 m × 12 m across the band.
+band_top = [(1055, 1215), (1685, 1020)]   # inner edge of the band
+band_bot = [(1050, 1312), (1730, 1105)]   # edge against the building
+a0, a1 = [p_to_m(p) for p in band_bot]
+along = (a1[0] - a0[0], a1[1] - a0[1]); Lb = math.hypot(*along); along = (along[0] / Lb, along[1] / Lb)
+across = (-along[1], along[0])
+t0 = p_to_m(band_top[0])
+if (t0[0] - a0[0]) * across[0] + (t0[1] - a0[1]) * across[1] < 0: across = (-across[0], -across[1])
+GEN_W, GEN_L, GEN_H, COUNT = 3.0, 12.0, 4.5, 37
+pitch = (Lb - 8) / COUNT
+for i in range(COUNT):
+    s0 = 4 + i * pitch + (pitch - GEN_W) / 2
+    pt = lambda s, c: (a0[0] + along[0] * s + across[0] * c, a0[1] + along[1] * s + across[1] * c)
+    add('generator', [pt(s0, 2.5), pt(s0 + GEN_W, 2.5), pt(s0 + GEN_W, 2.5 + GEN_L), pt(s0, 2.5 + GEN_L)], height=GEN_H, base=0.3)
+print(f'{COUNT} generators along a {Lb:.0f} m band ({pitch:.1f} m apart)')
+
+# "Parcel 0 substation" (open switchyard) and "Parcel 2 substation" (enclosed building).
+sub0 = [(620, 1222), (890, 1146), (992, 1436), (702, 1502)]
+add('substation-pad', pm(sub0), height=0.3)
+c = [p_to_m(p) for p in sub0]
+def in_quad(u, v, w, h):
+    """Box at fractions (u, v) across the pad, w × h meters, aligned with the pad."""
+    o = (c[0][0] + (c[1][0] - c[0][0]) * u + (c[3][0] - c[0][0]) * v, c[0][1] + (c[1][1] - c[0][1]) * u + (c[3][1] - c[0][1]) * v)
+    e1 = (c[1][0] - c[0][0], c[1][1] - c[0][1]); n1 = math.hypot(*e1); e1 = (e1[0] / n1, e1[1] / n1)
+    e2 = (c[3][0] - c[0][0], c[3][1] - c[0][1]); n2 = math.hypot(*e2); e2 = (e2[0] / n2, e2[1] / n2)
+    return [o, (o[0] + e1[0] * w, o[1] + e1[1] * w), (o[0] + e1[0] * w + e2[0] * h, o[1] + e1[1] * w + e2[1] * h), (o[0] + e2[0] * h, o[1] + e2[1] * h)]
+for u, v in [(0.3, 0.25), (0.62, 0.25), (0.3, 0.6), (0.62, 0.6)]:
+    add('substation-equipment', in_quad(u, v, 9, 7), height=5, base=0.3)
+for u in (0.2, 0.5, 0.8):
+    for v in (0.12, 0.85):
+        add('substation-mast', in_quad(u, v, 1.2, 1.2), height=16, base=0.3)
+sub2_pad = [(720, 1560), (1010, 1470), (1100, 1765), (805, 1850)]
+sub2_bldg = [(838, 1625), (968, 1585), (1038, 1785), (900, 1825)]
+add('substation-pad', pm(sub2_pad), height=0.3)
+add('substation-building', pm(sub2_bldg), height=8, base=0.3)
 
 def area(ring):
     return abs(sum(x0 * y1 - x1 * y0 for (x0, y0), (x1, y1) in zip(ring, ring[1:] + ring[:1]))) / 2

@@ -90,8 +90,8 @@ export default {
       labels: ['phase1', 'future', 'canal'],
     },
     model: {
-      site: 'phase1', zoom: 16.7,
-      pitch: 62, bearing: -40, duration: 4000,
+      site: 'phase1', zoom: 17.1,
+      pitch: 62, bearing: 55, duration: 4000,
       layers: { aerial: 1, plan: 0.6, canal: 1, model: 1 },
       labels: ['building', 'generators', 'substation'],
       orbit: true, // slow rotation while the reader lingers
@@ -127,7 +127,7 @@ export default {
     future: { lngLat: { at: 'future' }, text: 'Future phases', sub: '54 acres south of the canal', anchor: 'left' },
     canal: { lngLat: { site: [220, -40] }, text: 'Contra Costa Canal', anchor: 'left', minor: true },
     building: { lngLat: { at: 'building' }, text: 'Data center', sub: 'Three stories', anchor: 'left' },
-    generators: { lngLat: { at: 'generators' }, text: '37 diesel generators', anchor: 'bottom' },
+    generators: { lngLat: { at: 'generators' }, text: '37 diesel generators', anchor: 'right' },
     substation: { lngLat: { at: 'substation' }, text: 'Substation', anchor: 'top' },
   },
 };

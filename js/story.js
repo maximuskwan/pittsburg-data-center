@@ -234,6 +234,8 @@ function buildLayers() {
         'building', C.red,
         'generator', '#4a0510',
         'substation-pad', '#bdbdbd',
+        'yard', '#a3a3a3',
+        'substation-building', '#9e9e9e',
         C.redDark],
       'fill-extrusion-height': ['get', 'height'],
       'fill-extrusion-base': ['get', 'base'],
