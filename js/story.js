@@ -24,6 +24,35 @@ for (const id of chapterIds) {
 
 for (const a of document.querySelectorAll('#story-link')) a.href = config.storyUrl;
 
+// ── Listen button ─────────────────────────────────────────────────────────────
+// Hidden until the audio file's length is known, so a missing file never shows
+// a broken button. Shows "Listen · 29:50"; while playing, "Pause · time left".
+(function setupListen() {
+  const btn = document.getElementById('listen');
+  const audio = document.getElementById('listen-audio');
+  if (!btn || !audio || !config.audio || recording) return;
+  const label = btn.querySelector('.listen__label');
+  const time = btn.querySelector('.listen__time');
+  const fmt = (s) => {
+    s = Math.max(0, Math.round(s));
+    const h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60), sec = String(s % 60).padStart(2, '0');
+    return h ? `${h}:${String(m).padStart(2, '0')}:${sec}` : `${m}:${sec}`;
+  };
+  const update = () => {
+    const playing = !audio.paused && !audio.ended;
+    btn.classList.toggle('is-playing', playing);
+    label.textContent = playing ? 'Pause' : 'Listen';
+    const started = audio.currentTime > 0 && !audio.ended;
+    time.textContent = fmt(started ? audio.duration - audio.currentTime : audio.duration);
+    btn.setAttribute('aria-label', `${playing ? 'Pause' : 'Listen to'} this story, ${time.textContent}${started ? ' left' : ''}`);
+  };
+  audio.addEventListener('loadedmetadata', () => { if (isFinite(audio.duration)) { btn.hidden = false; update(); } });
+  for (const ev of ['play', 'pause', 'ended', 'timeupdate']) audio.addEventListener(ev, update);
+  audio.addEventListener('ended', () => { audio.currentTime = 0; update(); });
+  btn.addEventListener('click', () => (audio.paused ? audio.play() : audio.pause()));
+  audio.src = config.audio;
+})();
+
 // Screen-reader description of what the map or photo shows at each step.
 for (const step of steps) {
   if (!step.dataset.alt) continue;

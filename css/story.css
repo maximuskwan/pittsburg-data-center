@@ -241,3 +241,29 @@ h1 {
   margin: -6px 0 0 -6px; border-radius: 50%; background: var(--red);
   border: 2px solid #fff; box-shadow: 0 0 0 1px var(--ink); opacity: var(--tail, 1);
 }
+
+/* Listen button (under the byline) */
+.listen {
+  display: inline-flex; align-items: center; gap: 10px;
+  margin-top: 14px; padding: 9px 18px 9px 12px;
+  border: 0; border-radius: 999px; background: #e7e6e1; color: var(--ink);
+  font: 500 16px/1 var(--sans); cursor: pointer; pointer-events: auto;
+  text-shadow: none; transition: background 0.2s ease;
+}
+.listen:hover { background: #dcdbd5; }
+.listen:focus-visible { outline: 2px solid var(--red); outline-offset: 2px; }
+.listen__label { font-weight: 700; }
+.listen__time { font-variant-numeric: tabular-nums; }
+.listen__icon {
+  width: 22px; height: 22px; border-radius: 50%; background: var(--ink); position: relative; flex: none;
+}
+.listen__icon::before {
+  content: ''; position: absolute; left: 8px; top: 6px;
+  border-left: 8px solid #fff; border-top: 5px solid transparent; border-bottom: 5px solid transparent;
+}
+.listen.is-playing .listen__icon::before {
+  left: 7px; top: 6px; width: 3px; height: 10px; border: 0;
+  border-left: 3px solid #fff; border-right: 3px solid #fff; box-sizing: content-box; width: 2px;
+}
+.listen[hidden] { display: none; }
+.card--title { pointer-events: auto; }

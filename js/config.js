@@ -29,6 +29,11 @@ export default {
   siteUrl: 'https://maximuskwan.github.io/pittsburg-data-center/',
   storyUrl: 'https://scotscoop.com/', // TK: replace with the article URL once it's live
 
+  // Audio version of the story. Drop the file at this path; the button under
+  // the byline appears once the file loads and shows its length. MP3 works
+  // everywhere; keep it mono, 64–96 kbps.
+  audio: 'media/audio/power-hungry.mp3',
+
   // Map tiles. OpenFreeMap needs no key and has no usage caps.
   vectorTiles: 'https://tiles.openfreemap.org/planet',
   glyphs: 'https://tiles.openfreemap.org/fonts/{fontstack}/{range}.pbf',
