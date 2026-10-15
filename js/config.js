@@ -128,7 +128,7 @@ export default {
     canal: { lngLat: { site: [220, -40] }, text: 'Contra Costa Canal', anchor: 'left', minor: true },
     building: { lngLat: { at: 'building' }, text: 'Data center', sub: 'Three stories', anchor: 'left' },
     generators: { lngLat: { at: 'generators' }, text: '36 diesel generators', sub: 'Backup power for the servers', anchor: 'right' },
-    house: { lngLat: { at: 'house' }, text: 'House generator', sub: 'Offices and life safety', anchor: 'left', minor: true },
+    house: { lngLat: { at: 'house' }, text: 'House generator', sub: 'Offices and life safety', anchor: 'left' },
     substation: { lngLat: { at: 'substation' }, text: 'Substation', anchor: 'top' },
   },
 };
