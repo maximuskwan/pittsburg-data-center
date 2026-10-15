@@ -67,31 +67,50 @@ def add(kind, ring, **props):
 
 # "Parcel 1, 3 story data center": the heavy outline, minus the gravel
 # ("Lyngso black La Paz pebbles") yard along its west side.
-building = [(1050, 1312), (1730, 1105), (1862, 1070), (1902, 1197), (1967, 1310),
+building = [(1055, 1327), (1730, 1110), (1862, 1070), (1902, 1197), (1967, 1310),
             (1972, 1415), (1840, 1460), (1157, 1656)]
-yard = [(995, 1132), (1652, 925), (1690, 997), (1730, 1105), (1050, 1312)]
+yard = [(995, 1132), (1652, 925), (1690, 997), (1730, 1110), (1055, 1327)]
 # Height is not in any document reviewed; 21 m (~70 ft) is typical for three
 # data-center floors plus rooftop equipment. Change it here if a filing says.
 BUILDING_HEIGHT = 21
 add('building', pm(building), height=BUILDING_HEIGHT)
 add('yard', pm(yard), height=0.3)
 
-# 37 generators (Draft EIR / CEC: 37 × 3 MW, west side) in one row along the
-# 17 m-wide gravel band, each enclosure ~3 m × 12 m across the band.
-band_top = [(1055, 1215), (1685, 1020)]   # inner edge of the band
-band_bot = [(1050, 1312), (1730, 1105)]   # edge against the building
+# Generators: the 37 small squares in the gravel yard on the plans, located
+# one by one (registered to within ~0.2 m). The CEC filing: "Thirty-six (36) of
+# the generators would be dedicated to replacing the electricity needs of the
+# data center and one (1) ... would be used to support general office loads
+# along with building and life safety services (house generator)." On the plans
+# that's 12 groups of three, plus one square on its own at the north end.
+# The squares mark positions only; the enclosure size below is an estimate.
+GENERATORS = [
+    (1069, 1264), (1075, 1282), (1081, 1300),
+    (1123, 1248), (1128, 1265), (1135, 1283),
+    (1174, 1231), (1180, 1249), (1185, 1267),
+    (1224, 1215), (1230, 1232), (1235, 1251),
+    (1274, 1199), (1280, 1217), (1285, 1235),
+    (1325, 1182), (1331, 1200), (1339, 1218),
+    (1393, 1161), (1399, 1179), (1405, 1197),
+    (1447, 1144), (1452, 1163), (1458, 1180),
+    (1498, 1128), (1504, 1146), (1509, 1163),
+    (1548, 1112), (1554, 1130), (1559, 1147),
+    (1598, 1096), (1604, 1114), (1609, 1132),
+    (1649, 1080), (1655, 1098), (1660, 1116),
+]
+HOUSE_GENERATOR = (1695, 1059)
+band_bot = [(1055, 1327), (1730, 1110)]   # yard edge against the building (measured on a clean crop of L-202/L-203)
 a0, a1 = [p_to_m(p) for p in band_bot]
 along = (a1[0] - a0[0], a1[1] - a0[1]); Lb = math.hypot(*along); along = (along[0] / Lb, along[1] / Lb)
 across = (-along[1], along[0])
-t0 = p_to_m(band_top[0])
-if (t0[0] - a0[0]) * across[0] + (t0[1] - a0[1]) * across[1] < 0: across = (-across[0], -across[1])
-GEN_W, GEN_L, GEN_H, COUNT = 3.0, 12.0, 4.5, 37
-pitch = (Lb - 8) / COUNT
-for i in range(COUNT):
-    s0 = 4 + i * pitch + (pitch - GEN_W) / 2
-    pt = lambda s, c: (a0[0] + along[0] * s + across[0] * c, a0[1] + along[1] * s + across[1] * c)
-    add('generator', [pt(s0, 2.5), pt(s0 + GEN_W, 2.5), pt(s0 + GEN_W, 2.5 + GEN_L), pt(s0, 2.5 + GEN_L)], height=GEN_H, base=0.3)
-print(f'{COUNT} generators along a {Lb:.0f} m band ({pitch:.1f} m apart)')
+GEN_W, GEN_L, GEN_H = 3.0, 8.0, 4.5   # across the yard × along it × height, meters (estimated)
+def enclosure(center):
+    cx, cy = p_to_m(center)
+    hw, hl = GEN_W / 2, GEN_L / 2
+    return [(cx + along[0] * l + across[0] * w, cy + along[1] * l + across[1] * w) for l, w in ((-hl, -hw), (hl, -hw), (hl, hw), (-hl, hw))]
+for p in GENERATORS:
+    add('generator', enclosure(p), height=GEN_H, base=0.3)
+add('house-generator', enclosure(HOUSE_GENERATOR), height=GEN_H, base=0.3)
+print(f'{len(GENERATORS)} data-center generators + 1 house generator')
 
 # "Parcel 0 substation" (open switchyard) and "Parcel 2 substation" (enclosed building).
 sub0 = [(620, 1222), (890, 1146), (992, 1436), (702, 1502)]

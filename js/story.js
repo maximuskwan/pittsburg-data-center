@@ -113,6 +113,7 @@ function buildSite(local, anchor) {
     building: centroid(local.model.filter((m) => m.kind === 'building').map((m) => m.ring)),
     generators: centroid(local.model.filter((m) => m.kind === 'generator').map((m) => m.ring)),
     substation: centroid(local.model.filter((m) => m.kind === 'substation-pad').map((m) => m.ring)),
+    house: centroid(local.model.filter((m) => m.kind === 'house-generator').map((m) => m.ring)),
   };
   return { ll, plan, canal, model, at, imageCorners: [ll([w, n]), ll([e, n]), ll([e, s]), ll([w, s])] };
 }
@@ -235,6 +236,7 @@ function buildLayers() {
         'generator', '#4a0510',
         'substation-pad', '#bdbdbd',
         'yard', '#a3a3a3',
+        'house-generator', '#121212',
         'substation-building', '#9e9e9e',
         C.redDark],
       'fill-extrusion-height': ['get', 'height'],
