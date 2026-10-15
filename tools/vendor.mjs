@@ -19,11 +19,8 @@ const copies = [
   ['maplibre-gl/LICENSE.txt', 'vendor/maplibre-gl/LICENSE.txt'],
   ['scrollama/build/scrollama.min.js', 'vendor/scrollama/scrollama.min.js'],
   ['scrollama/LICENSE', 'vendor/scrollama/LICENSE'],
-  ['@fontsource-variable/inter-tight/files/inter-tight-latin-wght-normal.woff2', 'vendor/fonts/inter-tight-latin-wght-normal.woff2'],
-  ['@fontsource-variable/inter-tight/LICENSE', 'vendor/fonts/LICENSE-inter-tight.txt'],
-  ['@fontsource-variable/newsreader/files/newsreader-latin-opsz-normal.woff2', 'vendor/fonts/newsreader-latin-opsz-normal.woff2'],
-  ['@fontsource-variable/newsreader/files/newsreader-latin-opsz-italic.woff2', 'vendor/fonts/newsreader-latin-opsz-italic.woff2'],
-  ['@fontsource-variable/newsreader/LICENSE', 'vendor/fonts/LICENSE-newsreader.txt'],
+  ['@fontsource-variable/montserrat/files/montserrat-latin-wght-normal.woff2', 'vendor/fonts/montserrat-latin-wght-normal.woff2'],
+  ['@fontsource-variable/montserrat/LICENSE', 'vendor/fonts/LICENSE-montserrat.txt'],
 ];
 for (const [from, to] of copies) {
   mkdirSync(dirname(out(to)), { recursive: true });

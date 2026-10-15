@@ -23,7 +23,6 @@ for (const step of doc.querySelectorAll('.step')) {
     paragraphs.push(p.innerHTML.replace(/<mark class="tk">(.*?)<\/mark>/g, '[$1]').trim());
   }
 }
-paragraphs.push(doc.querySelector('.end__lede').innerHTML.trim());
 const credits = doc.querySelector('.credits').innerHTML.replace(/<mark class="tk">(.*?)<\/mark>/g, '[$1]').replace(/\s+/g, ' ').trim();
 
 const html = `<!-- Intro text for "Power Hungry" (Scot Scoop). Paste above the article body
@@ -40,7 +39,7 @@ const embed = `<iframe src="${config.siteUrl}"
 <p><a href="${config.siteUrl}">View the interactive full-screen →</a></p>
 `;
 const plain = (s) => s.replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
-const heroStep = doc.querySelector('.step[data-chapter="discovered"]');
+const heroStep = doc.querySelector('.step[data-chapter="photo-homes"]');
 mkdirSync(join(root, 'kit/media'), { recursive: true });
 writeFileSync(join(root, 'kit/media/hero-alt.txt'), `${heroStep.getAttribute('data-alt')}\n`);
 writeFileSync(join(root, 'kit/CREDITS.txt'), `${plain(credits)}\n\nThis story was originally published by Scot Scoop (${config.storyUrl}), the student newsroom of Carlmont High School in Belmont, Calif. It is republished under a Creative Commons BY-ND 4.0 license.\n`);

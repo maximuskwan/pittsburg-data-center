@@ -10,11 +10,11 @@
 // (`npx playwright install chromium`, once). Run it on a machine with internet
 // access: the map tiles and imagery load live.
 //
-// If media/drone.mp4 exists, the videos cross-fade into it at the end, and a
-// poster frame is saved to media/drone-poster.jpg.
+// Photo chapters are recorded too (the photos cross-fade over the map), but
+// stills are only saved for map chapters; the no-map version uses the photos.
 import { chromium } from 'playwright';
 import { execFileSync } from 'node:child_process';
-import { copyFileSync, existsSync, mkdirSync, mkdtempSync, rmSync } from 'node:fs';
+import { copyFileSync, mkdirSync, mkdtempSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -69,10 +69,10 @@ async function record({ captions, framesDir, stillsDir }) {
   };
 
   while (!(await page.evaluate(() => !!window.story?.loaded))) { await pump(16); await page.waitForTimeout(20); }
-  const chapters = await page.evaluate(() => window.story.chapters.map((id) => [id, window.story.config.chapters[id].duration || 0]));
+  const chapters = await page.evaluate(() => window.story.chapters.map((id) => [id, window.story.config.chapters[id].duration || 0, !!window.story.config.chapters[id].photo]));
 
   let frame = 0;
-  for (const [index, [id, duration]] of chapters.entries()) {
+  for (const [index, [id, duration, isPhoto]] of chapters.entries()) {
     process.stdout.write(`  ${id} `);
     await page.evaluate((cid) => window.story.goTo(cid, { instant: cid === 'opener' }), id);
     const hold = index === 0 ? 3000 : HOLD_MS;
@@ -82,7 +82,7 @@ async function record({ captions, framesDir, stillsDir }) {
       await settle();
       const file = join(framesDir, `${String(frame++).padStart(5, '0')}.jpg`);
       await page.screenshot({ path: file, type: 'jpeg', quality: 92 });
-      if (stillsDir && i === n - 1 && id !== 'opener') copyFileSync(file, join(stillsDir, `${id}.jpg`));
+      if (stillsDir && i === n - 1 && id !== 'opener' && !isPhoto) copyFileSync(file, join(stillsDir, `${id}.jpg`));
       if (i % FPS === 0) process.stdout.write('.');
     }
     process.stdout.write('\n');
@@ -91,22 +91,10 @@ async function record({ captions, framesDir, stillsDir }) {
   return frame / FPS;
 }
 
-function encode(framesDir, seconds, outBase) {
-  const drone = join(root, 'media/drone.mp4');
+function encode(framesDir, outBase) {
   const input = ['-framerate', String(FPS), '-i', join(framesDir, '%05d.jpg')];
-  const mp4 = ['-c:v', 'libx264', '-pix_fmt', 'yuv420p', '-crf', '20', '-preset', 'slow', '-movflags', '+faststart'];
-  const webm = ['-c:v', 'libvpx-vp9', '-b:v', '0', '-crf', '34', '-row-mt', '1'];
-  if (existsSync(drone)) {
-    const fade = 1.5;
-    const filter = `[1:v]scale=${W}:${H}:force_original_aspect_ratio=increase,crop=${W}:${H},fps=${FPS},setsar=1[d];` +
-      `[0:v]setsar=1[m];[m][d]xfade=transition=fade:duration=${fade}:offset=${(seconds - fade).toFixed(2)},format=yuv420p[v]`;
-    for (const [ext, codec] of [['mp4', mp4], ['webm', webm]]) {
-      ffmpeg(...input, '-i', drone, '-filter_complex', filter, '-map', '[v]', '-an', ...codec, `${outBase}.${ext}`);
-    }
-  } else {
-    ffmpeg(...input, ...mp4, '-an', `${outBase}.mp4`);
-    ffmpeg(...input, ...webm, '-an', `${outBase}.webm`);
-  }
+  ffmpeg(...input, '-c:v', 'libx264', '-pix_fmt', 'yuv420p', '-crf', '20', '-preset', 'slow', '-movflags', '+faststart', '-an', `${outBase}.mp4`);
+  ffmpeg(...input, '-c:v', 'libvpx-vp9', '-b:v', '0', '-crf', '34', '-row-mt', '1', '-an', `${outBase}.webm`);
 }
 
 try {
@@ -116,7 +104,7 @@ try {
   console.log(`Recording clean version (${W}×${H})…`);
   let tmp = mkdtempSync(join(tmpdir(), 'scrolly-'));
   let secs = await record({ captions: false, framesDir: tmp, stillsDir: join(root, 'media/stills') });
-  encode(tmp, secs, join(root, 'media/intro'));
+  encode(tmp, join(root, 'media/intro'));
   rmSync(tmp, { recursive: true, force: true });
   console.log(`  → media/intro.mp4, media/intro.webm (${secs.toFixed(1)}s), media/stills/`);
 
@@ -124,20 +112,14 @@ try {
     console.log('Recording captioned version for republishers…');
     tmp = mkdtempSync(join(tmpdir(), 'scrolly-'));
     secs = await record({ captions: true, framesDir: tmp });
-    encode(tmp, secs, join(root, 'kit/media/intro-captioned'));
+    encode(tmp, join(root, 'kit/media/intro-captioned'));
     rmSync(tmp, { recursive: true, force: true });
     console.log('  → kit/media/intro-captioned.mp4 / .webm');
   }
 
-  const drone = join(root, 'media/drone.mp4');
-  if (existsSync(drone)) {
-    ffmpeg('-ss', '2', '-i', drone, '-frames:v', '1', '-q:v', '3', '-vf', 'scale=1920:-2', join(root, 'media/drone-poster.jpg'));
-    copyFileSync(join(root, 'media/drone-poster.jpg'), join(root, 'kit/media/hero.jpg'));
-    console.log('  → media/drone-poster.jpg, kit/media/hero.jpg');
-  } else {
-    copyFileSync(join(root, 'media/stills/parcel.jpg'), join(root, 'kit/media/hero.jpg'));
-    console.log('  → kit/media/hero.jpg (map still; re-run after the drone footage is in media/drone.mp4)');
-  }
+  // The lead image for republishers: the drone photo from the 'photo-homes' chapter.
+  copyFileSync(join(root, 'media/photos/drone-02.jpg'), join(root, 'kit/media/hero.jpg'));
+  console.log('  → kit/media/hero.jpg');
 } finally {
   await browser.close();
   server.close();

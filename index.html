@@ -3,12 +3,13 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Power Hungry | Scot Scoop</title>
+  <title>Power hungry | Scot Scoop</title>
   <meta name="description" content="Interactive map: from the national data center boom to one former golf course in Pittsburg, California.">
-  <meta property="og:title" content="Power Hungry: The Data Center Fight">
-  <meta property="og:description" content="How a Bay Area city approved an $800 million data center on its old golf course — and why almost no one noticed.">
+  <meta property="og:title" content="Power hungry: One Bay Area city’s fight against the AI data center boom">
+  <meta property="og:description" content="How an approved data center on Pittsburg’s old municipal golf course became one of the Bay Area’s fiercest local fights.">
   <meta property="og:image" content="https://maximuskwan.github.io/pittsburg-data-center/kit/media/hero.jpg">
   <meta name="twitter:card" content="summary_large_image">
+  <meta name="robots" content="noindex"> <!-- TK: remove at publication -->
   <link rel="icon" href="data:,">
   <link rel="stylesheet" href="vendor/maplibre-gl/maplibre-gl.css">
   <link rel="stylesheet" href="css/story.css">
@@ -21,7 +22,8 @@
       var framed = window.self !== window.top;
       var narrowFrame = framed && window.innerWidth < 700;
       var c = document.documentElement.classList;
-      if (q.has('static') || reduce || narrowFrame) c.add('static');
+      if (q.has('calibrate')) c.add('calibrate');
+      else if (q.has('static') || reduce || narrowFrame) c.add('static');
       if (q.has('record')) c.add('record');
       if (q.get('captions') === '1') c.add('captions');
       if (framed) c.add('framed');
@@ -34,26 +36,22 @@
 
   <div id="graphic" aria-hidden="true">
     <div id="map"></div>
-    <div id="video-layer">
-      <video id="drone" muted playsinline loop preload="none"></video>
-    </div>
+    <div id="photo-layer"></div>
     <div id="caption" aria-hidden="true"></div>
   </div>
 
   <main id="story">
     <!-- ── CHAPTERS ──────────────────────────────────────────────────────────
          Each <section class="step"> is one scroll stop. data-chapter must match
-         a key in js/config.js. data-alt describes the map for screen readers
-         and becomes the alt text of the still image in the no-map version.
+         a key in js/config.js. data-alt describes the map (or photo) for screen
+         readers and becomes the alt text of the image in the no-map version.
          Anything in <mark class="tk"> is unfinished and shows the DRAFT banner.
     ─────────────────────────────────────────────────────────────────────── -->
 
     <section class="step step--title" data-chapter="opener"
-             data-alt="A dark map of the United States dotted with data center locations.">
+             data-alt="A map of the United States dotted with data center locations.">
       <div class="card card--title">
-        <p class="kicker">A Scot Scoop Investigation</p>
-        <h1>Power Hungry</h1>
-        <p class="dek">How a Bay Area city approved an $800 million data center on its old golf course — and why almost no one noticed.</p>
+        <h1><span class="h1-main">Power hungry:</span> <span class="h1-sub">One Bay Area city’s fight against the AI data center boom</span></h1>
         <p class="byline">By <mark class="tk">TK reporter name</mark> · <mark class="tk">TK publish date</mark></p>
         <p class="scroll-cue" aria-hidden="true">Scroll <span>↓</span></p>
       </div>
@@ -73,7 +71,7 @@
              data-alt="Map zooming into California, with data centers concentrated in the San Francisco Bay Area and Los Angeles.">
       <div class="card">
         <p>California is home to <mark class="tk">TK</mark> of them, most packed into Silicon Valley.</p>
-        <p><mark class="tk">TK: one sentence on state-level action — legislation, utility rules, or the lack of either.</mark></p>
+        <p><mark class="tk">TK: one sentence on state-level action — e.g., Proposition 45 on the Nov. 3 ballot, which would speed environmental review for projects it defines as “essential.”</mark></p>
       </div>
     </section>
 
@@ -81,57 +79,82 @@
              data-alt="Map of the San Francisco Bay Area highlighting the Santa Clara data center cluster in the south and Pittsburg in the northeast.">
       <div class="card">
         <p>Most of the Bay Area’s data centers sit in Santa Clara, at the heart of Silicon Valley.</p>
-        <p>The region’s newest one is planned somewhere else: Pittsburg, a city of about 76,000 on the Sacramento–San Joaquin River Delta.</p>
+        <p>One of the region’s newest is planned somewhere else: Pittsburg, a city of about 76,000 on the Sacramento–San Joaquin River Delta.</p>
       </div>
     </section>
 
     <section class="step" data-chapter="close-to-home"
              data-alt="A line drawn on the map from Carlmont High School in Belmont to Pittsburg in Contra Costa County.">
       <div class="card">
-        <p>It’s about an hour’s drive from Carlmont.</p>
-        <p><mark class="tk">TK: one or two sentences connecting a Carlmont student’s daily digital use to the electricity and water a data center consumes.</mark></p>
+        <p>It’s about an hour’s drive from Carlmont when the traffic is light.</p>
+        <p><mark class="tk">TK: one or two sentences connecting a Carlmont student’s daily digital use (e.g., MagicSchool AI) to the electricity and water a data center consumes.</mark></p>
       </div>
     </section>
 
     <section class="step" data-chapter="pittsburg"
              data-alt="Aerial view of southwestern Pittsburg, with the former Delta View Golf Course south of Highway 4.">
       <div class="card">
-        <p>In May 2018, Pittsburg’s City Council voted to permanently close the city-owned Delta View Golf Course.</p>
-        <p>A month later, the council agreed to begin bringing a “technology park” to the land.</p>
+        <p>In May 2018, Pittsburg’s City Council voted to close the city-owned Delta View Golf Course for good. A month later, it agreed to start planning a “technology park” on the land.</p>
         <p class="source">Imagery: U.S. Geological Survey, The National Map.</p>
       </div>
     </section>
 
-    <section class="step" data-chapter="parcel"
-             data-alt="Close aerial view of the former golf course with the boundary of the approved data center site outlined.">
+    <section class="step" data-chapter="site"
+             data-alt="Aerial view of the 76-acre plan area, split by the Contra Costa Canal into a 22-acre northern section and 54 acres to the south.">
       <div class="card">
-        <p>In November 2024, the council voted 5–0 to approve what that technology park would hold: “Perseus,” a 92-megawatt hyperscale data center from AVAIO Digital Partners, which the developer valued at $800 million.</p>
-        <p class="source">Site boundary: <mark class="tk">Contra Costa County GIS / City of Pittsburg Vesting Tentative Map, Nov. 2024</mark>.</p>
+        <p>The plan covers 76 acres of the old course. The Contra Costa Canal cuts it in two.</p>
+        <p>The data center would go on the 22 acres north of the canal. The 54 acres to the south are set aside for future phases.</p>
+        <p class="source">Boundaries: City of Pittsburg, Notice of Preparation, Feb. 28, 2024 (traced; approximate).</p>
       </div>
     </section>
 
-    <section class="step step--last" data-chapter="discovered"
-             data-alt="Drone footage over the former Delta View Golf Course.">
+    <section class="step" data-chapter="model"
+             data-alt="An illustrative 3D model on the aerial map: a long three-story building, two rows of generators along its west side, and a substation to the south.">
       <div class="card">
-        <p>Most residents didn’t learn about it until June 2026 — about 19 months later.</p>
-        <p class="source">Drone footage: <mark class="tk">Cara Esten Hurtle</mark>.</p>
+        <p>City and state filings describe what’s planned: a three-story data center, an electrical substation, and a yard of 37 diesel generators, 3 megawatts each, along the building’s west side.</p>
+        <p class="source">Illustrative model based on the city’s conceptual site plan and the project’s environmental filings; not an architectural rendering. Building height is approximate.</p>
+      </div>
+    </section>
+
+    <section class="step step--photo" data-chapter="photo-towers"
+             data-alt="Drone photo: a PG&amp;E transmission tower and small utility buildings on the edge of the former golf course, with homes beyond.">
+      <div class="card">
+        <p>Today the land is empty. PG&amp;E transmission towers line its east edge.</p>
+        <p class="source">Photo: <mark class="tk">TK photographer</mark>, Oct. 2026.</p>
+      </div>
+    </section>
+
+    <section class="step step--photo" data-chapter="photo-homes"
+             data-alt="Drone photo: overgrown fairways and cracked cart paths, with a neighborhood of houses at the property’s edge.">
+      <div class="card">
+        <p>The nearest backyard fences are about 85 feet from the property line.</p>
+        <p class="source">Photo: <mark class="tk">TK photographer</mark>, Oct. 2026.</p>
+      </div>
+    </section>
+
+    <section class="step step--photo step--last" data-chapter="photo-ruins"
+             data-alt="Drone photo: a cracked parking lot and a bare foundation where course buildings once stood, with golden hills and transmission lines behind.">
+      <div class="card">
+        <p>The final city approval came Dec. 11, 2025, at a hearing before a single official. Most people in Pittsburg say they did not hear about it until this spring.</p>
+        <p class="source">Photo: <mark class="tk">TK photographer</mark>, Oct. 2026.</p>
       </div>
     </section>
 
     <section id="end" class="end">
       <div class="end__inner">
-        <p class="end__lede">This is the story of how that happened — and whether a city that learns of a decision after it has been made can still change anything.</p>
         <p class="end__continue end__continue--framed">Continue reading below <span aria-hidden="true">↓</span></p>
         <p class="end__continue end__continue--standalone"><a id="story-link" href="https://scotscoop.com/">Read the full story on Scot Scoop <span aria-hidden="true">→</span></a></p>
         <p class="credits">
           Interactive by <mark class="tk">TK</mark> for Scot Scoop. Story text, photos and graphics licensed
-          <a href="https://creativecommons.org/licenses/by-nd/4.0/" rel="license">CC BY-ND 4.0</a>; drone footage © <mark class="tk">Cara Esten Hurtle</mark>, used with permission.
-          Map data © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>, <a href="https://openfreemap.org">OpenFreeMap</a>, <a href="https://openmaptiles.org">OpenMapTiles</a>; boundaries: U.S. Census Bureau; imagery: USGS The National Map.
+          <a href="https://creativecommons.org/licenses/by-nd/4.0/" rel="license">CC BY-ND 4.0</a>.
+          Map data © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>, <a href="https://openfreemap.org">OpenFreeMap</a>, <a href="https://openmaptiles.org">OpenMapTiles</a>; boundaries: U.S. Census Bureau, City of Pittsburg; imagery: USGS The National Map.
           <a href="https://github.com/maximuskwan/pittsburg-data-center">Code (MIT)</a>.
         </p>
       </div>
     </section>
   </main>
+
+  <div id="calibrate-panel" hidden></div>
 
   <script src="vendor/scrollama/scrollama.min.js"></script>
   <script type="module" src="js/story.js"></script>

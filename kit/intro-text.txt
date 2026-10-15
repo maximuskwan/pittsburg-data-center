@@ -6,24 +6,28 @@ In 2023, they used about 4.4% of all U.S. electricity. By 2028, that share could
 
 California is home to [TK] of them, most packed into Silicon Valley.
 
-[TK: one sentence on state-level action — legislation, utility rules, or the lack of either.]
+[TK: one sentence on state-level action — e.g., Proposition 45 on the Nov. 3 ballot, which would speed environmental review for projects it defines as “essential.”]
 
 Most of the Bay Area’s data centers sit in Santa Clara, at the heart of Silicon Valley.
 
-The region’s newest one is planned somewhere else: Pittsburg, a city of about 76,000 on the Sacramento–San Joaquin River Delta.
+One of the region’s newest is planned somewhere else: Pittsburg, a city of about 76,000 on the Sacramento–San Joaquin River Delta.
 
-It’s about an hour’s drive from Carlmont.
+It’s about an hour’s drive from Carlmont when the traffic is light.
 
-[TK: one or two sentences connecting a Carlmont student’s daily digital use to the electricity and water a data center consumes.]
+[TK: one or two sentences connecting a Carlmont student’s daily digital use (e.g., MagicSchool AI) to the electricity and water a data center consumes.]
 
-In May 2018, Pittsburg’s City Council voted to permanently close the city-owned Delta View Golf Course.
+In May 2018, Pittsburg’s City Council voted to close the city-owned Delta View Golf Course for good. A month later, it agreed to start planning a “technology park” on the land.
 
-A month later, the council agreed to begin bringing a “technology park” to the land.
+The plan covers 76 acres of the old course. The Contra Costa Canal cuts it in two.
 
-In November 2024, the council voted 5–0 to approve what that technology park would hold: “Perseus,” a 92-megawatt hyperscale data center from AVAIO Digital Partners, which the developer valued at $800 million.
+The data center would go on the 22 acres north of the canal. The 54 acres to the south are set aside for future phases.
 
-Most residents didn’t learn about it until June 2026 — about 19 months later.
+City and state filings describe what’s planned: a three-story data center, an electrical substation, and a yard of 37 diesel generators, 3 megawatts each, along the building’s west side.
 
-This is the story of how that happened — and whether a city that learns of a decision after it has been made can still change anything.
+Today the land is empty. PG&amp;E transmission towers line its east edge.
+
+The nearest backyard fences are about 85 feet from the property line.
+
+The final city approval came Dec. 11, 2025, at a hearing before a single official. Most people in Pittsburg say they did not hear about it until this spring.
 
 Interactive version: https://maximuskwan.github.io/pittsburg-data-center/

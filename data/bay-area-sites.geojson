@@ -16,23 +16,7 @@
      37.3746
     ]
    }
-  },
-  {
-   "type": "Feature",
-   "properties": {
-    "id": "perseus",
-    "name": "Perseus (proposed)",
-    "status": "approved",
-    "placeholder": true
-   },
-   "geometry": {
-    "type": "Point",
-    "coordinates": [
-     -121.933,
-     38.0045
-    ]
-   }
   }
  ],
- "name": "Bay Area sites. Hand-verify every point; delete placeholder:true once checked."
+ "name": "Bay Area reference sites. The Pittsburg site is added from js/config.js (site.anchor). Delete placeholder:true once verified."
 }

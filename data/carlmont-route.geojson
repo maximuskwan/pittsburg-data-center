@@ -4,25 +4,6 @@
   {
    "type": "Feature",
    "properties": {
-    "placeholder": true
-   },
-   "geometry": {
-    "type": "LineString",
-    "coordinates": [
-     [
-      -122.2963,
-      37.5136
-     ],
-     [
-      -121.933,
-      38.0045
-     ]
-    ]
-   }
-  },
-  {
-   "type": "Feature",
-   "properties": {
     "name": "Carlmont High School"
    },
    "geometry": {
@@ -34,5 +15,5 @@
    }
   }
  ],
- "name": "Carlmont High School to the Perseus site (straight line)."
+ "name": "Carlmont High School. The line to the Pittsburg site is drawn from js/config.js (site.anchor)."
 }

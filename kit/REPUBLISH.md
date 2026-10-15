@@ -8,7 +8,7 @@ Thank you for running Scot Scoop's investigation. The story is licensed under **
 
 **2. Video.** If your CMS strips iframes, use `media/intro-captioned.mp4`. It's the same map sequence with the chapter text on screen, about 45 seconds, silent, 1080p. Run it as an autoplaying muted loop or a regular video player.
 
-**3. Image.** If you can't run video, use `media/hero.jpg` as the lead image. The alt text is in `media/hero-alt.txt`.
+**3. Image.** If you can't run video, use `media/hero.jpg` (a drone photo of the site) as the lead image. The alt text is in `media/hero-alt.txt`.
 
 In every case, also include the intro text from `intro-text.html` (or `intro-text.txt`) as the first paragraphs of the story, so the intro's content reaches every reader.
 
@@ -26,9 +26,9 @@ Please link to the original article URL.
 - ❌ You can't: cut or reorder paragraphs, change quotes or findings, or sell the story separately.
 - Photos and graphics come under the same license and need the credits shown with them.
 
-## Drone footage
+## Photos
 
-The drone footage is © Cara Esten Hurtle and licensed to Scot Scoop for use within this article and its authorized republications. You may run it as part of the story (inside the embed or the intro video), but not separately.
+The drone photos are credited to their photographer and licensed to Scot Scoop for this article and its authorized republications. Run them with the story and their credits, but not separately.
 
 ## Contents of this kit
 
