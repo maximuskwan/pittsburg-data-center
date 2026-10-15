@@ -25,7 +25,7 @@ for (const step of doc.querySelectorAll('.step')) {
 }
 const credits = doc.querySelector('.credits').innerHTML.replace(/<mark class="tk">(.*?)<\/mark>/g, '[$1]').replace(/\s+/g, ' ').trim();
 
-const html = `<!-- Intro text for "Power Hungry" (Scot Scoop). Paste above the article body
+const html = `<!-- Intro text for "Power hungry" by Maximus Kwan. Paste above the article body
      when you can't embed the interactive. Licensed CC BY-ND 4.0: do not edit. -->
 ${paragraphs.map((p) => `<p>${p}</p>`).join('\n')}
 <p><em>Interactive version: <a href="${config.siteUrl}">${config.siteUrl}</a></em></p>
@@ -42,7 +42,7 @@ const plain = (s) => s.replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
 const heroStep = doc.querySelector('.step[data-chapter="photo-homes"]');
 mkdirSync(join(root, 'kit/media'), { recursive: true });
 writeFileSync(join(root, 'kit/media/hero-alt.txt'), `${heroStep.getAttribute('data-alt')}\n`);
-writeFileSync(join(root, 'kit/CREDITS.txt'), `${plain(credits)}\n\nThis story was originally published by Scot Scoop (${config.storyUrl}), the student newsroom of Carlmont High School in Belmont, Calif. It is republished under a Creative Commons BY-ND 4.0 license.\n`);
+writeFileSync(join(root, 'kit/CREDITS.txt'), `${plain(credits)}\n\nThis story by Maximus Kwan was originally published by Scot Scoop (${config.storyUrl}), the student newsroom of Carlmont High School in Belmont, Calif. It is republished under a Creative Commons BY-ND 4.0 license.\n`);
 writeFileSync(join(root, 'kit/intro-text.html'), html);
 writeFileSync(join(root, 'kit/intro-text.txt'), text);
 writeFileSync(join(root, 'kit/embed.html'), embed);

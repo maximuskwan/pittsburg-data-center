@@ -1,6 +1,6 @@
 # Republishing "Power Hungry"
 
-Thank you for running Scot Scoop's investigation. The story is licensed under **[Creative Commons Attribution-NoDerivatives 4.0 (CC BY-ND 4.0)](https://creativecommons.org/licenses/by-nd/4.0/)**. You may republish it free, in full and unchanged, with credit.
+Thank you for running this investigation by Maximus Kwan, first published by Scot Scoop. The author holds the copyright, and the story is licensed under **[Creative Commons Attribution-NoDerivatives 4.0 (CC BY-ND 4.0)](https://creativecommons.org/licenses/by-nd/4.0/)**. You may republish it free, in full and unchanged, with credit.
 
 ## The interactive intro: pick whichever your CMS supports
 
@@ -16,7 +16,7 @@ In every case, also include the intro text from `intro-text.html` (or `intro-tex
 
 Put this at the top or bottom of the story:
 
-> This story was originally published by [Scot Scoop](https://scotscoop.com/), the student newsroom of Carlmont High School in Belmont, Calif. It is republished under a Creative Commons BY-ND 4.0 license.
+> This story by Maximus Kwan was originally published by [Scot Scoop](https://scotscoop.com/), the student newsroom of Carlmont High School in Belmont, Calif. It is republished under a Creative Commons BY-ND 4.0 license.
 
 Please link to the original article URL.
 
@@ -28,7 +28,7 @@ Please link to the original article URL.
 
 ## Photos
 
-The drone photos are credited to their photographer and licensed to Scot Scoop for this article and its authorized republications. Run them with the story and their credits, but not separately.
+The drone photos are © Cara Esten Hurtle and used with permission for this story and its authorized republications; they are not covered by the CC license. Run them with the story and their credits, but not separately.
 
 ## Contents of this kit
 
@@ -40,4 +40,4 @@ The drone photos are credited to their photographer and licensed to Scot Scoop f
 | `media/hero.jpg` + `media/hero-alt.txt` | Lead image and alt text |
 | `CREDITS.txt` | Credits and license lines to copy |
 
-Questions: TK (Scot Scoop contact email)
+Questions: TK (contact email)

@@ -1,7 +1,7 @@
 {
   "name": "pittsburg-data-center",
   "version": "1.0.0",
-  "description": "Scrollytelling intro for Scot Scoop's \"Power Hungry\" investigation: from the national data center boom to one Pittsburg golf course.",
+  "description": "Scrollytelling intro for Maximus Kwan's \"Power hungry\" investigation, first published by Scot Scoop: from the national data center boom to one Pittsburg golf course.",
   "scripts": {
     "start": "node tools/serve.mjs",
     "vendor": "node tools/vendor.mjs",

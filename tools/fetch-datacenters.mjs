@@ -23,7 +23,7 @@ let json;
 for (const url of endpoints) {
   try {
     console.log(`Querying ${url} (can take a minute)…`);
-    const res = await fetch(url, { method: 'POST', body: new URLSearchParams({ data: query }), headers: { 'User-Agent': 'scotscoop-pittsburg-data-center' } });
+    const res = await fetch(url, { method: 'POST', body: new URLSearchParams({ data: query }), headers: { 'User-Agent': 'pittsburg-data-center' } });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     json = await res.json();
     break;

@@ -1,6 +1,6 @@
 # Power hungry: scrollytelling intro
 
-The opening interactive for Scot Scoop's investigation into the AVAIO "Perseus" data center in Pittsburg, Calif. Readers scroll and the map flies from the national data center boom to California, the Bay Area, Carlmont, Pittsburg and the former Delta View Golf Course. It ends on an illustrative 3D model of Phase 1 and drone photos of the site.
+The opening interactive for Maximus Kwan's investigation into the AVAIO "Perseus" data center in Pittsburg, Calif., first published by Scot Scoop. Readers scroll and the map flies from the national data center boom to California, the Bay Area, Carlmont, Pittsburg and the former Delta View Golf Course. It ends on an illustrative 3D model of Phase 1 and drone photos of the site.
 
 It's a standalone static page (MapLibre GL JS + Scrollama) with no build step, no API keys and no CMS dependency. Scot Scoop and every republisher embed the same URL in an iframe. Outlets that can't use iframes get an MP4, stills and plain text from `kit/`.
 
@@ -104,8 +104,8 @@ For SNO, see **[docs/SNO.md](docs/SNO.md)**. For republishers, see **[kit/REPUBL
 | Part | License |
 |---|---|
 | Code in this repo | MIT (see `LICENSE`). Other newsrooms can fork it for their own data center stories. |
-| Story text, Scot Scoop photos and graphics | CC BY-ND 4.0 (see `CONTENT-LICENSE.md`) |
-| Drone photos | © the photographer. If they aren't Scot Scoop staff, get a written license covering "use within this article and its authorized republications, in any medium." |
+| Story text and graphics | © Maximus Kwan, licensed CC BY-ND 4.0 (see `CONTENT-LICENSE.md`). Scot Scoop publishes under a license from the author. |
+| Drone photos | © Cara Esten Hurtle, used with permission. Get that permission in writing, covering "use within this article and its authorized republications, in any medium." |
 | Map data | © OpenStreetMap contributors (ODbL), OpenFreeMap / OpenMapTiles. Boundaries: U.S. Census Bureau (public domain); site boundaries traced from City of Pittsburg public records. Imagery: USGS The National Map (public domain). The attribution sits in the map corner, so republishers inherit it automatically. |
 | MapLibre GL JS (BSD-3), Scrollama (MIT), Montserrat (SIL OFL) | Their licenses are in `vendor/`. Body text uses Georgia, which ships with Mac, Windows and iOS; Android and Linux readers get their default serif. |
 

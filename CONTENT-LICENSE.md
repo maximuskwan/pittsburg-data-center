@@ -1,8 +1,10 @@
 # Content license
 
-The story text in `index.html`, the generated text in `kit/`, and Scot Scoop's photos, graphics and recorded map videos are © 2026 Scot Scoop and licensed under [Creative Commons Attribution-NoDerivatives 4.0 International (CC BY-ND 4.0)](https://creativecommons.org/licenses/by-nd/4.0/).
+The story text in `index.html`, the generated text in `kit/`, and the graphics and recorded map videos are © 2026 Maximus Kwan and licensed under [Creative Commons Attribution-NoDerivatives 4.0 International (CC BY-ND 4.0)](https://creativecommons.org/licenses/by-nd/4.0/).
 
-**Drone photos** (`media/photos/`, `kit/media/hero.jpg`): if the photographer is not Scot Scoop staff, they keep copyright and license the photos to Scot Scoop for this article and its authorized republications; in that case the photos are not covered by the CC license. TK: confirm.
+Maximus Kwan holds the copyright. Scot Scoop, the student newsroom of Carlmont High School, publishes the story under a license from the author; republication by other outlets is granted by the author through the CC BY-ND 4.0 license above.
+
+**Drone photos** (`media/photos/`, `kit/media/hero.jpg`) are © Cara Esten Hurtle and used with permission for this story and its authorized republications. They are not covered by the CC license.
 
 Third-party map data keeps its own terms: © OpenStreetMap contributors (ODbL); OpenFreeMap / OpenMapTiles; U.S. Census Bureau boundaries and USGS imagery (public domain).
 
