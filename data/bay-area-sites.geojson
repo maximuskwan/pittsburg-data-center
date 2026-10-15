@@ -6,8 +6,7 @@
    "properties": {
     "id": "santa-clara",
     "name": "Santa Clara cluster",
-    "status": "existing",
-    "placeholder": true
+    "status": "existing"
    },
    "geometry": {
     "type": "Point",
@@ -18,5 +17,5 @@
    }
   }
  ],
- "name": "Bay Area reference sites. The Pittsburg site is added from js/config.js (site.anchor). Delete placeholder:true once verified."
+ "name": "Bay Area reference sites. The Pittsburg site is added from js/config.js (site.anchor)."
 }
