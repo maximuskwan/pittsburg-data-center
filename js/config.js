@@ -42,8 +42,8 @@ export default {
   // up: open the page with ?calibrate, follow the on-screen steps, paste the
   // result here and set placeholder to false.
   site: {
-    anchor: [-121.912, 38.007],
-    placeholder: true,
+    anchor: [-121.909332, 38.008791],
+    placeholder: false,
   },
 
   // When embedded in an iframe narrower than this (px), show the stacked
