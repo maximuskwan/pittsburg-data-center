@@ -2,11 +2,11 @@ Data centers — the warehouses of servers behind every search, stream and AI ch
 
 In 2023, they used about 4.4% of all U.S. electricity. By 2028, that share could reach 6.7% to 12%, according to a 2024 report from Lawrence Berkeley National Laboratory.
 
-[TK: number of data centers proposed or under construction nationally, from one named, dated source (“as of [month] 2026”).]
+As of October 2026, 1,599 more data centers are on the way: 400 are under construction and another 1,199 are planned, according to Data Center Map.
 
-California is home to [TK] of them, most packed into Silicon Valley.
+California is home to 289 operating data centers, according to Data Center Map, most packed into Silicon Valley.
 
-[TK: one sentence on state-level action — e.g., Proposition 45 on the Nov. 3 ballot, which would speed environmental review for projects it defines as “essential.”]
+California voters will decide Nov. 3 whether to approve Proposition 45, which would speed environmental review for projects it defines as “essential” and has become a flashpoint over whether data centers could qualify.
 
 Most of the Bay Area’s data centers sit in Santa Clara, at the heart of Silicon Valley.
 
@@ -14,7 +14,7 @@ One of the region’s newest is planned somewhere else: Pittsburg, a city of abo
 
 It’s about an hour’s drive from Carlmont when the traffic is light.
 
-[TK: one or two sentences connecting a Carlmont student’s daily digital use (e.g., MagicSchool AI) to the electricity and water a data center consumes.]
+AI is already part of the school day there. After a pilot in the 2025-26 school year, the Sequoia Union High School District adopted MagicSchool, an AI platform for teachers and students. Every request to a tool like it is answered by servers in a data center somewhere.
 
 In May 2018, Pittsburg’s City Council voted to close the city-owned Delta View Golf Course for good. A month later, it agreed to start planning a “technology park” on the land.
 
