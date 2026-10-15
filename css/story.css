@@ -73,6 +73,7 @@ mark.tk { background: var(--tk); color: #111; padding: 0 3px; border-radius: 2px
   white-space: nowrap;
 }
 .label.on { opacity: 1; }
+.label.on.collide { opacity: 0; transition-duration: 0.25s; }
 .label b { display: block; font-weight: 700; font-size: 15px; line-height: 1.2; }
 .label small { display: block; font-size: 12px; font-weight: 500; color: var(--muted); }
 .label--minor b { font-weight: 600; font-size: 11px; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; }

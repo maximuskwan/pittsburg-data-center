@@ -2,6 +2,7 @@
 // story: chapter text is in index.html and camera moves are in js/config.js.
 import * as maplibregl from '../vendor/maplibre-gl/maplibre-gl.mjs';
 import config from './config.js';
+import { densify, snapOffset } from './snap.js';
 
 const root = document.documentElement;
 const params = new URLSearchParams(location.search);
@@ -199,9 +200,22 @@ function buildLayers() {
     id: 'route-end', type: 'circle', source: 'route', filter: ['==', ['geometry-type'], 'Point'],
     paint: { 'circle-color': C.ink, 'circle-radius': 5, 'circle-stroke-color': '#fff', 'circle-stroke-width': 1.5 },
   });
-  add('canal', { 'line-opacity': 1 }, {
+  // The canal comes from OpenStreetMap so it sits exactly on the real water. The
+  // line traced from the city's map is only a fallback (offline) and a reference
+  // in ?calibrate, because the city drew its canal by hand.
+  const canalWidth = ['interpolate', ['linear'], ['zoom'], 13, 2, 17, 9];
+  if (!offline) {
+    add('canal', { 'line-opacity': 1 }, {
+      id: 'canal-osm', type: 'line', source: 'openmaptiles', 'source-layer': 'waterway',
+      filter: ['==', ['get', 'class'], 'canal'],
+      layout: { 'line-cap': 'round', 'line-join': 'round' }, paint: { 'line-color': C.canal, 'line-width': canalWidth },
+    });
+  }
+  add(offline ? 'canal' : 'canal-traced', { 'line-opacity': 1 }, {
     id: 'canal-line', type: 'line', source: 'canal', layout: { 'line-cap': 'round', 'line-join': 'round' },
-    paint: { 'line-color': C.canal, 'line-width': ['interpolate', ['linear'], ['zoom'], 13, 2, 17, 9] },
+    paint: offline
+      ? { 'line-color': C.canal, 'line-width': canalWidth }
+      : { 'line-color': '#1f6fb2', 'line-width': 2, 'line-dasharray': [2, 2] },
   });
   add('plan', { 'fill-opacity': 0.22 }, { id: 'plan-fill', type: 'fill', source: 'plan', filter: ['==', ['get', 'phase'], 1], paint: { 'fill-color': C.red } });
   add('plan', { 'fill-opacity': 0.07 }, { id: 'plan-fill-future', type: 'fill', source: 'plan', filter: ['>', ['get', 'phase'], 1], paint: { 'fill-color': C.red } });
@@ -350,6 +364,28 @@ async function buildInteractive() {
     labels[id] = new maplibregl.Marker({ element: el, anchor: anchorSide, offset: OFFSET[anchorSide] || [0, 0] }).setLngLat(resolve(l.lngLat)).addTo(map);
   }
 
+  // When the camera moves (e.g. the orbit), a label that would cover one listed
+  // earlier in the chapter's `labels` fades out until there's room again.
+  let activeLabels = [];
+  let declutterQueued = false;
+  const declutter = () => {
+    declutterQueued = false;
+    const placed = [];
+    for (const id of activeLabels) {
+      const inner = labels[id]?.getElement().firstChild;
+      if (!inner) continue;
+      const r = inner.getBoundingClientRect();
+      const hit = placed.some((p) => r.left < p.right + 4 && r.right > p.left - 4 && r.top < p.bottom + 2 && r.bottom > p.top - 2);
+      inner.classList.toggle('collide', hit);
+      if (!hit) placed.push(r);
+    }
+  };
+  map.on('move', () => {
+    if (declutterQueued || !activeLabels.length) return;
+    declutterQueued = true;
+    requestAnimationFrame(declutter);
+  });
+
   // Animated route line from Carlmont to the site.
   let routeAnim = 0;
   const drawRoute = (instant) => {
@@ -396,21 +432,34 @@ async function buildInteractive() {
     photoLayer.append(img);
     photos[ch.photo] = { img, opacity: 0, target: 0 };
   }
+  // Photo to photo: the new one fades in on top while the old one stays fully
+  // opaque underneath, so the map never shows through mid-fade. Photo to map:
+  // everything fades out.
   let photoFrame = 0;
-  const showPhoto = (src) => {
-    for (const [key, p] of Object.entries(photos)) p.target = key === src ? 1 : 0;
+  let topZ = 1;
+  let photoRequest = 0;
+  const setOpacity = (p, o) => { p.opacity = o; p.img.style.opacity = o; };
+  const showPhoto = async (src) => {
+    const request = ++photoRequest;
+    const target = src ? photos[src] : null;
     cancelAnimationFrame(photoFrame);
+    if (target && !target.img.complete) {
+      await target.img.decode().catch(() => {});
+      if (request !== photoRequest) return; // the reader has already moved on
+    }
+    if (target && target.opacity < 1) target.img.style.zIndex = ++topZ;
     let last = performance.now();
     const step = (now) => {
-      const dt = (now - last) / 1000;
+      const delta = (now - last) / 900; // 0.9 s fade
       last = now;
       let moving = false;
-      for (const p of Object.values(photos)) {
-        const d = p.target - p.opacity;
-        if (Math.abs(d) > 0.001) {
-          p.opacity += Math.sign(d) * Math.min(Math.abs(d), dt / 0.9); // 0.9 s fade
-          p.img.style.opacity = p.opacity;
-          moving = true;
+      if (target) {
+        setOpacity(target, Math.min(1, target.opacity + delta));
+        if (target.opacity < 1) moving = true;
+        else for (const p of Object.values(photos)) if (p !== target && p.opacity) setOpacity(p, 0);
+      } else {
+        for (const p of Object.values(photos)) {
+          if (p.opacity > 0) { setOpacity(p, Math.max(0, p.opacity - delta)); moving = true; }
         }
       }
       if (moving) photoFrame = requestAnimationFrame(step);
@@ -467,6 +516,8 @@ async function buildInteractive() {
 
     for (const g of groups) setGroup(g, ch.layers?.[g] ?? 0);
     for (const [lid, m] of Object.entries(labels)) m.getElement().firstChild.classList.toggle('on', !!ch.labels?.includes(lid));
+    activeLabels = ch.labels || [];
+    requestAnimationFrame(declutter);
     if (ch.layers?.route && prev !== id) drawRoute(instant);
     showPhoto(ch.photo);
 
@@ -528,7 +579,7 @@ async function buildInteractive() {
 
   // ── ?calibrate: line the traced site up with the real aerial imagery ────────
   function startCalibration() {
-    for (const g of ['aerial', 'plan', 'canal', 'nop', 'basemap']) setGroup(g, g === 'basemap' ? 0 : 1);
+    for (const g of ['aerial', 'plan', 'canal', 'canal-traced', 'nop', 'basemap']) setGroup(g, g === 'basemap' ? 0 : 1);
     map.jumpTo({ center: site.at.plan, zoom: 15.4, pitch: 0, bearing: 0 });
     map.addControl(new maplibregl.NavigationControl({ visualizePitch: false }), 'bottom-right');
 
@@ -538,12 +589,13 @@ async function buildInteractive() {
       <h2>Line up the site</h2>
       <ol>
         <li>The faded picture is the city’s Plan Area map (NOP, Attachment 1) with the red outline traced from it. Underneath is the real aerial imagery.</li>
-        <li>Press the <b>arrow keys</b> to slide them until roads, the canal and Highway 4 line up (hold <b>Shift</b> for bigger steps). Drag or scroll to look around.</li>
+        <li>Click <b>Snap to canal</b>. It slides everything so the canal traced from the city’s map (dark dashed line) lands on the real canal (light blue line, from OpenStreetMap). Or press the <b>arrow keys</b> to slide by hand (hold <b>Shift</b> for bigger steps). Drag or scroll to look around.</li>
         <li>Copy the line below into <b>js/config.js</b> as <code style="display:inline;padding:0 3px">site.anchor</code>, and set <code style="display:inline;padding:0 3px">placeholder: false</code>.</li>
       </ol>
       <label>Overlay opacity <input id="cal-opacity" type="range" min="0" max="1" step="0.05" value="0.5"></label>
       <code id="cal-out"></code>
-      <button id="cal-copy" type="button">Copy</button><button id="cal-reset" type="button">Reset</button>`;
+      <button id="cal-snap" type="button">Snap to canal</button><button id="cal-copy" type="button">Copy</button><button id="cal-reset" type="button">Reset</button>
+      <p id="cal-msg" style="margin:8px 0 0"></p>`;
     const out = panel.querySelector('#cal-out');
     const show = () => { out.textContent = `anchor: [${anchor[0].toFixed(6)}, ${anchor[1].toFixed(6)}],`; };
     const apply = () => {
@@ -566,6 +618,25 @@ async function buildInteractive() {
     panel.querySelector('#cal-opacity').addEventListener('input', (e) => map.setPaintProperty('nop', 'raster-opacity', +e.target.value));
     panel.querySelector('#cal-copy').addEventListener('click', () => navigator.clipboard?.writeText(out.textContent));
     panel.querySelector('#cal-reset').addEventListener('click', () => { anchor = [...config.site.anchor]; apply(); });
+    const msg = panel.querySelector('#cal-msg');
+    panel.querySelector('#cal-snap').addEventListener('click', () => {
+      // OpenStreetMap canal lines currently loaded, in meters from the anchor.
+      const toLocal = ([lng, lat]) => [(lng - anchor[0]) * mPerLng(), (lat - anchor[1]) * 110540];
+      const lines = [];
+      for (const f of map.querySourceFeatures('openmaptiles', { sourceLayer: 'waterway', filter: ['==', ['get', 'class'], 'canal'] })) {
+        const g = f.geometry;
+        const parts = g.type === 'LineString' ? [g.coordinates] : g.type === 'MultiLineString' ? g.coordinates : [];
+        for (const p of parts) lines.push(p.map(toLocal));
+      }
+      const result = snapOffset(densify(data.site.canal), lines);
+      if (!result || result.matched < 10) {
+        msg.textContent = 'Couldn’t find the canal in the map data here. Zoom out a little so the canal is on screen, or line it up with the arrow keys.';
+        return;
+      }
+      anchor = [anchor[0] + result.east / mPerLng(), anchor[1] + result.north / 110540];
+      apply();
+      msg.textContent = `Moved ${Math.abs(result.east).toFixed(0)} m ${result.east >= 0 ? 'east' : 'west'} and ${Math.abs(result.north).toFixed(0)} m ${result.north >= 0 ? 'north' : 'south'}. The traced canal is now within about ${result.meanError.toFixed(0)} m of the real one on average. Check by eye, then copy.`;
+    });
     show();
   }
 }
