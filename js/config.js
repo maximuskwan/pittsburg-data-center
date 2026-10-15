@@ -38,9 +38,7 @@ export default {
   // The project site, traced from the city's Feb. 28, 2024 Notice of
   // Preparation (see data/site-local.json and tools/trace-site.py).
   // `anchor` is the point where the Contra Costa Canal crosses the plan
-  // area's straight east boundary. It is an ESTIMATE until someone lines it
-  // up: open the page with ?calibrate, follow the on-screen steps, paste the
-  // result here and set placeholder to false.
+  // area's straight east boundary.
   site: {
     anchor: [-121.909332, 38.008791],
     placeholder: false,
