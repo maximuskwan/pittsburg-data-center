@@ -54,7 +54,7 @@ Plain-English requests work well in Claude Code: "the California zoom is too fas
 - Site pinned to the map (`site.anchor` in `js/config.js`, set with `?calibrate` → **Snap to canal**).
 - Phase 1 model traced from AVAIO's landscape plans, with the 37 generators on the squares the plans mark (see "The site and the model" below).
 - 1,730 U.S. data centers from OpenStreetMap (`npm run fetch:datacenters`, retrieved Oct. 15, 2026).
-- Drone photos by Cara Esten Hurtle, popping out of the map and expanding to full screen.
+- Drone photos by Cara Esten Hurtle (2400 px wide, from the 4000 px originals), popping out of the map and expanding to full screen.
 - Scale bars, a Carlmont–Pittsburg distance label, and a Listen button waiting for the audio.
 - Credits and licenses name Maximus Kwan as copyright holder, with Scot Scoop publishing under license.
 - Embed tested on SNO.
@@ -66,7 +66,7 @@ Plain-English requests work well in Claude Code: "the California zoom is too fas
 4. **Videos and stills for the kit and the no-map version:** run `npm run record`. It needs [ffmpeg](https://ffmpeg.org) and, the first time, `npx playwright install chromium`. It writes `media/intro.mp4`, `media/stills/*.jpg`, `kit/media/intro-captioned.mp4` and `kit/media/hero.jpg` (drone photo 02). Run it last, after every text or map change.
 5. **Permissions in writing:** Cara's OK for the photos, covering this story and its republications.
 6. **Fact check:** go through the list below.
-7. **Optional:** full-resolution drone photos (at least 2400 px wide) under the same names in `media/photos/`, and the exact spot photo 07 was taken from, for the pin (`popFrom` in `js/config.js`).
+7. **Optional:** the exact spot photo 07 was taken from, for the pin (`popFrom` in `js/config.js`).
 
 ### Facts in the intro text to verify against primary sources
 
