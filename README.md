@@ -9,7 +9,7 @@ index.html          ← ALL chapter text lives here
 js/config.js        ← camera moves, layers and labels for each chapter
 css/story.css       ← look and feel
 data/               ← map data (GeoJSON; site-local.json is the traced project site)
-media/              ← drone photos, recorded intro video, chapter stills
+media/              ← drone photos, audio, recorded intro video, chapter stills
 kit/                ← republication kit (embed code, text, video, guide)
 docs/SNO.md         ← how to put it in the SNO article, and questions for SNO support
 tools/              ← scripts (preview server, data fetch, site tracing, video recorder, kit builder)
@@ -33,8 +33,9 @@ Useful URLs while previewing:
 | `localhost:8080/?static` | The no-map version (what reduced-motion users and narrow iframes get) |
 | `localhost:8080/docs/embed-test.html` | The interactive inside an iframe on a fake article page |
 | `localhost:8080/?offline` | Map without remote tiles or imagery (for testing if a tile server is down) |
+| `localhost:8080/?calibrate` | Line the traced site up with the aerial imagery |
 
-While anything is unfinished, a yellow **DRAFT** banner across the top counts the open TK items and placeholder datasets. When it disappears, the page is ready.
+If anything is left unfinished, a yellow **DRAFT** banner across the top counts the open TK items and placeholder datasets. When it disappears, the page is ready.
 
 ## Editing
 
@@ -46,43 +47,57 @@ While anything is unfinished, a yellow **DRAFT** banner across the top counts th
 
 Plain-English requests work well in Claude Code: "the California zoom is too fast," "make the text boxes narrower," "hold the last chapter for two scroll lengths."
 
-## Before publishing: replace the placeholders
+## Status
 
-Every item below is flagged by the DRAFT banner or by `npm run kit`.
+**Done and on `main`:**
+- All chapter text filled in. No TKs remain, so the DRAFT banner is gone.
+- Site pinned to the map (`site.anchor` in `js/config.js`, set with `?calibrate` → **Snap to canal**).
+- Phase 1 model traced from AVAIO's landscape plans, with the 37 generators on the squares the plans mark (see "The site and the model" below).
+- 1,730 U.S. data centers from OpenStreetMap (`npm run fetch:datacenters`, retrieved Oct. 15, 2026).
+- Drone photos by Cara Esten Hurtle, popping out of the map and expanding to full screen.
+- Scale bars, a Carlmont–Pittsburg distance label, and a Listen button waiting for the audio.
+- Credits and licenses name Maximus Kwan as copyright holder, with Scot Scoop publishing under license.
+- Embed tested on SNO.
 
-1. **Pin the site to the map.** The plan area, canal, Phase 1 parcel and the 3D model are traced from the city's Notice of Preparation (Feb. 28, 2024). Attachment 1 is the Plan Area aerial and Attachment 2 the Conceptual Site Plan; see `tools/trace-site.py`. The traced shapes match the NOP's acreage within 2% (21.6 of 22.05 acres north of the canal, 53.7 of 54.33 south). Their *position* on the globe, though, is an estimate. To fix it:
-   - Run `npm start` and open `localhost:8080/?calibrate`. You'll see the city's own map, faded, over live aerial imagery.
-   - Click **Snap to canal**. It slides the site so the canal traced from the city's map lands on OpenStreetMap's canal. Or press the arrow keys until Highway 4, the canal and the roads line up.
-   - Copy the `anchor: [...]` line into `site` in `js/config.js` and set `placeholder: false`.
-
-   Everything that sits on the site moves with that one setting: the outline, the model, the labels, the Pittsburg dot and the Carlmont line. The canal on the map always comes from OpenStreetMap, so it sits on the real water whatever the anchor is.
-2. **The model.** The building, gravel generator yard and two substations are traced from AVAIO's landscape plans: sheets L-202 to L-205 of the "Pittsburg Data Hub" 90% progress set, stitched together at their 60 ft = 95 px scale. North is to the right on those sheets. Two numbers check the trace: the traced Phase 1 outline is 22.1 acres (the NOP says 22.05), and three floors of the traced footprint come to ~366,000 sq ft (the NOP gives 347,740 sq ft for Phase I). The 37 generators sit on the 37 small squares in the plans' gravel yard: 12 groups of three (the 36 that back up the servers) plus one on its own at the north end (the "house generator" for offices and life safety, per the CEC filing). The squares only mark positions, so the 3 m × 8 m enclosures are an estimate. Still unknown: **building height** (21 m / ~70 ft assumed) and the generator enclosure size. To change either, edit `BUILDING_HEIGHT` or `GEN_*` in `tools/trace-site.py` and re-run `python3 tools/trace-site.py`. Remove `placeholder: true` from `data/bay-area-sites.geojson` once you've checked the Santa Clara point.
-3. **National data centers** (`data/datacenters.geojson`). Now it holds placeholder dots for about 25 well-known data center *markets*. Run `npm run fetch:datacenters` to replace them with every U.S. data center mapped in OpenStreetMap, then update the "as of" date in the national chapter's source line.
-4. **Drone photos.** All nine are in `media/photos/` (`drone-01.jpg` … `drone-09.jpg`). The last three chapters use 07, 02 and 04; swap them with the `photo:` lines in `js/config.js`. They're 1125–1500 px wide, which looks soft full-screen on a large monitor, so replace them with full-resolution exports (at least 2400 px wide, JPEG quality ~80) under the same names. Fill in the photographer credit in `index.html`, and get a written license if the photographer isn't on staff.
-5. **Record the videos and stills:** `npm run record`. It needs [ffmpeg](https://ffmpeg.org) and, the first time, `npx playwright install chromium`. It writes `media/intro.mp4`, `media/stills/*.jpg` (used by the no-map version), `kit/media/intro-captioned.mp4` and `kit/media/hero.jpg` (drone photo 02). Re-run it any time the map or text changes.
-6. **URLs:** set `storyUrl` (the article) and `siteUrl` (where this is hosted) in `js/config.js`, and update the code link in the credits in `index.html`.
-7. **Kit:** `npm run kit` rebuilds the embed code and plain-text intro, and lists any TK still open.
+**Still to do before Nov. 7:**
+1. **Audio:** save the recording as `media/audio/power-hungry.mp3`. The Listen button appears on its own and shows the length (see "Audio" below).
+2. **Article URL:** set `storyUrl` in `js/config.js` once the Scot Scoop story has its link, then run `npm run kit`.
+3. **Search engines:** delete the `<meta name="robots" content="noindex">` line near the top of `index.html` (marked "TK: remove at publication").
+4. **Videos and stills for the kit and the no-map version:** run `npm run record`. It needs [ffmpeg](https://ffmpeg.org) and, the first time, `npx playwright install chromium`. It writes `media/intro.mp4`, `media/stills/*.jpg`, `kit/media/intro-captioned.mp4` and `kit/media/hero.jpg` (drone photo 02). Run it last, after every text or map change.
+5. **Permissions in writing:** Cara's OK for the photos, covering this story and its republications.
+6. **Fact check:** go through the list below.
+7. **Optional:** full-resolution drone photos (at least 2400 px wide) under the same names in `media/photos/`, and the exact spot photo 07 was taken from, for the pin (`popFrom` in `js/config.js`).
 
 ### Facts in the intro text to verify against primary sources
 
-The intro text follows the article draft, but check each of these:
-
 - LBNL 2024 report: data centers used ~4.4% of U.S. electricity in 2023, and could reach 6.7%–12% by 2028.
+- Data Center Map, October 2026: 400 under construction, 1,199 planned (1,599 total); 289 operating in California.
 - Pittsburg population "about 76,000" (2020 Census: 76,416).
 - Course closure vote May 8, 2018; technology park planning begins a month later.
 - 76 / 22 / 54 acres, and the canal split (NOP p. 3).
 - Three stories, 37 generators at 3 MW each, on the building's west side (Draft EIR / CEC filing).
 - PG&E transmission towers along the east edge, and homes about 85 feet from the property line (field reporting; how was 85 ft measured?).
 - Final city approval Dec. 11, 2025, by the zoning administrator.
-- "About an hour's drive from Carlmont when the traffic is light," and Santa Clara as the Bay Area's data center hub.
+- Sequoia Union adopted MagicSchool after a 2025-26 pilot (Barbara Reklis).
+- "About an hour's drive from Carlmont when the traffic is light." The map label's 40 miles is the straight-line distance.
+- Proposition 45 wording, and the Nov. 3 date.
 - The intro's last card repeats the article's second and third paragraphs nearly word for word. Trim one or the other so readers don't read it twice.
+
+## The site and the model
+
+- **Outline and canal split:** traced from the city's Notice of Preparation (Feb. 28, 2024), Attachments 1 and 2. The trace is within 2% of the NOP's acreage: 21.6 of 22.05 acres north of the canal, 53.7 of 54.33 south. `tools/trace-site.py` does the tracing.
+- **Position:** set by `site.anchor` in `js/config.js`. Everything on the site moves with it: the outline, the model, the labels, the photo pin, the Pittsburg dot and the end of the Carlmont line. To check or redo it, open `?calibrate`. The canal on the map comes from OpenStreetMap, so it always sits on the real water.
+- **Building, gravel yard and both substations:** traced from AVAIO's landscape plans, sheets L-202 to L-205 of the "Pittsburg Data Hub" 90% progress set. The sheets are stitched at their 60 ft = 95 px scale, with north to the right. Two checks: the traced outline is 22.1 acres, and three floors of the footprint come to ~366,000 sq ft (the NOP says 347,740).
+- **Generators:** the plans' 37 small squares. That's 12 groups of three (the 36 that back up the servers) plus the lone "house generator" for offices and life safety at the north end, per the CEC filing.
+- **Estimates:** building height (21 m / ~70 ft) and the 3 m × 8 m generator enclosures. To change them, edit `BUILDING_HEIGHT` or `GEN_*` in `tools/trace-site.py` and run `python3 tools/trace-site.py`.
+
+## Audio
+
+The Listen button under the byline plays `media/audio/power-hungry.mp3` (path set by `audio:` in `js/config.js`). It stays hidden until that file loads, then reads "Listen · 29:50" using the file's real length, and "Pause · time left" while playing. Export mono MP3 at 64–96 kbps: a 30-minute file comes to roughly 15–20 MB.
 
 ## Publishing on GitHub Pages
 
-GitHub Pages can't publish from a **private** repo on a free account; it needs GitHub Pro (or Team) for that. Even then, the published site itself is public; only the code stays private. Until you're ready, preview locally with `npm start`. The page carries `<meta name="robots" content="noindex">` so search engines skip it if it does go up early; remove that line at publication.
-
-1. In the repo, go to **Settings → Pages**, set **Source: Deploy from a branch**, branch `main`, folder `/ (root)`, and save. The site appears at `https://<account>.github.io/pittsburg-data-center/` within a minute or two.
-2. Work on a branch and merge into `main` only when it's right. `main` is the live site.
+The site publishes from `main` (**Settings → Pages → Deploy from a branch**, `main`, `/ (root)`) at `https://maximuskwan.github.io/pittsburg-data-center/`. Anything pushed to `main` goes live within a minute or two, so try bigger changes on a branch first, or preview locally with `npm start`.
 
 For SNO, see **[docs/SNO.md](docs/SNO.md)**. For republishers, see **[kit/REPUBLISH.md](kit/REPUBLISH.md)**.
 
@@ -95,7 +110,10 @@ For SNO, see **[docs/SNO.md](docs/SNO.md)**. For republishers, see **[kit/REPUBL
   - the frame is narrower than 700px, since iOS handles scrolling inside iframes badly. Change this with `staticBelowWidthInIframe` in the config;
   - WebGL fails;
   - the URL has `?static`.
-- **The model chapter** slowly orbits the site while the reader lingers. The photos then cross-fade over the map.
+- **The model chapter** slowly orbits the site while the reader lingers. Labels that would cover each other fade out as the camera turns.
+- **Map to photos:** the first drone photo pops out of a pin on the map as a framed card, then expands to fill the screen. Scrolling back up reverses it. The next photos cross-fade.
+- **Scale bars** (miles/feet) appear on chapters with `scale: true` in the config. They're left off the national map, where the projection stretches distances too much for one bar, and off the photos.
+- **Carlmont line:** carries its straight-line length ("40 MILES"), computed from the map points.
 - **If the tile servers are down**, the national and California chapters still render from the bundled Census boundaries.
 - **Accessibility:** all text is real HTML (readable by screen readers, search engines and text-only republishers). Each chapter also has a screen-reader description of the map (`data-alt`), which doubles as alt text for the stills and photos. A "Skip the interactive map" link sits at the top.
 
