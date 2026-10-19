@@ -98,21 +98,21 @@ export default {
     site: {
       site: 'plan', zoom: 15.2,
       pitch: 35, bearing: -15, duration: 3500,
-      layers: { aerial: 1, plan: 1, canal: 1 },
+      layers: { aerial: 1, plan: 1 },
       scale: true,
       labels: ['phase1', 'future', 'canal'],
     },
     model: {
       site: 'phase1', zoom: 17.1,
       pitch: 62, bearing: 55, duration: 4000,
-      layers: { aerial: 1, plan: 0.6, canal: 1, model: 1 },
+      layers: { aerial: 1, plan: 0.6, model: 1 },
       scale: true,
       labels: ['building', 'generators', 'house', 'substation'],
       orbit: true, // slow rotation while the reader lingers
     },
     'photo-towers': {
       site: 'phase1', zoom: 16.7, pitch: 62, bearing: -60, duration: 0,
-      layers: { aerial: 1, plan: 0.6, canal: 1, model: 1 },
+      layers: { aerial: 1, plan: 0.6, model: 1 },
       photo: 'media/photos/drone-07.jpg',
       // The photo pops out of this point on the map, then fills the screen.
       // { site: [metersEast, metersNorth] } from the site anchor, or [lng, lat].
@@ -120,12 +120,12 @@ export default {
     },
     'photo-homes': {
       site: 'phase1', zoom: 16.7, pitch: 62, bearing: -60, duration: 0,
-      layers: { aerial: 1, plan: 0.6, canal: 1, model: 1 },
+      layers: { aerial: 1, plan: 0.6, model: 1 },
       photo: 'media/photos/drone-02.jpg',
     },
     'photo-ruins': {
       site: 'phase1', zoom: 16.7, pitch: 62, bearing: -60, duration: 0,
-      layers: { aerial: 1, plan: 0.6, canal: 1, model: 1 },
+      layers: { aerial: 1, plan: 0.6, model: 1 },
       photo: 'media/photos/drone-04.jpg',
     },
   },
