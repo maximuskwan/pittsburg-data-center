@@ -28,7 +28,7 @@ Please link to the original article URL.
 
 ## Photos
 
-The drone photos are © Cara Esten Hurtle and used with permission for this story and its authorized republications; they are not covered by the CC license. Run them with the story and their credits, but not separately.
+The drone photos are © Cara Esten Hurtle and licensed by her under CC BY-ND 4.0, the same as the story. Run them unchanged (no cropping that alters meaning, no edits) with the credit "Photo: Cara Esten Hurtle."
 
 ## Contents of this kit
 

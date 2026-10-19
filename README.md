@@ -58,6 +58,8 @@ Plain-English requests work well in Claude Code: "the California zoom is too fas
 - Scale bars, a Carlmont–Pittsburg distance label, and a Listen button waiting for the audio.
 - Credits and licenses name Maximus Kwan as copyright holder, with Scot Scoop publishing under license.
 - Embed tested on SNO.
+- Statistics fact-checked.
+- Photos licensed CC BY-ND 4.0 by Cara Esten Hurtle.
 
 **Hidden for now:** the "close to home" chapter (Carlmont → Pittsburg line, 40-mile label, MagicSchool text). It's commented out in `index.html`; delete the comment markers around that section to bring it back. Its map settings stay in `js/config.js`.
 
@@ -66,24 +68,7 @@ Plain-English requests work well in Claude Code: "the California zoom is too fas
 2. **Article URL:** set `storyUrl` in `js/config.js` once the Scot Scoop story has its link, then run `npm run kit`.
 3. **Search engines:** delete the `<meta name="robots" content="noindex">` line near the top of `index.html` (marked "TK: remove at publication").
 4. **Videos and stills for the kit and the no-map version:** run `npm run record`. It needs [ffmpeg](https://ffmpeg.org) and, the first time, `npx playwright install chromium`. It writes `media/intro.mp4`, `media/stills/*.jpg`, `kit/media/intro-captioned.mp4` and `kit/media/hero.jpg` (drone photo 02). Run it last, after every text or map change.
-5. **Permissions in writing:** Cara's OK for the photos, covering this story and its republications.
-6. **Fact check:** go through the list below.
-7. **Optional:** the exact spot photo 07 was taken from, for the pin (`popFrom` in `js/config.js`).
-
-### Facts in the intro text to verify against primary sources
-
-- LBNL 2024 report: data centers used ~4.4% of U.S. electricity in 2023, and could reach 6.7%–12% by 2028.
-- Data Center Map, October 2026: 400 under construction, 1,199 planned (1,599 total); 289 operating in California.
-- Pittsburg population "about 76,000" (2020 Census: 76,416).
-- Course closure vote May 8, 2018; technology park planning begins a month later.
-- 76 / 22 / 54 acres, and the canal split (NOP p. 3).
-- Three stories, 37 generators at 3 MW each, on the building's west side (Draft EIR / CEC filing).
-- PG&E transmission towers along the east edge, and homes about 85 feet from the property line (field reporting; how was 85 ft measured?).
-- Final city approval Dec. 11, 2025, by the zoning administrator.
-- Sequoia Union adopted MagicSchool after a 2025-26 pilot (Barbara Reklis).
-- "About an hour's drive from Carlmont when the traffic is light." The map label's 40 miles is the straight-line distance.
-- Proposition 45 wording, and the Nov. 3 date.
-- The intro's last card repeats the article's second and third paragraphs nearly word for word. Trim one or the other so readers don't read it twice.
+5. **Optional:** the exact spot photo 07 was taken from, for the pin (`popFrom` in `js/config.js`).
 
 ## The site and the model
 
@@ -125,7 +110,7 @@ For SNO, see **[docs/SNO.md](docs/SNO.md)**. For republishers, see **[kit/REPUBL
 |---|---|
 | Code in this repo | MIT (see `LICENSE`). Other newsrooms can fork it for their own data center stories. |
 | Story text and graphics | © Maximus Kwan, licensed CC BY-ND 4.0 (see `CONTENT-LICENSE.md`). Scot Scoop publishes under a license from the author. |
-| Drone photos | © Cara Esten Hurtle, used with permission. Get that permission in writing, covering "use within this article and its authorized republications, in any medium." |
+| Drone photos | © Cara Esten Hurtle, licensed CC BY-ND 4.0. Credit her by name wherever they run. |
 | Map data | © OpenStreetMap contributors (ODbL), OpenFreeMap / OpenMapTiles. Boundaries: U.S. Census Bureau (public domain); site boundaries traced from City of Pittsburg public records. Imagery: USGS The National Map (public domain). The attribution sits in the map corner, so republishers inherit it automatically. |
 | MapLibre GL JS (BSD-3), Scrollama (MIT), Montserrat (SIL OFL) | Their licenses are in `vendor/`. Body text uses Georgia, which ships with Mac, Windows and iOS; Android and Linux readers get their default serif. |
 
