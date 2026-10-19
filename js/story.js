@@ -1,7 +1,7 @@
 // Scrollytelling engine. You shouldn't need to edit this file to change the
 // story: chapter text is in index.html and camera moves are in js/config.js.
 import * as maplibregl from '../vendor/maplibre-gl/maplibre-gl.mjs';
-import config from './config.js';
+const config = (await import(`./config.js?v=${window.STORY_V || Date.now()}`)).default;
 import { densify, snapOffset } from './snap.js';
 
 const root = document.documentElement;
@@ -70,7 +70,7 @@ const DATA = {
   route: 'data/carlmont-route.geojson',
   site: 'data/site-local.json',
 };
-const loadJSON = (url) => fetch(url).then((r) => {
+const loadJSON = (url) => fetch(url, { cache: 'no-cache' }).then((r) => {
   if (!r.ok) throw new Error(`${url}: HTTP ${r.status}`);
   return r.json();
 });

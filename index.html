@@ -12,7 +12,15 @@
   <meta name="robots" content="noindex"> <!-- TK: remove at publication -->
   <link rel="icon" href="data:,">
   <link rel="stylesheet" href="vendor/maplibre-gl/maplibre-gl.css">
-  <link rel="stylesheet" href="css/story.css">
+  <script>
+    // GitHub Pages lets browsers reuse files for 10 minutes, so after an update
+    // readers could see the old story and map settings. Load our own CSS and JS
+    // with a per-visit query string so every visit gets the latest version.
+    // (MapLibre, fonts and photos are left cacheable; they rarely change.)
+    window.STORY_V = Date.now().toString(36);
+    document.write('<link rel="stylesheet" href="css/story.css?v=' + window.STORY_V + '">');
+  </script>
+  <noscript><link rel="stylesheet" href="css/story.css"></noscript>
   <link rel="modulepreload" href="vendor/maplibre-gl/maplibre-gl.mjs">
   <script>
     // Choose the mode before first paint so there's no flash of the wrong layout.
@@ -164,6 +172,6 @@
   <div id="calibrate-panel" hidden></div>
 
   <script src="vendor/scrollama/scrollama.min.js"></script>
-  <script type="module" src="js/story.js"></script>
+  <script type="module">import(`./js/story.js?v=${window.STORY_V}`);</script>
 </body>
 </html>
