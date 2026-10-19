@@ -59,6 +59,8 @@ Plain-English requests work well in Claude Code: "the California zoom is too fas
 - Credits and licenses name Maximus Kwan as copyright holder, with Scot Scoop publishing under license.
 - Embed tested on SNO.
 
+**Hidden for now:** the "close to home" chapter (Carlmont → Pittsburg line, 40-mile label, MagicSchool text). It's commented out in `index.html`; delete the comment markers around that section to bring it back. Its map settings stay in `js/config.js`.
+
 **Still to do before Nov. 7:**
 1. **Audio:** save the recording as `media/audio/power-hungry.mp3`. The Listen button appears on its own and shows the length (see "Audio" below).
 2. **Article URL:** set `storyUrl` in `js/config.js` once the Scot Scoop story has its link, then run `npm run kit`.
