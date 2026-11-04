@@ -11,12 +11,50 @@ const recording = root.classList.contains('record');
 const calibrating = root.classList.contains('calibrate');
 const offline = params.has('offline'); // skip remote tiles (testing, or if a tile host is down)
 
-if (framed && !calibrating && !params.has('static') && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+if (framed && !calibrating && !params.has('static') && !params.has('host') && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
   root.classList.toggle('static', window.innerWidth < config.staticBelowWidthInIframe);
 }
 const isStatic = root.classList.contains('static');
 
 const steps = [...document.querySelectorAll('.step')];
+
+// ── ?host=1: embedded with the host-page script ─────────────────────────────
+// The host page makes this frame as tall as the story, so the frame itself
+// never scrolls (no scroll trap) and sends the page's scroll position in.
+// Here, the map is pinned and the chapters are triggered from that position.
+const hostedFrame = framed && params.has('host');
+const hosted = root.classList.contains('hosted');
+const host = { top: 0, height: window.innerHeight, seen: false, onChange: null };
+if (hostedFrame) {
+  // Height of the story itself (not scrollHeight, which would count the pinned
+  // map). In hosted mode, wait for the reader's screen height first: before
+  // that, chapter heights can't be known.
+  const storyEl = document.getElementById('story');
+  const storyHeight = () => Math.ceil(storyEl.getBoundingClientRect().bottom);
+  const sendHeight = () => {
+    if (hosted && !host.seen) return;
+    window.parent.postMessage({ type: 'power-hungry:height', height: storyHeight() }, '*');
+  };
+  new ResizeObserver(sendHeight).observe(document.body);
+  window.addEventListener('load', sendHeight);
+  sendHeight();
+
+  window.addEventListener('message', (e) => {
+    if (e.source !== window.parent || e.data?.type !== 'power-hungry:viewport') return;
+    const { top, height } = e.data;
+    if (!Number.isFinite(top) || !(height > 0)) return;
+    const resized = height !== host.height || !host.seen;
+    host.top = top; host.height = height; host.seen = true;
+    if (!hosted) return;
+    if (resized) { root.style.setProperty('--vh', height + 'px'); sendHeight(); }
+    const max = Math.max(0, storyHeight() - height);
+    root.style.setProperty('--pin', Math.min(max, Math.max(0, -top)) + 'px');
+    host.onChange?.(resized);
+  });
+  // Ask the host page for the reader's screen; its first message may have
+  // been sent before this script loaded.
+  window.parent.postMessage({ type: 'power-hungry:ready' }, '*');
+}
 const chapterIds = steps.map((s) => s.dataset.chapter);
 for (const id of chapterIds) {
   if (!config.chapters[id]) console.warn(`index.html has chapter "${id}" but js/config.js does not`);
@@ -713,21 +751,38 @@ async function buildInteractive() {
   if (calibrating) return startCalibration();
   if (recording) return;
 
-  const scroller = scrollama();
-  scroller
-    .setup({ step: '.step', offset: 0.6 })
-    .onStepEnter(({ element }) => goTo(element.dataset.chapter));
-
   let resizeTimer;
-  window.addEventListener('resize', () => {
+  const refit = () => {
     clearTimeout(resizeTimer);
     resizeTimer = setTimeout(() => {
-      scroller.resize();
+      if (!hosted) scroller.resize();
+      map.resize();
       const id = current;
       current = null;
       goTo(id, { instant: true });
     }, 200);
-  });
+  };
+
+  let scroller;
+  if (hosted) {
+    // Same trigger as scrollama's offset 0.6: the chapter whose top has passed
+    // 60% of the way down the reader's screen.
+    const update = (resized) => {
+      const line = -host.top + host.height * 0.6;
+      let active = steps[0];
+      for (const s of steps) if (s.getBoundingClientRect().top <= line) active = s;
+      if (active.dataset.chapter !== current) goTo(active.dataset.chapter);
+      if (resized) refit();
+    };
+    host.onChange = update;
+    if (host.seen) update(true);
+  } else {
+    scroller = scrollama();
+    scroller
+      .setup({ step: '.step', offset: 0.6 })
+      .onStepEnter(({ element }) => goTo(element.dataset.chapter));
+  }
+  window.addEventListener('resize', refit);
 
   // ── ?calibrate: line the traced site up with the real aerial imagery ────────
   function startCalibration() {

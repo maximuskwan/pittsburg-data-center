@@ -1,0 +1,43 @@
+<!-- Power hungry: scrollytelling intro for Scot Scoop (SNO).
+     Paste all of this into ONE Custom HTML block at the top of the story.
+     The script makes the frame as tall as the intro and passes the page's
+     scroll position into it, so readers scroll one continuous page. -->
+<div style="width:100vw;max-width:none;margin-left:calc(50% - 50vw)">
+  <iframe id="power-hungry-intro"
+          src="https://maximuskwan.github.io/pittsburg-data-center/?host=1"
+          title="Interactive map: from the national data center boom to one Pittsburg golf course"
+          scrolling="no"
+          style="width:100%;height:100vh;height:100svh;border:0;display:block"
+          allow="fullscreen" allowfullscreen></iframe>
+</div>
+<p><a href="https://maximuskwan.github.io/pittsburg-data-center/">View the interactive full-screen →</a></p>
+<script>
+(function () {
+  var frame = document.getElementById('power-hungry-intro');
+  if (!frame) return;
+  var origin = new URL(frame.src, location.href).origin;
+  var queued = false;
+  function send() {
+    queued = false;
+    if (!frame.contentWindow) return;
+    frame.contentWindow.postMessage({
+      type: 'power-hungry:viewport',
+      top: frame.getBoundingClientRect().top,
+      height: window.innerHeight
+    }, origin);
+  }
+  function queue() {
+    if (!queued) { queued = true; requestAnimationFrame(send); }
+  }
+  window.addEventListener('scroll', queue, { passive: true });
+  window.addEventListener('resize', queue);
+  frame.addEventListener('load', queue);
+  window.addEventListener('message', function (e) {
+    var d = e.data;
+    if (e.origin !== origin || e.source !== frame.contentWindow) return;
+    if (!d) return;
+    if (d.type === 'power-hungry:height' && d.height > 0) frame.style.height = d.height + 'px';
+    if (d.type === 'power-hungry:height' || d.type === 'power-hungry:ready') queue();
+  });
+})();
+</script>
