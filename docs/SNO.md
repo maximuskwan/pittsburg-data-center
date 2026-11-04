@@ -5,7 +5,7 @@ The interactive is hosted outside SNO, so the article only needs to embed it wit
 ## Steps
 
 1. Use SNO's long-form / immersive story template so a block can run full width.
-2. Make the **first block** of the story a **Custom HTML** block containing everything in `docs/host-embed.html`. Its script makes the frame as tall as the intro and sends the page's scroll position into it (`?host=1`), so readers scroll one continuous page with no scroll trap, and phones get the full interactive. The plain snippet in `kit/embed.html` is still the one for republishers whose CMS won't run scripts.
+2. Make the **first block** of the story a **Custom HTML** block containing everything in `embed/sno-embed.html`. It loads the intro straight into the story page (no iframe) via `embed/mount.js`, so the map pins with the page's own scrolling, as on the standalone site. The plain iframe in `kit/embed.html` is still the one for republishers.
 
 3. In the article body, include the intro's text as regular paragraphs (from `kit/intro-text.html`). Search engines, email newsletters, RSS readers and text-only republishers then get it even if they drop the iframe. Readers who saw the interactive will see the same sentences again. Rephrase those paragraphs into the lede if you like: the article body isn't bound by the interactive's wording.
 4. Preview on a phone and on a laptop before publishing.

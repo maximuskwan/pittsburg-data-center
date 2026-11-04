@@ -28,15 +28,10 @@
       var q = new URLSearchParams(location.search);
       var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
       var framed = window.self !== window.top;
-      // ?host=1: embedded with the host-page script in docs/host-embed.html,
-      // which sizes the frame and sends it the page's scroll position. Phones
-      // then get the full interactive too, so narrow frames stay interactive.
-      var hosted = framed && q.has('host');
-      var narrowFrame = framed && !hosted && window.innerWidth < 700;
+      var narrowFrame = framed && window.innerWidth < 700;
       var c = document.documentElement.classList;
       if (q.has('calibrate')) c.add('calibrate');
       else if (q.has('static') || reduce || narrowFrame) c.add('static');
-      if (hosted && !c.contains('static') && !c.contains('calibrate')) c.add('hosted');
       if (q.has('record')) c.add('record');
       if (q.get('captions') === '1') c.add('captions');
       if (framed) c.add('framed');

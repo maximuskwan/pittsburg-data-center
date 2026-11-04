@@ -4,70 +4,47 @@ import * as maplibregl from '../vendor/maplibre-gl/maplibre-gl.mjs';
 const config = (await import(`./config.js?v=${window.STORY_V || Date.now()}`)).default;
 import { densify, snapOffset } from './snap.js';
 
-const root = document.documentElement;
+// When embed/mount.js loads the intro into another page (Scot Scoop), the
+// markup lives in a shadow root and the mode classes sit on its container.
+const mount = window.PH_MOUNT || null;
+const scope = mount?.scope || document;
+const root = mount?.root || document.documentElement;
+// Files are resolved against this site, not the page the intro is shown on.
+const BASE = new URL('../', import.meta.url);
+const asset = (p) => (p ? new URL(p, BASE).href : p);
+for (const ch of Object.values(config.chapters)) if (ch.photo) ch.photo = asset(ch.photo);
+if (config.audio) config.audio = asset(config.audio);
 const params = new URLSearchParams(location.search);
 const framed = window.self !== window.top;
 const recording = root.classList.contains('record');
 const calibrating = root.classList.contains('calibrate');
 const offline = params.has('offline'); // skip remote tiles (testing, or if a tile host is down)
 
-if (framed && !calibrating && !params.has('static') && !params.has('host') && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+if (framed && !calibrating && !params.has('static') && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
   root.classList.toggle('static', window.innerWidth < config.staticBelowWidthInIframe);
 }
 const isStatic = root.classList.contains('static');
 
-const steps = [...document.querySelectorAll('.step')];
-
-// ── ?host=1: embedded with the host-page script ─────────────────────────────
-// The host page makes this frame as tall as the story, so the frame itself
-// never scrolls (no scroll trap) and sends the page's scroll position in.
-// Here, the map is pinned and the chapters are triggered from that position.
-const hostedFrame = framed && params.has('host');
-const hosted = root.classList.contains('hosted');
-const host = { top: 0, height: window.innerHeight, seen: false, onChange: null };
-if (hostedFrame) {
-  // Height of the story itself (not scrollHeight, which would count the pinned
-  // map). In hosted mode, wait for the reader's screen height first: before
-  // that, chapter heights can't be known.
-  const storyEl = document.getElementById('story');
-  const storyHeight = () => Math.ceil(storyEl.getBoundingClientRect().bottom);
-  const sendHeight = () => {
-    if (hosted && !host.seen) return;
-    window.parent.postMessage({ type: 'power-hungry:height', height: storyHeight() }, '*');
-  };
-  new ResizeObserver(sendHeight).observe(document.body);
-  window.addEventListener('load', sendHeight);
-  sendHeight();
-
-  window.addEventListener('message', (e) => {
-    if (e.source !== window.parent || e.data?.type !== 'power-hungry:viewport') return;
-    const { top, height } = e.data;
-    if (!Number.isFinite(top) || !(height > 0)) return;
-    const resized = height !== host.height || !host.seen;
-    host.top = top; host.height = height; host.seen = true;
-    if (!hosted) return;
-    if (resized) { root.style.setProperty('--vh', height + 'px'); sendHeight(); }
-    const max = Math.max(0, storyHeight() - height);
-    root.style.setProperty('--pin', Math.min(max, Math.max(0, -top)) + 'px');
-    host.onChange?.(resized);
-  });
-  // Ask the host page for the reader's screen; its first message may have
-  // been sent before this script loaded.
-  window.parent.postMessage({ type: 'power-hungry:ready' }, '*');
-}
+const steps = [...scope.querySelectorAll('.step')];
 const chapterIds = steps.map((s) => s.dataset.chapter);
 for (const id of chapterIds) {
   if (!config.chapters[id]) console.warn(`index.html has chapter "${id}" but js/config.js does not`);
 }
 
-for (const a of document.querySelectorAll('#story-link')) a.href = config.storyUrl;
+for (const a of scope.querySelectorAll('#story-link')) a.href = config.storyUrl;
+if (mount) {
+  for (const a of scope.querySelectorAll('a[href="#end"]')) a.addEventListener('click', (e) => {
+    e.preventDefault();
+    scope.getElementById('end')?.scrollIntoView();
+  });
+}
 
 // ── Listen button ─────────────────────────────────────────────────────────────
 // Hidden until the audio file's length is known, so a missing file never shows
 // a broken button. Shows "Listen · 29:50"; while playing, "Pause · time left".
 (function setupListen() {
-  const btn = document.getElementById('listen');
-  const audio = document.getElementById('listen-audio');
+  const btn = scope.getElementById('listen');
+  const audio = scope.getElementById('listen-audio');
   if (!btn || !audio || !config.audio || recording) return;
   const label = btn.querySelector('.listen__label');
   const time = btn.querySelector('.listen__time');
@@ -101,12 +78,12 @@ for (const step of steps) {
 }
 
 const DATA = {
-  states: 'data/states.geojson',
-  counties: 'data/ca-counties.geojson',
-  datacenters: 'data/datacenters.geojson',
-  sites: 'data/bay-area-sites.geojson',
-  route: 'data/carlmont-route.geojson',
-  site: 'data/site-local.json',
+  states: asset('data/states.geojson'),
+  counties: asset('data/ca-counties.geojson'),
+  datacenters: asset('data/datacenters.geojson'),
+  sites: asset('data/bay-area-sites.geojson'),
+  route: asset('data/carlmont-route.geojson'),
+  site: asset('data/site-local.json'),
 };
 const loadJSON = (url) => fetch(url, { cache: 'no-cache' }).then((r) => {
   if (!r.ok) throw new Error(`${url}: HTTP ${r.status}`);
@@ -115,13 +92,13 @@ const loadJSON = (url) => fetch(url, { cache: 'no-cache' }).then((r) => {
 
 // ── Draft banner: unresolved TKs and placeholder data are impossible to miss ──
 function updateDraftBanner(data) {
-  const tks = document.querySelectorAll('mark.tk').length;
+  const tks = scope.querySelectorAll('mark.tk').length;
   const placeholders = Object.entries(data)
     .filter(([, fc]) => fc?.features?.some((f) => f.properties?.placeholder))
     .map(([name]) => name);
   if (config.site.placeholder) placeholders.push('site location (open ?calibrate)');
   if (!tks && !placeholders.length) return;
-  const banner = document.getElementById('draft-banner');
+  const banner = scope.getElementById('draft-banner');
   const parts = [];
   if (tks) parts.push(`${tks} TK item${tks === 1 ? '' : 's'}`);
   if (placeholders.length) parts.push(`placeholder data: ${placeholders.join(', ')}`);
@@ -143,7 +120,7 @@ async function buildStatic() {
     const fig = document.createElement('figure');
     fig.className = 'still';
     const img = new Image();
-    img.src = config.chapters[id]?.photo || `media/stills/${id}.jpg`;
+    img.src = config.chapters[id]?.photo || asset(`media/stills/${id}.jpg`);
     img.alt = step.dataset.alt || '';
     img.loading = 'lazy';
     img.decoding = 'async';
@@ -372,14 +349,14 @@ async function buildInteractive() {
     sources.aerial = { type: 'raster', tiles: aerial.tiles, tileSize: 256, maxzoom: aerial.maxzoom, attribution: aerial.attribution };
   }
   if (calibrating) {
-    sources.nop = { type: 'image', url: data.site.calibration_image.file, coordinates: site.imageCorners };
+    sources.nop = { type: 'image', url: asset(data.site.calibration_image.file), coordinates: site.imageCorners };
     const at = layers.findIndex((l) => l.layer.id === 'states-line');
     layers.splice(at, 0, { group: 'nop', opacity: { 'raster-opacity': 0.5 }, layer: { id: 'nop', type: 'raster', source: 'nop', paint: { 'raster-opacity': 0 }, layout: { visibility: 'none' } } });
   }
 
   const first = config.chapters[chapterIds[0]];
   const map = new maplibregl.Map({
-    container: 'map',
+    container: scope.getElementById('map'),
     style: {
       version: 8,
       glyphs: config.glyphs,
@@ -524,7 +501,7 @@ async function buildInteractive() {
 
   // Photos cross-fade over the map. Faded with requestAnimationFrame rather than
   // CSS so the video recorder (which runs on a virtual clock) captures the fade.
-  const photoLayer = document.getElementById('photo-layer');
+  const photoLayer = scope.getElementById('photo-layer');
   const photos = {};
   for (const [id, ch] of Object.entries(config.chapters)) {
     if (!ch.photo || photos[ch.photo]) continue;
@@ -677,7 +654,7 @@ async function buildInteractive() {
     };
   }
 
-  const caption = document.getElementById('caption');
+  const caption = scope.getElementById('caption');
   let current = null;
 
   function goTo(id, { instant = false } = {}) {
@@ -751,38 +728,21 @@ async function buildInteractive() {
   if (calibrating) return startCalibration();
   if (recording) return;
 
+  const scroller = scrollama();
+  scroller
+    .setup({ step: steps, offset: 0.6 })
+    .onStepEnter(({ element }) => goTo(element.dataset.chapter));
+
   let resizeTimer;
-  const refit = () => {
+  window.addEventListener('resize', () => {
     clearTimeout(resizeTimer);
     resizeTimer = setTimeout(() => {
-      if (!hosted) scroller.resize();
-      map.resize();
+      scroller.resize();
       const id = current;
       current = null;
       goTo(id, { instant: true });
     }, 200);
-  };
-
-  let scroller;
-  if (hosted) {
-    // Same trigger as scrollama's offset 0.6: the chapter whose top has passed
-    // 60% of the way down the reader's screen.
-    const update = (resized) => {
-      const line = -host.top + host.height * 0.6;
-      let active = steps[0];
-      for (const s of steps) if (s.getBoundingClientRect().top <= line) active = s;
-      if (active.dataset.chapter !== current) goTo(active.dataset.chapter);
-      if (resized) refit();
-    };
-    host.onChange = update;
-    if (host.seen) update(true);
-  } else {
-    scroller = scrollama();
-    scroller
-      .setup({ step: '.step', offset: 0.6 })
-      .onStepEnter(({ element }) => goTo(element.dataset.chapter));
-  }
-  window.addEventListener('resize', refit);
+  });
 
   // ── ?calibrate: line the traced site up with the real aerial imagery ────────
   function startCalibration() {
@@ -790,7 +750,7 @@ async function buildInteractive() {
     map.jumpTo({ center: site.at.plan, zoom: 15.4, pitch: 0, bearing: 0 });
     map.addControl(new maplibregl.NavigationControl({ visualizePitch: false }), 'bottom-right');
 
-    const panel = document.getElementById('calibrate-panel');
+    const panel = scope.getElementById('calibrate-panel');
     panel.hidden = false;
     panel.innerHTML = `
       <h2>Line up the site</h2>
