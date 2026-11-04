@@ -53,7 +53,9 @@ mark.tk { background: var(--tk); color: #111; padding: 0 3px; border-radius: 2px
 /* ── Graphic (map + photos), pinned while the chapters scroll over it ─────── */
 #graphic {
   position: sticky; top: 0;
-  height: 100vh; height: 100svh;
+  /* lvh = the screen with Safari's toolbars collapsed. svh left a white strip
+     at the bottom on iPhone and iPad once the toolbars shrank mid-scroll. */
+  height: 100vh; height: 100lvh;
   width: 100%;
   overflow: hidden;
   z-index: 0;
@@ -81,7 +83,7 @@ mark.tk { background: var(--tk); color: #111; padding: 0 3px; border-radius: 2px
 .label--accent b { color: var(--red); }
 
 /* ── Chapters ─────────────────────────────────────────────────────────────── */
-#story { position: relative; z-index: 1; margin-top: -100vh; margin-top: -100svh; }
+#story { position: relative; z-index: 1; margin-top: -100vh; margin-top: -100lvh; }
 .step {
   min-height: 100vh; min-height: 100svh;
   display: flex; align-items: center;
