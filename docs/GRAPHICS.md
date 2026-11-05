@@ -74,7 +74,7 @@ Copy a folder in `graphics/` (the redline is the simplest), rename it, and keep 
 
 **1. CalEnviroScreen map.** It uses CalEnviroScreen **5.0**, OEHHA's current version, final since July 1, 2026, rather than 4.0 as the plan said. 5.0 replaced 4.0 and uses 2020 census tracts. It shows the **overall CalEnviroScreen percentile**, the score OEHHA ranks communities by, because no tract near the site reaches the 90th percentile for pollution burden alone in either version. Two Pittsburg tracts 0.8 and 1.4 miles from the plan area are at the 92nd percentile overall (92.6 and 92.2; pollution burden 87.4 and 79.9). A tract in neighboring Antioch is at the 90th. The tracts the plan area sits in are at the 44th and 46th. To show pollution burden instead, change `MEASURE` in `graphic.js` to `'pollution_burden_percentile'`; the CSV has both. Only Contra Costa tracts are shaded. A Solano County tract across the river (Suisun Marsh, 90th percentile) is drawn as plain land. Labels show the percentile rounded down, so no tract is shown above a threshold it doesn't meet.
 
-**2. Deal timeline.** It has 27 entries, from August 2017 to the Oct. 26, 2026, moratorium, with Dec. 8–16, 2025, in a day-by-day box. Each entry names its record, page included, in the CSV's `source` column. An entry links to the record when the CSV's `url` column has one. Five do now: CEQAnet, the notice of determination (two entries), AVAIO's press release and the city's moratorium release. Fill in the rest (for example, DocumentCloud links) and the links appear. Scrollama highlights the entry at mid-screen. Reduced motion leaves the highlight off.
+**2. Deal timeline.** It has 27 entries, from August 2017 to the Oct. 26, 2026, moratorium, with Dec. 8–16, 2025, in a day-by-day box. Each entry names its record, page included, in the CSV's `source` column. An entry links to the record when the CSV's `url` column has one. 24 of 27 do: DocumentCloud copies of the records, plus CEQAnet, the notice of determination, AVAIO's press release and the city's moratorium release. Three have no link yet: Dec. 8, 2025 (the CEC's answers to Scot Scoop, not uploaded), around May 20, 2026 (an interview transcript, not for publication) and Oct. 19, 2026 (needs the council's agenda, minutes or video). Scrollama highlights the entry at mid-screen. Reduced motion leaves the highlight off.
 
 **4. Committee redline.** The draft's full purpose line (p. 41 of the advisory committee emails) is struck through, with the replies typed into the email beside it, quoted as typed. The draft is attributed as the story attributes it.
 
@@ -88,12 +88,12 @@ These are DocumentCloud documents, embedded with SNO's own embed. They aren't bu
 
 | Record | Quote | Section |
 |---|---|---|
-| Delta Diablo–Kimley-Horn emails, p. 4 (Ryan Bernal, Feb. 7, 2024) | "will be a data center" | "'Will be a data center'" |
-| FPPC advice letter A-25-154 (Feb. 27, 2026) | "in any manner" | "Nine days in December" |
-| FPPC advice request emails, p. 4 (Donna Mooney, Dec. 10, 2025) | "For business reasons…" | "Nine days in December" |
-| Delta Diablo–AVAIO recycled water emails, p. 9 (Nick Steiner, March 13, 2026) | "would also be the first to be curtailed" | "First to be curtailed" |
+| [Delta Diablo–Kimley-Horn emails](https://www.documentcloud.org/documents/28867505-email-correspondence-delta-diablo-kimley-horn-emails/), p. 4 (Ryan Bernal, Feb. 7, 2024) | "will be a data center" | "'Will be a data center'" |
+| [FPPC advice letter A-25-154](https://www.documentcloud.org/documents/28867506-final-a-25-154-fppc-advice-letter/) (Feb. 27, 2026) | "in any manner" | "Nine days in December" |
+| [FPPC advice request emails](https://www.documentcloud.org/documents/28867509-fw-fair-political-practices-commission-advice-request-25-154/), p. 4 (Donna Mooney, Dec. 10, 2025) | "For business reasons…" | "Nine days in December" |
+| [Delta Diablo–AVAIO recycled water emails](https://www.documentcloud.org/documents/28867513-data-center-recycled-water-discussion-delta-diablo-avaio-emails/), p. 9 (Nick Steiner, March 13, 2026) | "would also be the first to be curtailed" | "First to be curtailed" |
 
-Once they're up, put their URLs in `data/deal-timeline.csv` too.
+All four are on DocumentCloud; paste each one's embed code from DocumentCloud into SNO.
 
 ## Before it counts as done
 
