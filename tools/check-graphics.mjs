@@ -8,7 +8,8 @@
 //   - reduced motion: JS animation must check ctx.reducedMotion
 //   - full-screen layers use lvh, never vh/svh/dvh
 //   - hidden text uses .ph-sr-only, not an offset
-//   - each graphic has its frame (headline, explainer, body, description, source),
+//   - each graphic has its frame (headline, explainer, body, description, and a
+//     footer of Note, Source, credit), no underlines but links,
 //     a CSV with a source column, PNG fallbacks and an SNO snippet with a caption
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
@@ -49,7 +50,12 @@ for (const name of names) {
 
   // The frame.
   if (!new RegExp(`class="ph-root"[^>]*data-graphic="${name}"`).test(html)) report(name, `index.html needs <figure class="ph-root" data-graphic="${name}">`);
-  for (const cls of ['ph-hed', 'ph-dek', 'ph-body', 'ph-desc', 'ph-source']) if (!html.includes(cls)) report(name, `index.html has no .${cls}`);
+  for (const cls of ['ph-hed', 'ph-dek', 'ph-body', 'ph-desc', 'ph-foot', 'ph-source', 'ph-credit']) if (!html.includes(cls)) report(name, `index.html has no .${cls}`);
+  // Footer order: Note (optional), Source, credit.
+  const order = ['ph-note', 'ph-source', 'ph-credit'].map((c) => html.indexOf(`class="${c}"`)).filter((i) => i >= 0);
+  if (order.some((v, i) => i && v < order[i - 1])) report(name, 'footer must run Note, Source, credit');
+  // Underlines mean links: no text-decoration underline outside a links rule.
+  if (/text-decoration[^;]*underline/.test(css)) report(name, 'CSS underlines something; underlines are for links only (shared/graphic.css)');
   if (!/export default/.test(js)) report(name, 'graphic.js must export a default function(ctx)');
 
   // Data with sources.

@@ -1,67 +1,64 @@
-/* Deal timeline. Shared frame: shared/graphic.css */
+/* Deal timeline. Shared frame: shared/graphic.css. No red here: the
+   highlight that follows the reader is ink, and the nine-days box is plain. */
 .tl { position: relative; }
 .tl-year { position: relative; margin: 0; padding: 0 0 6px; }
-.tl-year__label {
-  position: relative; margin: 0 0 6px; padding-left: 22px;
-  font: 800 15px/1.2 var(--sans); letter-spacing: 0.02em; color: var(--ink);
-}
-.tl-year__label::before { /* year marker on the rail */
-  content: ''; position: absolute; left: 1px; top: 3px; width: 11px; height: 11px;
-  background: var(--ink); border-radius: 2px;
-}
+.tl-year__label { position: relative; margin: 0 0 6px; padding-left: 22px; font: var(--type-label); font-size: 14px; letter-spacing: 0.04em; color: var(--ink); }
+.tl-year__label::before { content: ''; position: absolute; left: 1px; top: 2px; width: 11px; height: 11px; background: var(--ink); }
 .tl-list { list-style: none; margin: 0; padding: 0; }
-.tl-entry {
-  position: relative; margin: 0; padding: 0 0 16px 22px;
-  border-left: 2px solid var(--gray-light); margin-left: 5.5px; padding-left: 16px;
-}
-.tl-entry::before { /* the dot */
+.tl-entry { position: relative; margin: 0 0 0 5.5px; padding: 0 0 14px 16px; border-left: 2px solid var(--gray-light); }
+.tl-entry::before {
   content: ''; position: absolute; left: -7px; top: 3px; width: 8px; height: 8px;
   border-radius: 50%; background: #fff; border: 2px solid var(--gray);
   transition: background-color 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
 }
-.tl-date { margin: 0 0 2px; font: 700 13px/1.3 var(--sans); color: var(--ink); transition: color 0.25s ease; }
-.tl-text { margin: 0 0 3px; font: 400 15px/1.45 var(--serif); color: var(--ink); }
-.tl-source { margin: 0; font: 11.5px/1.4 var(--sans); color: var(--muted); }
-.tl-source a { color: inherit; text-decoration-color: var(--gray); text-underline-offset: 2px; }
-.tl-source a:hover { color: var(--red); }
+.tl-date { margin: 0 0 2px; font: 700 13px/1.3 var(--sans); color: var(--ink); }
+.tl-date:empty { display: none; }
+.tl-text { margin: 0 0 2px; font: var(--type-body); color: var(--ink); }
+.tl-entry--key .tl-text { font-weight: 700; }
+.tl-entry--key::before { background: var(--ink); border-color: var(--ink); }
+.tl-record { font: var(--type-source); color: var(--muted); }
+.tl-record summary { cursor: pointer; width: max-content; }
+.tl-record p { margin: 2px 0 0; }
 
-/* Highlight follows the reader (only when Scrollama runs). */
-.tl-live .tl-entry.is-active::before { background: var(--red); border-color: var(--red); transform: scale(1.25); }
-.tl-live .tl-entry.is-active .tl-date { color: var(--red); }
+/* The highlight that follows the reader (only while Scrollama runs; never in print). */
+.tl-live .tl-entry.is-active::before { background: var(--ink); border-color: var(--ink); transform: scale(1.35); }
+.tl-live .tl-entry.is-active { border-left-color: var(--ink); }
 
 /* The nine days */
-.tl-nine {
-  margin: 4px 0 18px 5.5px; padding: 12px 12px 4px; border: 1px solid var(--ink);
-  background: var(--red-wash);
-}
-.tl-nine__title { margin: 0 0 2px; font: 800 15px/1.25 var(--sans); color: var(--ink); }
-.tl-nine__dek { margin: 0 0 10px; font: 400 14px/1.4 var(--serif); color: var(--ink); }
-.tl-nine .tl-entry { border-left-color: #e8c3ca; }
+.tl-nine { margin: 4px 0 18px 5.5px; padding: 12px 12px 4px; border: var(--box-border); background: #fff; }
+.tl-nine__title { margin: 0 0 2px; font: var(--type-label); font-size: 12px; letter-spacing: var(--label-spacing); text-transform: uppercase; color: var(--ink); }
+.tl-nine__dek { margin: 0 0 10px; font: var(--type-body); color: var(--ink); }
 .tl-days { display: grid; grid-template-columns: repeat(9, 1fr); gap: 2px; margin: 0 0 14px; }
 .tl-day {
-  display: flex; flex-direction: column; align-items: center; gap: 1px;
-  padding: 5px 0 6px; background: #fff; border: 1px solid #ecd2d7; min-width: 0;
+  display: flex; flex-direction: column; align-items: center; gap: 1px; min-width: 0;
+  padding: 5px 0 6px; margin: 0; background: #fff; border: 1px solid var(--gray-light); font: inherit; color: inherit;
   transition: background-color 0.25s ease;
 }
+button.tl-day { cursor: pointer; border-color: var(--ink); }
+button.tl-day:hover, button.tl-day:focus-visible { background: var(--mark); }
 .tl-day__dow { font: 600 9.5px/1 var(--sans); color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; }
 .tl-day__num { font: 700 14px/1.2 var(--sans); color: var(--muted); }
-.tl-day__dot { width: 8px; height: 8px; border-radius: 50%; background: transparent; margin-top: 2px; }
+.tl-day__dot { width: 8px; height: 8px; border-radius: 50%; margin-top: 2px; }
 .tl-day--event .tl-day__num { color: var(--ink); }
-.tl-day--event .tl-day__dot { background: var(--red); }
+.tl-day--event .tl-day__dot { background: var(--ink); }
 .tl-day__what { display: none; }
-.tl-live .tl-day.is-active { background: var(--red); border-color: var(--red); }
-.tl-live .tl-day.is-active .tl-day__num, .tl-live .tl-day.is-active .tl-day__dow { color: #fff; }
+.tl-live .tl-day.is-active { background: var(--ink); }
+.tl-live .tl-day.is-active :is(.tl-day__num, .tl-day__dow, .tl-day__what) { color: #fff; }
 .tl-live .tl-day.is-active .tl-day__dot { background: #fff; }
 
+@media print {
+  .tl-live .tl-entry.is-active::before { transform: none; }
+  .tl-live .tl-entry.is-active { border-left-color: var(--gray-light); }
+  .tl-live .tl-day.is-active { background: #fff; }
+  .tl-live .tl-day.is-active :is(.tl-day__num, .tl-day__dow, .tl-day__what) { color: var(--ink); }
+  .tl-live .tl-day.is-active .tl-day__dot { background: var(--ink); }
+}
+
 @container (min-width: 560px) {
-  .tl-entry { display: grid; grid-template-columns: 128px 1fr; column-gap: 14px; padding-bottom: 14px; }
+  .tl-entry { display: grid; grid-template-columns: 128px 1fr; column-gap: 14px; }
   .tl-date { margin: 0; }
-  .tl-text { font-size: 16px; }
+  .tl-date:empty { display: block; }
   .tl-nine { padding: 14px 16px 6px; }
   .tl-days { gap: 3px; }
-  .tl-day__what {
-    display: block; margin-top: 4px; padding: 0 3px; text-align: center;
-    font: 600 10.5px/1.2 var(--sans); color: var(--ink); hyphens: manual; overflow-wrap: anywhere;
-  }
-  .tl-live .tl-day.is-active .tl-day__what { color: #fff; }
+  .tl-day__what { display: block; margin-top: 4px; padding: 0 3px; text-align: center; font: 600 10.5px/1.2 var(--sans); color: var(--ink); overflow-wrap: anywhere; }
 }

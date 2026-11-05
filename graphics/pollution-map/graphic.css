@@ -3,7 +3,12 @@
 .pm-value { font: 600 11px/1 var(--sans); }
 .pm-value--top { font-weight: 800; font-size: 12.5px; }
 .pm-place { font: 700 10.5px/1 var(--sans); letter-spacing: 0.12em; fill: var(--gray-dark); }
-.pm-water-name { font: italic 500 11px/1 var(--sans); fill: #4a7aa0; }
+.pm-water-name { font: italic 500 11px/1 var(--sans); fill: #3f6f96; }
 .pm-road-name { font: 700 10.5px/1 var(--sans); fill: var(--gray-dark); }
 .pm-callout { font: 700 12px/1.15 var(--sans); fill: var(--ink); }
-.pm-note { margin: 8px 0 0; font: 500 12px/1.4 var(--sans); color: var(--muted); }
+.pm-key { font: 600 11px/1 var(--sans); fill: var(--ink); }
+.pm-key--strong { font-weight: 700; }
+.pm-legend { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; margin: 0 0 8px; font: var(--type-small); font-size: 12px; color: var(--ink); }
+.pm-legend__title { font-weight: 700; margin-right: 2px; }
+.pm-legend__item { display: inline-flex; align-items: center; gap: 5px; white-space: nowrap; }
+.pm-legend__swatch { display: inline-block; width: 14px; height: 11px; border: 1px solid rgba(0, 0, 0, 0.15); }

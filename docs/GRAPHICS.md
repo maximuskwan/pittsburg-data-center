@@ -34,6 +34,14 @@ vendor/d3, vendor/plot        D3 7.9 and Observable Plot 0.6 as single ES module
 
 **The intro** now loads through `shared/mount.js` too. `embed/mount.js` forwards to it, so the intro block already pasted into SNO keeps working unchanged. After the move, the intro was checked in headless Chromium, standalone and mounted in a mock SNO page, at phone and desktop sizes, in map and no-map modes. Every element's computed style matched the version before the move, and screenshots differed no more than two runs of the old version differ from each other (map rendering noise). That check doesn't cover Safari or iOS: test those on SNO.
 
+## Design rules (shared/tokens.css, shared/graphic.css)
+
+- Every headline states the finding in one line at desktop width.
+- The footer always runs **Note:** (optional), **Source:** or **Sources:**, then "Graphic by Maximus Kwan / Scot Scoop."
+- Red has one job: the thing to look at. Blue is for water only. Inserted or quoted words get the neutral `--mark` highlight. Underlines mean links, and only links.
+- Section labels are letterspaced caps (`.ph-label`). Boxes use `--box-border` with square corners.
+- Type comes from the named roles in `tokens.css` (`--type-hed`, `--type-dek`, `--type-body`, `--type-data`, `--type-label`, `--type-small`, `--type-source`). Serif is for prose and quoted records; sans is for labels and data.
+
 ## The rules (shared/kit.js; `npm run check` enforces them)
 
 1. Find elements through the container (`ctx.$`, `ctx.$$`), never through `document`. In SNO, `document` is the story page.
@@ -72,7 +80,7 @@ Copy a folder in `graphics/` (the redline is the simplest), rename it, and keep 
 
 **5. Water-use chart.** The same four estimates are shown at three scales (up to 60,000, 300,000 and 5 million gallons a day), so the small numbers stay visible as it zooms out. The golf course figure is 300 acre-feet a year (≈267,800 gallons a day), shown as "roughly 270,000". The cooling share is 41,177 of 58,407 gallons, or 70.5%, labeled "about 70%" to match the story.
 
-**6 and 7. Diagrams.** These are hand-built SVG with text that wraps to the frame's width. They stack in one column on phones and use two columns from 560 px (the diagram) or 620 px (the flowchart).
+**6 and 7. Diagrams.** HTML and CSS boxes (like the redline), so text wraps at any width and follows the reader's font size. The approvals chart marks who decides each step with a tag, filled for a public vote and outlined otherwise, explained in a key above it. The moratorium is shown as a banner over Phases 2 and 3, since it isn't a step a project takes.
 
 ## Key-record embeds
 

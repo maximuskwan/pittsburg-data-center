@@ -8,7 +8,7 @@
 const NINE = { first: '2025-12-08', last: '2025-12-16' };
 const SHORT = { // labels for the day-by-day strip
   '2025-12-08': 'Generators exempted',
-  '2025-12-10': 'Mooney’s email',
+  '2025-12-10': 'FPPC pressed',
   '2025-12-11': 'Design approved, suit paused',
   '2025-12-15': 'Loan rewritten',
   '2025-12-16': 'Settlement filed',
@@ -18,13 +18,16 @@ export default async function draw(ctx) {
   const { h } = ctx;
   const rows = (await ctx.csv('data/deal-timeline.csv')).sort((a, b) => a.date_iso.localeCompare(b.date_iso));
 
-  const entry = (r) => h('li', { class: 'tl-entry', 'data-date': r.date_iso },
-    h('p', { class: 'tl-date', text: r.date }),
+  // Every entry looks the same whether or not its record is online yet: a
+  // "Record" toggle that opens the citation (a link once the CSV has a URL).
+  const entry = (r) => h('li', { class: `tl-entry${r.key ? ' tl-entry--key' : ''}`, 'data-date': r.date_iso },
+    // A year-only date would repeat the year heading right above it.
+    h('p', { class: 'tl-date', text: r.date === r.date_iso.slice(0, 4) ? '' : r.date }),
     h('div', { class: 'tl-what' },
       h('p', { class: 'tl-text', text: r.text }),
-      h('p', { class: 'tl-source' }, 'Source: ', r.url
-        ? h('a', { href: r.url, target: '_blank', rel: 'noopener', text: r.source })
-        : r.source)));
+      h('details', { class: 'tl-record' },
+        h('summary', { text: 'Record' }),
+        h('p', {}, r.url ? h('a', { href: r.url, target: '_blank', rel: 'noopener', text: r.source }) : r.source))));
 
   // Day-by-day strip for Dec. 8–16, 2025.
   const days = [];
@@ -34,7 +37,8 @@ export default async function draw(ctx) {
   const weekday = (iso) => new Date(`${iso}T12:00:00Z`).toLocaleDateString('en-US', { weekday: 'short', timeZone: 'UTC' });
   const strip = h('div', { class: 'tl-days', 'aria-hidden': 'true' }, days.map((iso) => {
     const has = rows.some((r) => r.date_iso === iso);
-    return h('div', { class: `tl-day${has ? ' tl-day--event' : ''}`, 'data-date': iso },
+    return h(has ? 'button' : 'div', { class: `tl-day${has ? ' tl-day--event' : ''}`, 'data-date': iso, type: has ? 'button' : null,
+      'aria-label': has ? `Go to Dec. ${Number(iso.slice(8))}` : null },
       h('span', { class: 'tl-day__dow', text: weekday(iso) }),
       h('span', { class: 'tl-day__num', text: Number(iso.slice(8)) }),
       h('span', { class: 'tl-day__dot' }),
@@ -60,6 +64,10 @@ export default async function draw(ctx) {
     list.append(section);
   }
   ctx.$('.ph-body').replaceChildren(list);
+  // A day with events jumps to its entry.
+  for (const cell of ctx.$$('button.tl-day')) {
+    cell.addEventListener('click', () => ctx.$(`.tl-entry[data-date="${cell.dataset.date}"]`)?.scrollIntoView({ behavior: ctx.reducedMotion ? 'auto' : 'smooth', block: 'center' }));
+  }
 
   // Scroll highlighting. With reduced motion (or ?still), every entry stays as is.
   if (ctx.reducedMotion) return;

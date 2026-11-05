@@ -1,7 +1,9 @@
-/* The frame every graphic shares: a short headline, a one-line explainer, the
-   graphic and a source line. Designed for a 375px phone first; it follows the
-   frame's own width (container queries), not the screen's, because in the SNO
-   story the frame sits in the text column. */
+/* The frame every graphic shares: a one-line headline stating the finding, a
+   one-line explainer, the graphic, then the footer in a fixed order: Note
+   (optional), Source(s), credit. Designed for a 375px phone first; it follows
+   the frame's own width (container queries), not the screen's, because in
+   the SNO story the frame sits in the text column. Colors and type roles:
+   shared/tokens.css. */
 
 .ph-root {
   container-type: inline-size;
@@ -12,31 +14,35 @@
   border-top: 3px solid var(--ink);
   background: var(--bg);
   color: var(--ink);
-  font-family: var(--sans);
-  font-size: 15px;
-  line-height: 1.45;
+  font: var(--type-data);
   text-align: left;
   -webkit-font-smoothing: antialiased;
   -webkit-text-size-adjust: 100%;
 }
 .ph-root *, .ph-root *::before, .ph-root *::after { box-sizing: border-box; }
 
-.ph-hed { margin: 0 0 6px; font: 800 21px/1.15 var(--sans); letter-spacing: -0.015em; color: var(--ink); }
-.ph-dek { margin: 0 0 16px; font: 400 16px/1.45 var(--serif); color: var(--ink); }
+.ph-hed { margin: 0 0 6px; font: var(--type-hed-phone); letter-spacing: -0.015em; color: var(--ink); }
+.ph-dek { margin: 0 0 16px; font: var(--type-dek); font-size: 16px; color: var(--ink); }
 .ph-body { position: relative; margin: 0 0 14px; }
 .ph-body svg { display: block; overflow: visible; }
 .ph-body svg text { font-family: var(--sans); }
-.ph-source {
-  margin: 0; padding: 9px 0 2px; border-top: 1px solid var(--gray-light);
-  font: 12px/1.45 var(--sans); color: var(--muted);
-}
-.ph-source + .ph-source { border-top: 0; padding-top: 2px; }
-.ph-source a { color: inherit; text-decoration-color: var(--gray); text-underline-offset: 2px; }
-.ph-source a:hover { color: var(--red); }
+
+/* Shared pieces */
+.ph-label { margin: 0 0 8px; font: var(--type-label); letter-spacing: var(--label-spacing); text-transform: uppercase; color: var(--ink); }
+.ph-box { border: var(--box-border); border-radius: 0; background: #fff; padding: 10px 12px; }
+.ph-text { font: var(--type-body); color: var(--ink); margin: 0; }
+.ph-root a { color: inherit; text-decoration: underline; text-decoration-color: var(--gray); text-underline-offset: 2px; }
+.ph-root a:hover { color: var(--red); }
+
+/* Footer: Note, Source, credit */
+.ph-foot { margin: 0; padding: 9px 0 2px; border-top: 1px solid var(--gray-light); font: var(--type-source); color: var(--muted); }
+.ph-foot p { margin: 0 0 3px; }
+.ph-foot b { font-weight: 700; color: var(--gray-dark); }
+.ph-credit { color: var(--muted); }
 
 @container (min-width: 560px) {
-  .ph-hed { font-size: 24px; }
-  .ph-dek { font-size: 17px; margin-bottom: 20px; }
+  .ph-hed { font: var(--type-hed); letter-spacing: -0.015em; }
+  .ph-dek { font: var(--type-dek); margin-bottom: 20px; }
 }
 
 /* Visually hidden, still read by screen readers. */
@@ -47,7 +53,7 @@
 
 mark.tk { background: var(--tk); color: #111; padding: 0 3px; border-radius: 2px; }
 .ph-draft { margin: 0 0 10px; padding: 6px 10px; background: var(--tk); color: #111; font: 600 12px/1.3 var(--sans); }
-.ph-error { margin: 0 0 12px; font: 14px/1.4 var(--sans); color: var(--red-dark); }
+.ph-error { margin: 0 0 12px; font: var(--type-small); color: var(--red-dark); }
 
 /* A graphic's own page (graphics/<name>/index.html) */
 body.ph-page { margin: 0; padding: 24px 16px 32px; background: var(--bg); }

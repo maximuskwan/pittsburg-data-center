@@ -23,7 +23,26 @@
   --sans: 'PH Montserrat', 'Helvetica Neue', Arial, sans-serif;
   color-scheme: light;
 
-  /* Graphics (the intro's map colors live in js/story.js) */
+  /* ── Graphics ───────────────────────────────────────────────────────────
+     Color jobs (one job each):
+       --red        the thing to look at. Nothing else is red.
+       --water, --canal, --blue   water only (map, supply). Never text or links.
+       --mark       a neutral highlight for quoted or inserted words.
+     Underlines mean links, and only links. */
+  --mark: #ecebe6;
+  --box-border: 1px solid var(--ink);
+
+  /* Type roles: serif for prose and quoted records, sans for labels and data.
+     Use these, not one-off sizes. Headlines drop to --type-hed-phone in narrow frames. */
+  --type-hed: 800 24px/1.15 var(--sans);
+  --type-hed-phone: 800 21px/1.15 var(--sans);
+  --type-dek: 400 17px/1.45 var(--serif);
+  --type-body: 400 15px/1.45 var(--serif);
+  --type-data: 600 13px/1.35 var(--sans);
+  --type-label: 800 11.5px/1.2 var(--sans); /* letterspaced caps: section labels */
+  --type-small: 500 12.5px/1.4 var(--sans);
+  --type-source: 400 12px/1.45 var(--sans);
+  --label-spacing: 0.08em;
   --red-light: #f6d9de;
   --red-wash: #fdf2f4;
   --gray-dark: #3d3d3d;

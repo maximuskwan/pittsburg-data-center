@@ -20,7 +20,8 @@ export default async function draw(ctx) {
   const ultimate = get('ultimate');
   // 41,177 of 58,407 is 70.5%; the story says 70%, so round to the nearest 5 and say "about".
   const share = Math.round((cool / eng) * 20) * 5;
-  const times = Math.round(eng / cm.high);
+  // "About 10 to 15 times": against the city manager's high and low ends.
+  const times = [Math.round(eng / cm.high), Math.round(eng / cm.low)];
 
   const C = {
     ink: ctx.token('--ink'), muted: ctx.token('--muted'), red: ctx.token('--red'), redLight: '#f3b3be',
@@ -32,14 +33,15 @@ export default async function draw(ctx) {
   const ROWS = {
     'city-manager': {
       label: data['city-manager'].label, value: `${fmt.format(cm.low)}–${fmt.format(cm.high)}`,
-      segments: [{ x1: 0, x2: cm.low, fill: C.ink }, { x1: cm.low, x2: cm.high, fill: C.ink, opacity: 0.35 }],
+      // A range, not a share: solid to the low end, outlined to the high end.
+      segments: [{ x1: 0, x2: cm.low, fill: C.ink }, { x1: cm.low, x2: cm.high, fill: '#fff', outline: true }],
     },
     engineers: {
       label: data.engineers.label, value: `About ${about(eng, 1000)}`,
       segments: [{ x1: 0, x2: cool, fill: C.red }, { x1: cool, x2: eng, fill: C.redLight }],
     },
     'golf-course': {
-      label: data['golf-course'].label, value: `Roughly ${about(golf, 10000)}`,
+      label: data['golf-course'].label, value: `About ${about(golf, 10000)}`,
       segments: [{ x1: 0, x2: golf, fill: C.gray }],
     },
     ultimate: {
@@ -50,7 +52,8 @@ export default async function draw(ctx) {
 
   const PANELS = [
     {
-      title: `Up close: the engineers’ estimate is about ${times} times the city manager’s`,
+      kicker: 'Up close',
+      title: `About ${share}% of the engineers’ estimate is for cooling, not landscaping`,
       scale: 'Gallons a day, up to 60,000',
       max: 60000, ticks: [0, 20000, 40000, 60000], tick: (d) => fmt.format(d),
       rows: ['city-manager', 'engineers'],
@@ -63,13 +66,15 @@ export default async function draw(ctx) {
       },
     },
     {
-      title: 'Zoom out: the golf course used far more when it was green',
+      kicker: 'Zoom out',
+      title: 'The golf course used far more when it was green',
       scale: 'Gallons a day, up to 300,000. Shaded: the previous scale',
       max: 300000, prev: 60000, ticks: [0, 100000, 200000, 300000], tick: (d) => fmt.format(d),
       rows: ['city-manager', 'engineers', 'golf-course'],
     },
     {
-      title: 'Zoom out again: what a 2019 city agreement anticipated',
+      kicker: 'Zoom out again',
+      title: 'What a 2019 city agreement anticipated',
       scale: 'Gallons a day, up to 5 million. Shaded: the previous scale',
       max: 5000000, prev: 300000, ticks: [0, 2500000, 5000000], tick: (d) => (d ? `${fmt.format(d / 1e6)} million` : '0'),
       rows: ['city-manager', 'engineers', 'golf-course', 'ultimate'],
@@ -92,7 +97,8 @@ export default async function draw(ctx) {
   const FONT = { label: `600 12.5px ${C.sans}`, value: `700 14px ${C.sans}`, note: `500 11.5px ${C.sans}` };
   const TEXT = {
     label: { textAnchor: 'start', fontSize: 12.5, fontWeight: 600 },
-    value: { textAnchor: 'end', fontSize: 14, fontWeight: 700 },
+    valueOut: { textAnchor: 'start', fontSize: 13.5, fontWeight: 700, lineAnchor: 'middle', dx: 6 },
+    valueTop: { textAnchor: 'end', fontSize: 13.5, fontWeight: 700, lineAnchor: 'top' },
     note: { textAnchor: 'start', fontSize: 11.5, fontWeight: 500 },
     strong: { textAnchor: 'start', fontSize: 11.5, fontWeight: 700 },
   };
@@ -106,11 +112,23 @@ export default async function draw(ctx) {
     let y = 4;
     for (const id of p.rows) {
       const row = ROWS[id];
-      const valueW = measure(row.value, FONT.value);
-      const lines = wrap(row.label, FONT.label, right - valueW - 14);
+      const lines = wrap(row.label, FONT.label, right);
       texts.push({ x: 0, y, text: lines.join('\n'), kind: 'label', fill: C.ink });
-      texts.push({ x: p.max, y, text: row.value, kind: 'value', fill: C.ink });
       y += lines.length * 15.5 + 4;
+      // The value sits at the end of its bar: outside if it fits, else inside.
+      const last = row.segments[row.segments.length - 1];
+      const endPx = (Math.min(p.max, last.x2) / p.max) * (right - 5) + 5;
+      const fits = endPx + 6 + measure(row.value, FONT.value) <= width;
+            // A bar that runs (nearly) full width gets its value at the end of the label line, right above the bar's end.
+      if (fits) texts.push({ x: Math.min(p.max, last.x2), y: y + 8, text: row.value, kind: 'valueOut', fill: C.ink });
+      else texts.push({ x: Math.min(p.max, last.x2), y: y - 15.5 - 4, text: row.value, kind: 'valueTop', fill: C.ink }); // on the label's last line
+      if (!fits && measure(lines[lines.length - 1], FONT.label) + measure(row.value, FONT.value) + 12 > endPx) {
+        // Label and value would collide: wrap the label shorter and redo this row's height.
+        const short = wrap(row.label, FONT.label, endPx - measure(row.value, FONT.value) - 12);
+        texts[texts.length - 2].text = short.join('\n');
+        y += (short.length - lines.length) * 15.5;
+        texts[texts.length - 1].y = y - 15.5 - 4;
+      }
       for (const sgm of row.segments) {
         // Bars too thin to see at this scale still get a hairline.
         marks.push({ ...sgm, x2: Math.min(p.max, sgm.x2), y1: y, y2: y + 16 });
@@ -123,17 +141,15 @@ export default async function draw(ctx) {
     }
     const height = y + 18;
     const svg = Plot.plot({
-      width, height, marginLeft: 0, marginRight, marginTop: 0, marginBottom: 22,
+      width, height, marginLeft: 4, marginRight, marginTop: 0, marginBottom: 22,
       style: { fontFamily: C.sans, color: C.muted, overflow: 'visible' },
-      x: { domain: [0, p.max], range: [1, right] },
-      y: { type: 'identity' },
+      x: { domain: [0, p.max], range: [5, right] },
+      y: { type: 'identity', axis: null },
       marks: [
         p.prev ? Plot.rect([{ x1: 0, x2: p.prev, y1: 0, y2: height - 22 }], { x1: 'x1', x2: 'x2', y1: 'y1', y2: 'y2', fill: C.wash }) : null,
         Plot.gridX(p.ticks, { stroke: C.rule, strokeOpacity: 1, y1: 0, y2: height - 22 }),
-        Plot.rect(marks, {
-          x1: 'x1', x2: 'x2', y1: 'y1', y2: 'y2', fill: 'fill', fillOpacity: (d) => d.opacity ?? 1,
-          insetLeft: 0, insetRight: 0,
-        }),
+        Plot.rect(marks.filter((m) => !m.outline), { x1: 'x1', x2: 'x2', y1: 'y1', y2: 'y2', fill: 'fill' }),
+        Plot.rect(marks.filter((m) => m.outline), { x1: 'x1', x2: 'x2', y1: 'y1', y2: 'y2', fill: '#fff', stroke: C.ink, strokeWidth: 1.2, inset: 0.6 }),
         // A hairline at each bar's end, so the tiny ones are still visible.
         Plot.ruleX(marks.filter((m) => m.x2 / p.max < 0.004), { x: 'x2', y1: 'y1', y2: 'y2', stroke: 'fill', strokeWidth: 1.5 }),
         Plot.ruleX([0], { stroke: C.ink, y1: 0, y2: height - 22 }),
@@ -146,6 +162,7 @@ export default async function draw(ctx) {
     });
     svg.setAttribute('aria-hidden', 'true');
     return ctx.h('section', { class: 'wu-panel' },
+      ctx.h('p', { class: 'ph-label wu-kicker', text: p.kicker }),
       ctx.h('p', { class: 'wu-title', text: p.title }),
       ctx.h('p', { class: 'wu-scale', text: p.scale }),
       svg);
