@@ -1,40 +1,70 @@
-/* Approvals-still-ahead flowchart. Shared frame: shared/graphic.css */
-.ap-key { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 0; margin: 0 0 18px; font: var(--type-small); color: var(--ink); }
-.ap-key__item { white-space: nowrap; margin-right: 12px; }
-.ap-tag {
-  display: inline-block; padding: 2px 8px; border: 1px solid var(--ink); border-radius: 999px;
-  font: var(--type-label); font-size: 10px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--ink); background: #fff;
-}
-.ap-tag--vote { background: var(--ink); color: #fff; }
-.ap-lanes { display: grid; gap: 28px; }
-.ap-lane { border-top: 4px solid var(--ink); padding-top: 10px; }
-/* Same phase colors as the map: Phase 1 black, Phases 2-3 gray. */
-.ap-lane--phase1 { border-top-color: var(--ink); }
-.ap-lane--phases23 { border-top-color: var(--gray); }
-.ap-lane__title { margin: 0 0 3px; font: 800 17px/1.2 var(--sans); color: var(--ink); }
-.ap-sub { margin: 0 0 12px; font: var(--type-small); color: var(--muted); }
-.ap-banner { margin: 0 0 12px; padding: 8px 10px; background: var(--gray-wash); border-left: 4px solid var(--ink); font: var(--type-small); color: var(--ink); }
-.ap-steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
-.ap-steps--all { padding-left: 12px; border-left: 2px solid var(--ink); }
-.ap-steps--order { gap: 26px; }
-.ap-steps--order .ap-step { position: relative; }
-.ap-steps--order .ap-step + .ap-step::before, .ap-arrow::before {
-  content: ''; position: absolute; left: 50%; top: -24px; width: 2px; height: 16px; background: var(--ink);
-}
-.ap-steps--order .ap-step + .ap-step::after, .ap-arrow::after {
-  content: ''; position: absolute; left: calc(50% - 5px); top: -9px; border: 6px solid transparent; border-top: 7px solid var(--ink); border-bottom: 0;
-}
-.ap-step { padding: 10px 12px 11px; }
-.ap-step .ap-tag { margin-bottom: 7px; }
-.ap-title { margin: 0; font: 700 14px/1.3 var(--sans); color: var(--ink); }
-.ap-who { margin: 3px 0 0; font: 600 12.5px/1.35 var(--sans); color: var(--ink); }
-.ap-detail { margin: 4px 0 0; font: var(--type-small); color: var(--muted); }
-.ap-arrow { position: relative; height: 26px; margin: 0; }
-.ap-arrow::before { top: 2px; }
-.ap-arrow::after { top: 17px; }
-.ap-end { margin: 0; padding: 9px 12px; background: var(--ink); color: #fff; text-align: center; font: 700 13px/1.3 var(--sans); }
+/* Approvals still ahead. Shared frame: shared/graphic.css.
+   Nodes: filled = public vote, open = no public vote. No boxes; labels are
+   plain text under (desktop) or beside (phone) their node. Red marks the one
+   step the graphic is about: the zoning administrator. */
+.ap-key { display: flex; flex-wrap: wrap; gap: 6px 18px; margin: 0 0 18px; font: var(--type-small); color: var(--ink); }
+.ap-key__item { display: inline-flex; align-items: center; gap: 7px; white-space: nowrap; }
 
+.ap-node {
+  --size: 14px;
+  display: inline-block; flex: none; width: var(--size); height: var(--size); border-radius: 50%;
+  border: 2px solid var(--ink); background: #fff; position: relative; z-index: 1;
+}
+.ap-node--vote { background: var(--ink); }
+.ap-node--reveal { border-color: var(--red); }
 
+.ap-track { margin: 0 0 26px; }
+.ap-track:last-child { margin-bottom: 4px; }
+.ap-track__title { margin: 0 0 12px; padding-top: 8px; border-top: 1px solid var(--gray-light); font: 800 16px/1.25 var(--sans); color: var(--ink); }
+.ap-track__title span { display: block; margin-top: 2px; font: var(--type-small); color: var(--muted); }
+
+.ap-label { min-width: 0; }
+.ap-title { margin: 0; font: 700 13.5px/1.3 var(--sans); color: var(--ink); }
+.ap-who { margin: 2px 0 0; font: 500 12.5px/1.35 var(--sans); color: var(--ink); }
+.ap-detail { margin: 3px 0 0; font: var(--type-small); font-size: 12px; color: var(--muted); }
+.ap-end { margin: 0; font: 700 12.5px/1.2 var(--sans); color: var(--muted); white-space: nowrap; }
+
+/* Phase 1: nodes stacked, a bracket joining them on the right, then the end
+   of the track. graphic.js measures the nodes and sets --stub, --arm and --mid, so every line meets. */
+.ap-fan { position: relative; padding-right: 130px; }
+.ap-par { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
+.ap-par .ap-item { display: grid; grid-template-columns: 14px minmax(0, 1fr); gap: 10px; align-items: start; position: relative; }
+/* A stub from each item's node line into the bracket. */
+.ap-par .ap-item::after { content: ''; position: absolute; right: -24px; top: var(--stub, 7px); width: 14px; border-top: 2px solid var(--ink); }
+.ap-bracket { position: absolute; right: 104px; width: 0; border-right: 2px solid var(--ink); }
+.ap-bracket::after { content: ''; position: absolute; left: 0; top: var(--arm, 50%); width: 14px; border-top: 2px solid var(--ink); }
+.ap-fan .ap-end { position: absolute; right: 0; width: 88px; top: var(--mid, 50%); transform: translateY(-50%); }
+
+/* Phases 2-3: a vertical track on phones. */
+.ap-seq { list-style: none; margin: 0; padding: 0; position: relative; }
+.ap-seq::before { content: ''; position: absolute; left: 6px; top: 8px; bottom: 8px; border-left: 2px solid var(--ink); }
+.ap-seq > li { display: grid; grid-template-columns: 14px minmax(0, 1fr); gap: 10px; align-items: start; padding: 0 0 14px; position: relative; }
+.ap-hatch {
+  width: 14px; height: 100%; min-height: 40px; position: relative; z-index: 1; border: 1px solid var(--ink);
+  background: repeating-linear-gradient(135deg, var(--ink) 0 1.5px, #fff 1.5px 5px);
+}
+.ap-hold .ap-title { color: var(--ink); }
+.ap-item--reveal .ap-title, .ap-item--reveal .ap-who { color: var(--red); }
+.ap-endstep { padding-bottom: 0 !important; }
+.ap-endstep .ap-end { grid-column: 2; }
+.ap-endstep::before { content: ''; width: 10px; height: 2px; margin: 6px 0 0 2px; background: var(--ink); position: relative; z-index: 1; }
+
+/* The one annotation, on the zoning administrator. */
+.ap-note { margin: 8px 0 0; padding-left: 10px; border-left: 2px solid var(--red); }
+.ap-note__quote { margin: 0; font: var(--type-body); color: var(--ink); }
+.ap-note__quote b { font: 700 13.5px/1.3 var(--sans); color: var(--red); }
+.ap-note__caveat { margin: 6px 0 0; font: var(--type-small); color: var(--muted); }
+
+/* Wide frames: Phases 2-3 run left to right, labels under the nodes. */
 @container (min-width: 620px) {
-  .ap-lanes { grid-template-columns: 1fr 1fr; gap: 24px; }
+  .ap-seq { display: grid; grid-template-columns: 0.9fr repeat(4, 1fr) 96px; gap: 0; }
+  .ap-seq::before { left: 0; right: 40px; top: 6px; bottom: auto; border-left: 0; border-top: 2px solid var(--ink); }
+  .ap-seq > li { display: block; padding: 0 14px 0 0; }
+  .ap-seq > li .ap-label { margin-top: 10px; }
+  .ap-hatch { display: block; width: calc(100% + 14px); height: 14px; min-height: 0; }
+  .ap-endstep { align-self: start; }
+  .ap-endstep::before { display: none; }
+  .ap-endstep .ap-end { margin-top: 0; line-height: 14px; padding-left: 4px; background: #fff; position: relative; z-index: 1; }
+  /* The annotation hangs under the zoning administrator, into the end column. */
+  .ap-item--reveal .ap-note { width: calc(100% + 96px); }
 }

@@ -49,6 +49,10 @@
   .ph-dek { font: var(--type-dek); margin-bottom: 20px; }
 }
 
+/* Controls that only work live (buttons, toggles). The PNG fallbacks leave
+   them out: tools/snapshot.mjs sets data-snapshot on the frame before capture. */
+.ph-root[data-snapshot] .ph-interactive { display: none; }
+
 /* Visually hidden, still read by screen readers. */
 .ph-sr-only {
   position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px;

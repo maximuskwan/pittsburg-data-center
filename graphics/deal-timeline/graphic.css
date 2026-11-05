@@ -15,9 +15,17 @@
 .tl-text { margin: 0 0 2px; font: var(--type-body); color: var(--ink); }
 .tl-entry--key .tl-text { font-weight: 700; }
 .tl-entry--key::before { background: var(--ink); border-color: var(--ink); }
-.tl-record { font: var(--type-source); color: var(--muted); }
-.tl-record summary { cursor: pointer; width: max-content; }
-.tl-record p { margin: 2px 0 0; }
+/* Records: hidden until "Show records" (always shown in print). Hidden with
+   display: none, so their links can't take keyboard focus while invisible. */
+.tl-tools { margin: 0 0 12px; }
+.tl-toggle {
+  padding: 4px 10px; border: 1px solid var(--ink); border-radius: 0; background: #fff; color: var(--ink);
+  font: 600 12px/1.3 var(--sans); cursor: pointer;
+}
+.tl-toggle[aria-pressed="true"] { background: var(--ink); color: #fff; }
+.tl-toggle:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+.tl-record { margin: 2px 0 0; font: var(--type-source); color: var(--muted); }
+.ph-root:not(.tl-records) .tl-record { display: none; }
 
 /* The highlight that follows the reader (only while Scrollama runs; never in print). */
 .tl-live .tl-entry.is-active::before { background: var(--ink); border-color: var(--ink); transform: scale(1.35); }
@@ -47,6 +55,8 @@ button.tl-day:hover, button.tl-day:focus-visible { background: var(--mark); }
 .tl-live .tl-day.is-active .tl-day__dot { background: #fff; }
 
 @media print {
+  .tl-tools { display: none; }
+  .ph-root .tl-record { display: block; }
   .tl-live .tl-entry.is-active::before { transform: none; }
   .tl-live .tl-entry.is-active { border-left-color: var(--gray-light); }
   .tl-live .tl-day.is-active { background: #fff; }

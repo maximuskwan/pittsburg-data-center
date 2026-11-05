@@ -29,55 +29,60 @@ export default async function draw(ctx) {
     sans: ctx.token('--sans'),
   };
 
+  // Each label carries its scope ("Phase 1" or "whole park, all phases"), so the
+  // zoom-out never compares Phase 1 numbers to the whole park unlabeled.
+  const label = (id) => (data[id].scope ? `${data[id].label} (${data[id].scope.replace(/^Phase /, 'Phase\u00a0')})` : data[id].label);
   // One row per estimate: label, value text, bar segments, optional note under the bar.
   const ROWS = {
     'city-manager': {
-      label: data['city-manager'].label, value: `${fmt.format(cm.low)}–${fmt.format(cm.high)}`,
+      label: label('city-manager'), value: `${fmt.format(cm.low)}–${fmt.format(cm.high)}`,
       // A range, not a share: solid to the low end, outlined to the high end.
       segments: [{ x1: 0, x2: cm.low, fill: C.ink }, { x1: cm.low, x2: cm.high, fill: '#fff', outline: true }],
     },
     engineers: {
-      label: data.engineers.label, value: `About ${about(eng, 1000)}`,
+      label: label('engineers'), value: `About ${about(eng, 1000)}`,
       segments: [{ x1: 0, x2: cool, fill: C.red }, { x1: cool, x2: eng, fill: C.redLight }],
     },
     'golf-course': {
-      label: data['golf-course'].label, value: `About ${about(golf, 10000)}`,
+      label: label('golf-course'), value: `About ${about(golf, 10000)}`,
       segments: [{ x1: 0, x2: golf, fill: C.gray }],
     },
     ultimate: {
-      label: data.ultimate.label, value: `About ${fmt.format(ultimate / 1e6)} million`,
+      label: label('ultimate'), value: `About ${fmt.format(ultimate / 1e6)} million`,
       segments: [{ x1: 0, x2: ultimate, fill: C.grayDark }],
     },
   };
+
+  // The cooling share keeps its label in every panel, not just the first.
+  const cooling = { at: 0, text: `Red: about ${share}% for cooling the data halls`, color: C.red, strong: true };
 
   const PANELS = [
     {
       kicker: 'Up close',
       title: `About ${share}% of the engineers’ estimate is for cooling, not landscaping`,
-      scale: 'Gallons a day, up to 60,000',
-      max: 60000, ticks: [0, 20000, 40000, 60000], tick: (d) => fmt.format(d),
+      scale: 'Gallons a day',
+      max: 90000, ticks: [0, 30000, 60000, 90000], tick: (d) => fmt.format(d),
       rows: ['city-manager', 'engineers'],
       notes: {
         'city-manager': [{ at: 0, text: 'Gale said it would mostly go to landscaping.' }],
-        engineers: [
-          { at: 0, text: `About ${share}% for cooling the data halls`, color: C.red, strong: true },
-          { at: 0, text: 'The recycled water contract allows about the same.', line: 1 },
-        ],
+        engineers: [cooling, { at: 0, text: 'The recycled water contract allows about the same.', line: 1 }],
       },
     },
     {
       kicker: 'Zoom out',
       title: 'The golf course used far more when it was green',
-      scale: 'Gallons a day, up to 300,000. Shaded: the previous scale',
-      max: 300000, prev: 60000, ticks: [0, 100000, 200000, 300000], tick: (d) => fmt.format(d),
+      scale: 'Gallons a day. Shaded: the previous scale',
+      max: 400000, prev: 90000, ticks: [0, 100000, 200000, 300000, 400000], tick: (d) => fmt.format(d),
       rows: ['city-manager', 'engineers', 'golf-course'],
+      notes: { engineers: [cooling] },
     },
     {
       kicker: 'Zoom out again',
-      title: 'What a 2019 city agreement anticipated',
-      scale: 'Gallons a day, up to 5 million. Shaded: the previous scale',
-      max: 5000000, prev: 300000, ticks: [0, 2500000, 5000000], tick: (d) => (d ? `${fmt.format(d / 1e6)} million` : '0'),
+      title: 'What a 2019 city agreement anticipated for the whole park',
+      scale: 'Gallons a day. Shaded: the previous scale',
+      max: 7500000, prev: 400000, ticks: [0, 2500000, 5000000, 7500000], tick: (d) => (d ? `${fmt.format(d / 1e6)} million` : '0'),
       rows: ['city-manager', 'engineers', 'golf-course', 'ultimate'],
+      notes: { engineers: [cooling] },
     },
   ];
 
