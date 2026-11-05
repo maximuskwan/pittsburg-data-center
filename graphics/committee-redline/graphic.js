@@ -28,7 +28,7 @@ export default async function draw(ctx) {
         col('What it became', ...became)));
   };
 
-  // Purpose: what the city's news release said about who sets the committee up.
+  // Purpose: the city's news release, the draft's line with the City Manager in place of the council.
   const purpose = get('purpose-release');
   const purposeBecame = [
     h('p', { class: 'rl-words' }, words(purpose, quote(purpose))),
