@@ -57,7 +57,7 @@
 
 /* Wide frames: Phases 2-3 run left to right, labels under the nodes. */
 @container (min-width: 620px) {
-  .ap-seq { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr 112px; gap: 0; }
+  .ap-seq { display: grid; grid-template-columns: 0.9fr repeat(4, 1fr) 96px; gap: 0; }
   .ap-seq::before { left: 0; right: 40px; top: 6px; bottom: auto; border-left: 0; border-top: 2px solid var(--ink); }
   .ap-seq > li { display: block; padding: 0 14px 0 0; }
   .ap-seq > li .ap-label { margin-top: 10px; }
@@ -66,5 +66,5 @@
   .ap-endstep::before { display: none; }
   .ap-endstep .ap-end { margin-top: 0; line-height: 14px; padding-left: 4px; background: #fff; position: relative; z-index: 1; }
   /* The annotation hangs under the zoning administrator, into the end column. */
-  .ap-item--reveal .ap-note { width: calc(100% + 112px); }
+  .ap-item--reveal .ap-note { width: calc(100% + 96px); }
 }

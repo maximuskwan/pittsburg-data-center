@@ -28,9 +28,12 @@ export default async function draw(ctx) {
         col('What it became', ...became)));
   };
 
-  // Purpose: what the city's news release said.
+  // Purpose: what the city's news release said about who sets the committee up.
   const purpose = get('purpose-release');
-  const purposeBecame = [h('p', { class: 'rl-words' }, words(purpose, quote(purpose)))];
+  const purposeBecame = [
+    h('p', { class: 'rl-words' }, words(purpose, quote(purpose))),
+    h('p', { class: 'rl-attr', text: `— ${purpose.who}` }),
+  ];
 
   // Length of service: how "4 months" became "over the next several months".
   const sug = get('term-suggestion'), ok = get('term-approval'), rel = get('term-release');

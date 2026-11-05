@@ -62,8 +62,8 @@ export default async function draw(ctx) {
         h('span', { class: 'ap-hatch', 'aria-hidden': 'true' }),
         h('div', { class: 'ap-label' },
           h('p', { class: 'ap-title', text: 'Moratorium' }),
-          h('p', { class: 'ap-who' }, 'Oct. 26 to ', tk(m, 'Dec. 10')),
-          h('p', { class: 'ap-detail' }, `${m.title.replace(/ on new data centers$/, '')}, adopted unanimously. `, tk(m, 'Expires Dec. 10 unless extended.')))),
+          h('p', { class: 'ap-who' }, 'Oct.\u00a026 to ', tk(m, 'Dec.\u00a010')),
+          h('p', { class: 'ap-detail' }, `${m.title.replace(/ on new data centers$/, '')}, adopted unanimously. `, tk(m, 'Ends Dec.\u00a010 unless extended.')))),
       ...steps.map(item),
       h('li', { class: 'ap-endstep' }, h('p', { class: 'ap-end', text: 'Construction' }))));
 
