@@ -4,7 +4,7 @@ The opening interactive for Maximus Kwan's investigation into the AVAIO "Perseus
 
 It's a standalone static page (MapLibre GL JS + Scrollama) with no build step, no API keys and no CMS dependency. Scot Scoop loads it straight into the story page (`embed/sno-embed.html`); republishers embed the same URL in an iframe. Outlets that can't use iframes get an MP4, stills and plain text from `kit/`.
 
-The repo also holds the story's six other graphics (a CalEnviroScreen map, the deal timeline, the committee email redline, the water-use chart, the recycled-water priority diagram and the approvals still ahead). Each loads into the SNO story the same way. See **[docs/GRAPHICS.md](docs/GRAPHICS.md)**.
+The repo also holds the story's six other graphics (a CalEnviroScreen map, the deal timeline, the committee email redline, the water-use chart, the recycled-water fallback and the approvals still ahead). Each loads into the SNO story the same way. See **[docs/GRAPHICS.md](docs/GRAPHICS.md)**.
 
 ```
 index.html          ← ALL chapter text lives here

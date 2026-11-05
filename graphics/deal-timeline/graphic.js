@@ -18,15 +18,14 @@ export default async function draw(ctx) {
   const { h } = ctx;
   const rows = (await ctx.csv('data/deal-timeline.csv')).sort((a, b) => a.date_iso.localeCompare(b.date_iso));
 
-  // Every entry looks the same whether or not its record is online yet: a
-  // "Record" toggle that opens the citation (a link once the CSV has a URL).
+  // Each entry's record (a link once the CSV has a URL) stays hidden until the
+  // reader presses the one "Show records" toggle above the list.
   const entry = (r) => h('li', { class: `tl-entry${r.key ? ' tl-entry--key' : ''}`, 'data-date': r.date_iso },
     h('p', { class: 'tl-date', text: r.date }),
     h('div', { class: 'tl-what' },
       h('p', { class: 'tl-text', text: r.text }),
-      h('details', { class: 'tl-record' },
-        h('summary', { text: 'Record' }),
-        h('p', {}, r.url ? h('a', { href: r.url, target: '_blank', rel: 'noopener', text: r.source }) : r.source))));
+      h('p', { class: 'tl-record' }, h('span', { class: 'ph-sr-only', text: 'Record: ' }),
+        r.url ? h('a', { href: r.url, target: '_blank', rel: 'noopener', text: r.source }) : r.source)));
 
   // Day-by-day strip for Dec. 8–16, 2025.
   const days = [];
@@ -62,7 +61,14 @@ export default async function draw(ctx) {
     }
     list.append(section);
   }
-  ctx.$('.ph-body').replaceChildren(list);
+  const toggle = h('button', { class: 'tl-toggle', type: 'button', 'aria-pressed': 'false', text: 'Show records' });
+  toggle.addEventListener('click', () => {
+    const on = !ctx.root.classList.contains('tl-records');
+    ctx.root.classList.toggle('tl-records', on);
+    toggle.setAttribute('aria-pressed', String(on));
+    toggle.textContent = on ? 'Hide records' : 'Show records';
+  });
+  ctx.$('.ph-body').replaceChildren(h('p', { class: 'tl-tools' }, toggle), list);
   // A day with events jumps to its entry.
   for (const cell of ctx.$$('button.tl-day')) {
     cell.addEventListener('click', () => ctx.$(`.tl-entry[data-date="${cell.dataset.date}"]`)?.scrollIntoView({ behavior: ctx.reducedMotion ? 'auto' : 'smooth', block: 'center' }));

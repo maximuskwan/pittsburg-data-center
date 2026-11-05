@@ -1,25 +1,23 @@
-/* Committee email redline. Shared frame: shared/graphic.css.
-   Deleted words: red strike (the thing to look at). Inserted words: the
-   neutral --mark highlight, never underlined (underlines mean links). */
+/* Committee email. Shared frame: shared/graphic.css.
+   Draft, reply and what it became side by side, quoted in serif. No
+   strikethrough and no highlight behind the quotes: the columns do the work. */
 .rl-email { border: var(--box-border); background: #fff; }
 .rl-head { padding: 10px 12px; border-bottom: 1px solid var(--gray-light); background: var(--gray-wash); }
 .rl-head p { margin: 0; font: var(--type-small); color: var(--ink); }
 .rl-head span { display: inline-block; width: 42px; font-weight: 700; color: var(--muted); }
 .rl-part { padding: 12px 12px 14px; }
-.rl-part + .rl-part { border-top: 1px dashed var(--gray-light); }
-.rl-pair { display: grid; gap: 10px; }
+.rl-part + .rl-part { border-top: 1px solid var(--gray-light); }
+.rl-cols { display: grid; gap: 12px; }
+.rl-col + .rl-col { padding-top: 10px; border-top: 1px dotted var(--gray-light); }
 .rl-tag { margin: 0 0 3px; font: 700 11px/1.2 var(--sans); color: var(--muted); }
 .rl-words { margin: 0; font: var(--type-body); color: var(--ink); }
-.rl-draft del { color: var(--red-dark); text-decoration: line-through 2px var(--red); padding: 0 2px; }
-.rl-reply, .rl-became { padding-left: 10px; border-left: 3px solid var(--ink); }
-.rl-part ins { text-decoration: none; background: var(--mark); padding: 1px 3px; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
-.rl-became { margin-top: 12px; }
-.rl-steps { list-style: none; margin: 6px 0 0; padding: 0; font: var(--type-small); color: var(--ink); }
+.rl-words--draft { color: var(--gray-dark); }
+.rl-steps { list-style: none; margin: 8px 0 0; padding: 0; font: var(--type-small); color: var(--ink); }
 .rl-steps li { margin: 0 0 2px; }
 
 @container (min-width: 560px) {
-  .rl-pair { grid-template-columns: 1fr 1.6fr; gap: 16px; align-items: start; }
-  .rl-became { margin-left: calc((100% - 16px) * 1 / 2.6 + 16px); }
+  .rl-cols { grid-template-columns: 1fr 1.35fr 1fr; gap: 18px; align-items: start; }
+  .rl-col + .rl-col { padding: 0 0 0 18px; border-top: 0; border-left: 1px solid var(--gray-light); margin-left: -9px; }
   .rl-part { padding: 14px 16px 16px; }
   .rl-head { padding: 10px 16px; }
 }

@@ -28,6 +28,10 @@ const PLACES = [
   { name: 'New York Slough', at: [-121.862, 38.0365], water: true, wide: true, narrow: false },
 ];
 const HWY_LABEL = [-121.935, 38.0185];
+// Homes on Golf Club Road, about 800 feet east of the planned
+// data center (the intro's homes photo). Placed 245 m east of the building's
+// east wall, from the traced site in data/site-local.json (anchor + [154 m E, 240 m N]).
+const HOMES = [-121.90754, 38.01100];
 
 export default async function draw(ctx) {
   const [topo, rows] = await Promise.all([ctx.json('data/pollution-map.topojson'), ctx.csv('data/pollution-map.csv')]);
@@ -40,7 +44,7 @@ export default async function draw(ctx) {
   const water = layer('water'), roads = layer('roads'), canal = layer('canal'), site = layer('site');
 
   const C = {
-    land: '#f7f6f3', edge: '#ffffff', ink: ctx.token('--ink'), muted: ctx.token('--muted'),
+    land: '#ffffff', edge: '#ffffff', outside: '#dcdcdc', ink: ctx.token('--ink'), muted: ctx.token('--muted'),
     water: ctx.token('--water'), canal: ctx.token('--canal'), road: '#9b9b9b',
     bins: ['#ecebe6', '#f6d9de', '#e597a4', ctx.token('--red')],
   };
@@ -61,7 +65,12 @@ export default async function draw(ctx) {
     const g = (cls) => svg.appendChild(ctx.s('g', { class: cls }));
 
     const land = g('pm-tracts');
-    for (const t of tracts) land.append(ctx.s('path', { d: path(t.f), fill: fill(t.value), stroke: C.edge, 'stroke-width': 0.8 }));
+    // Tracts outside Contra Costa stay white with gray edges, so they can't be
+    // read as the lightest shade.
+    for (const t of tracts) {
+      const shaded = Number.isFinite(t.value);
+      land.append(ctx.s('path', { d: path(t.f), fill: fill(t.value), stroke: shaded ? C.edge : C.outside, 'stroke-width': shaded ? 0.8 : 0.6 }));
+    }
     // Outline the 90th-percentile tracts so they read as a group.
     const top = g('pm-top');
     for (const t of tracts) if (t.value >= TOP) top.append(ctx.s('path', { d: path(t.f), fill: 'none', stroke: '#7a0a1c', 'stroke-width': 1.2 }));
@@ -95,6 +104,10 @@ export default async function draw(ctx) {
       { x0: ringLabel.x - 70, x1: ringLabel.x + 70, y0: ringLabel.y - 12, y1: ringLabel.y + 4 },
       { x0: 0, x1: 90, y0: height - 26, y1: height }, // scale bar
     ];
+    const [hx, hy] = projection(HOMES);
+    const homesLabel = { x: hx + 8, y: hy + 4 };
+    const homesText = ['Homes about 800 ft', 'from the data center'];
+    taken.push({ x0: hx - 5, x1: homesLabel.x + 128, y0: homesLabel.y - 11, y1: homesLabel.y + 18 });
     const clear = (x, y, r) => !taken.some((b) => x + r > b.x0 && x - r < b.x1 && y + r > b.y0 && y - r < b.y1);
     // Place names and the highway label, also placed before the tract numbers.
     const fixed = PLACES.filter((p) => p[narrow ? 'narrow' : 'wide'])
@@ -134,6 +147,12 @@ export default async function draw(ctx) {
       plan.append(ctx.s('rect', { x: kx, y: keyY - 8, width: 10, height: 10, fill: color, stroke: C.ink, 'stroke-width': 1 }));
       plan.append(halo(ctx.s('text', { x: kx + 14, y: keyY + 1, class: 'pm-key', text: label })));
     });
+
+    // The Golf Club Road homes: a small marker with a two-line label.
+    plan.append(ctx.s('circle', { cx: hx, cy: hy, r: 3.5, fill: '#fff', stroke: C.ink, 'stroke-width': 1.5 }));
+    const homes = halo(ctx.s('text', { x: homesLabel.x, y: homesLabel.y, class: 'pm-key' }));
+    homesText.forEach((line, i) => homes.append(ctx.s('tspan', { x: homesLabel.x, dy: i ? '1.2em' : 0, text: line })));
+    plan.append(homes);
 
     // The 1.5-mile ring's label and a scale bar.
     plan.append(halo(ctx.s('text', { x: ringLabel.x, y: ringLabel.y, 'text-anchor': 'middle', class: 'pm-key pm-key--strong', text: `${RING_MILES} miles from the plan area` })));
