@@ -35,11 +35,17 @@ body, .ph-root {
 a { color: inherit; text-decoration-color: var(--red); text-underline-offset: 3px; }
 a:hover { color: var(--red); }
 
+/* Hidden until a keyboard user tabs to it. (Pushing it off the top of the
+   box only works on a page of its own: loaded into a story, "above the box"
+   is the story's headline, where it showed on iPhone.) */
 .skip {
-  position: absolute; left: 16px; top: -100px; z-index: 50;
+  position: absolute; left: 16px; top: 16px; z-index: 50;
   background: var(--ink); color: var(--bg); padding: 8px 12px; font-family: var(--sans); font-size: 15px;
 }
-.skip:focus { top: 16px; }
+.skip:not(:focus) {
+  width: 1px; height: 1px; padding: 0; overflow: hidden;
+  clip-path: inset(50%); white-space: nowrap;
+}
 
 mark.tk { background: var(--tk); color: #111; padding: 0 3px; border-radius: 2px; }
 
@@ -273,4 +279,3 @@ h1 {
 
 /* ── Loaded into another page (embed/mount.js) ───────────────────────────── */
 .ph-root { position: relative; display: block; text-align: left; }
-.ph-root .skip:focus { top: 16px; }
