@@ -21,8 +21,7 @@ export default async function draw(ctx) {
   // Every entry looks the same whether or not its record is online yet: a
   // "Record" toggle that opens the citation (a link once the CSV has a URL).
   const entry = (r) => h('li', { class: `tl-entry${r.key ? ' tl-entry--key' : ''}`, 'data-date': r.date_iso },
-    // A year-only date would repeat the year heading right above it.
-    h('p', { class: 'tl-date', text: r.date === r.date_iso.slice(0, 4) ? '' : r.date }),
+    h('p', { class: 'tl-date', text: r.date }),
     h('div', { class: 'tl-what' },
       h('p', { class: 'tl-text', text: r.text }),
       h('details', { class: 'tl-record' },

@@ -31,6 +31,11 @@ export default async function draw(ctx) {
     queue,
     h('p', { class: 'wp-arrow', 'aria-hidden': 'true' }),
     box('wp-shortage', row('shortage')),
+    h('p', { class: 'wp-arrow', 'aria-hidden': 'true' }),
+    // The rule comes before the fallbacks: "absent a disruption" is why they're allowed.
+    h('div', { class: 'ph-box wp-box wp-rule' },
+      h('p', { class: 'wp-kicker', text: settle.label }),
+      h('p', { class: 'wp-detail wp-detail--ink', text: `${settle.detail[0].toUpperCase()}${settle.detail.slice(1)}. So during a shortage, other water is allowed.` })),
     h('p', { class: 'ph-label wp-gap', text: 'If AVAIO is cut off' }),
     h('div', { class: 'wp-fallbacks' },
       h('div', { class: 'ph-box wp-box' },
@@ -41,8 +46,5 @@ export default async function draw(ctx) {
         h('p', { class: 'wp-kicker', text: 'The city’s 2019 promise' }),
         h('p', { class: 'wp-title', text: 'Find the water elsewhere, in this order' }),
         chain)),
-    h('p', { class: 'wp-unsaid', text: 'The records don’t say whether the tank or the city’s promise would come first.' }),
-    h('div', { class: 'ph-box wp-box wp-rule' },
-      h('p', { class: 'wp-kicker', text: settle.label }),
-      h('p', { class: 'wp-detail wp-detail--ink', text: `${settle.detail[0].toUpperCase()}${settle.detail.slice(1)}.` }))));
+    h('p', { class: 'ph-caveat', text: 'The records don’t say whether the tank or the city’s promise would come first.' })));
 }

@@ -21,8 +21,8 @@
 }
 .ph-root *, .ph-root *::before, .ph-root *::after { box-sizing: border-box; }
 
-.ph-hed { margin: 0 0 6px; font: var(--type-hed-phone); letter-spacing: -0.015em; color: var(--ink); }
-.ph-dek { margin: 0 0 16px; font: var(--type-dek); font-size: 16px; color: var(--ink); }
+.ph-hed { margin: 0 0 6px; font: var(--type-hed-phone); letter-spacing: -0.015em; color: var(--ink); text-wrap: balance; }
+.ph-dek { margin: 0 0 16px; font: var(--type-dek); font-size: 16px; color: var(--ink); text-wrap: pretty; }
 .ph-body { position: relative; margin: 0 0 14px; }
 .ph-body svg { display: block; overflow: visible; }
 .ph-body svg text { font-family: var(--sans); }
@@ -33,6 +33,10 @@
 .ph-text { font: var(--type-body); color: var(--ink); margin: 0; }
 .ph-root a { color: inherit; text-decoration: underline; text-decoration-color: var(--gray); text-underline-offset: 2px; }
 .ph-root a:hover { color: var(--red); }
+
+/* The one style for a caveat inside a graphic. Anything else under a
+   graphic goes in the footer's Note. */
+.ph-caveat { margin: 8px 0 0; font: var(--type-small); color: var(--muted); text-wrap: pretty; }
 
 /* Footer: Note, Source, credit */
 .ph-foot { margin: 0; padding: 9px 0 2px; border-top: 1px solid var(--gray-light); font: var(--type-source); color: var(--muted); }

@@ -8,7 +8,9 @@
 .ap-tag--vote { background: var(--ink); color: #fff; }
 .ap-lanes { display: grid; gap: 28px; }
 .ap-lane { border-top: 4px solid var(--ink); padding-top: 10px; }
-.ap-lane--phase1 { border-top-color: var(--red); }
+/* Same phase colors as the map: Phase 1 black, Phases 2-3 gray. */
+.ap-lane--phase1 { border-top-color: var(--ink); }
+.ap-lane--phases23 { border-top-color: var(--gray); }
 .ap-lane__title { margin: 0 0 3px; font: 800 17px/1.2 var(--sans); color: var(--ink); }
 .ap-sub { margin: 0 0 12px; font: var(--type-small); color: var(--muted); }
 .ap-banner { margin: 0 0 12px; padding: 8px 10px; background: var(--gray-wash); border-left: 4px solid var(--ink); font: var(--type-small); color: var(--ink); }
@@ -31,7 +33,7 @@
 .ap-arrow::before { top: 2px; }
 .ap-arrow::after { top: 17px; }
 .ap-end { margin: 0; padding: 9px 12px; background: var(--ink); color: #fff; text-align: center; font: 700 13px/1.3 var(--sans); }
-.ap-note { margin: 10px 0 0; font: var(--type-small); color: var(--ink); }
+
 
 @container (min-width: 620px) {
   .ap-lanes { grid-template-columns: 1fr 1fr; gap: 24px; }

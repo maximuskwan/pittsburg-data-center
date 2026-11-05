@@ -96,11 +96,11 @@ export default async function draw(ctx) {
   };
   const FONT = { label: `600 12.5px ${C.sans}`, value: `700 14px ${C.sans}`, note: `500 11.5px ${C.sans}` };
   const TEXT = {
-    label: { textAnchor: 'start', fontSize: 12.5, fontWeight: 600 },
+    label: { textAnchor: 'start', fontSize: 12.5, fontWeight: 600, dx: 6 }, // clear of the axis line
     valueOut: { textAnchor: 'start', fontSize: 13.5, fontWeight: 700, lineAnchor: 'middle', dx: 6 },
     valueTop: { textAnchor: 'end', fontSize: 13.5, fontWeight: 700, lineAnchor: 'top' },
-    note: { textAnchor: 'start', fontSize: 11.5, fontWeight: 500 },
-    strong: { textAnchor: 'start', fontSize: 11.5, fontWeight: 700 },
+    note: { textAnchor: 'start', fontSize: 11.5, fontWeight: 500, dx: 6 },
+    strong: { textAnchor: 'start', fontSize: 11.5, fontWeight: 700, dx: 6 },
   };
   await Promise.all([document.fonts.load(FONT.label), document.fonts.load(FONT.value)]).catch(() => {});
 
@@ -129,9 +129,12 @@ export default async function draw(ctx) {
         y += (short.length - lines.length) * 15.5;
         texts[texts.length - 1].y = y - 15.5 - 4;
       }
+      // Bars too thin to see at this scale still get 2px, so their label has something to attach to.
+      const minW = (2 / (right - 5)) * p.max;
       for (const sgm of row.segments) {
-        // Bars too thin to see at this scale still get a hairline.
-        marks.push({ ...sgm, x2: Math.min(p.max, sgm.x2), y1: y, y2: y + 16 });
+        const x2 = Math.min(p.max, sgm.x2);
+        if (sgm.outline && x2 - sgm.x1 < minW) continue; // an outline that thin would just be a smudge
+        marks.push({ ...sgm, x2: sgm.outline ? x2 : Math.max(x2, sgm.x1 + minW), y1: y, y2: y + 16 });
       }
       y += 16;
       const notes = p.notes?.[id] || [];
@@ -150,14 +153,12 @@ export default async function draw(ctx) {
         Plot.gridX(p.ticks, { stroke: C.rule, strokeOpacity: 1, y1: 0, y2: height - 22 }),
         Plot.rect(marks.filter((m) => !m.outline), { x1: 'x1', x2: 'x2', y1: 'y1', y2: 'y2', fill: 'fill' }),
         Plot.rect(marks.filter((m) => m.outline), { x1: 'x1', x2: 'x2', y1: 'y1', y2: 'y2', fill: '#fff', stroke: C.ink, strokeWidth: 1.2, inset: 0.6 }),
-        // A hairline at each bar's end, so the tiny ones are still visible.
-        Plot.ruleX(marks.filter((m) => m.x2 / p.max < 0.004), { x: 'x2', y1: 'y1', y2: 'y2', stroke: 'fill', strokeWidth: 1.5 }),
         Plot.ruleX([0], { stroke: C.ink, y1: 0, y2: height - 22 }),
         // Plot takes one anchor, size and weight per mark, so one text mark per kind.
         ...Object.entries(TEXT).map(([kind, style]) => Plot.text(texts.filter((t) => t.kind === kind), {
           x: 'x', y: 'y', text: 'text', fill: 'fill', lineAnchor: 'top', lineHeight: 1.24, ...style,
         })),
-        Plot.axisX(p.ticks, { tickFormat: p.tick, tickSize: 0, tickPadding: 6, fontSize: 11, fill: C.muted, anchor: 'bottom' }),
+        Plot.axisX(p.ticks, { tickFormat: p.tick, tickSize: 0, tickPadding: 6, fontSize: 11, fontWeight: 400, fill: C.muted, anchor: 'bottom' }),
       ].filter(Boolean),
     });
     svg.setAttribute('aria-hidden', 'true');

@@ -49,8 +49,6 @@ export default async function draw(ctx) {
     pair('purpose-draft', 'purpose-reply', true),
     pair('term-draft', 'term-reply', false, became));
 
-  const note = h('p', { class: 'ph-text rl-note', text: 'Because the committee advises the city manager, the Brown Act, California’s open-meetings law, does not apply, Gale said.' });
-
-  ctx.$('.ph-body').replaceChildren(email, note);
+  ctx.$('.ph-body').replaceChildren(email);
   ctx.flagDrafts();
 }

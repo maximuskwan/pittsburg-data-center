@@ -20,7 +20,6 @@
 .wp-chain { list-style: none; margin: 6px 0 0; padding: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 4px 6px; font: var(--type-small); color: var(--ink); }
 .wp-chain li span { display: inline-block; background: var(--mark); padding: 2px 7px; }
 .wp-chain li + li::before { content: '→'; margin-right: 6px; font-weight: 700; }
-.wp-unsaid { margin: 8px 0 18px; font: var(--type-small); color: var(--muted); }
 .wp-rule { border-color: var(--muted); }
 
 @container (min-width: 560px) {

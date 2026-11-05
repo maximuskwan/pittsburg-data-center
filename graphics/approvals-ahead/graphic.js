@@ -44,12 +44,12 @@ export default async function draw(ctx) {
       h('ol', { class: `ap-steps${id === 'phase1' ? ' ap-steps--all' : ' ap-steps--order'}` }, steps.map(step)),
       h('p', { class: 'ap-arrow', 'aria-hidden': 'true' }),
       h('p', { class: 'ap-end', text: L.end }),
-      ...(L.notes || []).map((n) => h('p', { class: 'ap-note', text: n })));
+      ...(L.notes || []).map((n) => h('p', { class: 'ph-caveat', text: n })));
   };
 
   ctx.$('.ph-body').replaceChildren(
     h('p', { class: 'ap-key' },
       h('span', { class: 'ap-key__item' }, tag('Public vote'), ' decided by a public vote'),
-      h('span', { class: 'ap-key__item' }, tag('Agency'), ' decided without one')),
+      h('span', { class: 'ap-key__item' }, tag('Other'), ' decided without one')),
     h('div', { class: 'ap-lanes' }, lane('phase1'), lane('phases23')));
 }
