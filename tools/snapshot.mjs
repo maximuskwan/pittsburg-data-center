@@ -56,6 +56,9 @@ try {
         await page.close();
         continue;
       }
+      // A PNG can't be clicked: drop controls that only work live (.ph-interactive).
+      await page.$eval('.ph-root', (el) => { el.dataset.snapshot = 'true'; });
+      await page.evaluate(() => new Promise((done) => requestAnimationFrame(() => requestAnimationFrame(done))));
       const box = await page.$eval('.ph-root', (el) => {
         const r = el.getBoundingClientRect();
         return { x: r.left + scrollX, y: r.top + scrollY, width: r.width, height: r.height };

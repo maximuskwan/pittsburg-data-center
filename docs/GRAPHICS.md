@@ -39,6 +39,7 @@ vendor/d3, vendor/plot        D3 7.9 and Observable Plot 0.6 as single ES module
 - Every headline states the finding in one line at desktop width.
 - The footer always runs **Note:** (optional), **Source:** or **Sources:**, then "Graphic by Maximus Kwan / Scot Scoop."
 - Red has one job: the thing to look at. Blue is for water only. Inserted or quoted words get the neutral `--mark` highlight. Underlines mean links, and only links.
+- Controls that only work live (buttons, toggles) get `.ph-interactive`, so the PNG fallbacks leave them out.
 - Section labels are letterspaced caps (`.ph-label`). Boxes use `--box-border` with square corners.
 - Type comes from the named roles in `tokens.css` (`--type-hed`, `--type-dek`, `--type-body`, `--type-data`, `--type-label`, `--type-small`, `--type-source`). Serif is for prose and quoted records; sans is for labels and data.
 

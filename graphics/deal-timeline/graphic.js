@@ -68,7 +68,7 @@ export default async function draw(ctx) {
     toggle.setAttribute('aria-pressed', String(on));
     toggle.textContent = on ? 'Hide records' : 'Show records';
   });
-  ctx.$('.ph-body').replaceChildren(h('p', { class: 'tl-tools' }, toggle), list);
+  ctx.$('.ph-body').replaceChildren(h('p', { class: 'tl-tools ph-interactive' }, toggle), list);
   // A day with events jumps to its entry.
   for (const cell of ctx.$$('button.tl-day')) {
     cell.addEventListener('click', () => ctx.$(`.tl-entry[data-date="${cell.dataset.date}"]`)?.scrollIntoView({ behavior: ctx.reducedMotion ? 'auto' : 'smooth', block: 'center' }));
