@@ -1,0 +1,9 @@
+/* CalEnviroScreen map. Shared frame: shared/graphic.css */
+.ph-body svg.pm-map { overflow: hidden; width: 100%; height: auto; background: var(--water); }
+.pm-value { font: 600 11px/1 var(--sans); }
+.pm-value--top { font-weight: 800; font-size: 12.5px; }
+.pm-place { font: 700 10.5px/1 var(--sans); letter-spacing: 0.12em; fill: var(--gray-dark); }
+.pm-water-name { font: italic 500 11px/1 var(--sans); fill: #4a7aa0; }
+.pm-road-name { font: 700 10.5px/1 var(--sans); fill: var(--gray-dark); }
+.pm-callout { font: 700 12px/1.15 var(--sans); fill: var(--ink); }
+.pm-note { margin: 8px 0 0; font: 500 12px/1.4 var(--sans); color: var(--muted); }

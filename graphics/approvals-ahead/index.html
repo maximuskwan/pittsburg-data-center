@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>What’s still ahead | Power hungry</title>
+  <meta name="robots" content="noindex">
+  <link rel="icon" href="data:,">
+  <script>
+    window.PH_V = Date.now().toString(36);
+    for (const f of ['../../shared/tokens.css', '../../shared/graphic.css', 'graphic.css']) {
+      document.write('<link rel="stylesheet" href="' + f + '?v=' + window.PH_V + '">');
+    }
+  </script>
+  <noscript><link rel="stylesheet" href="../../shared/tokens.css"><link rel="stylesheet" href="../../shared/graphic.css"><link rel="stylesheet" href="graphic.css"></noscript>
+</head>
+<body class="ph-page">
+  <!-- Section: "What's left to decide". Text: data/approvals-ahead.csv -->
+  <figure class="ph-root" data-graphic="approvals-ahead" aria-labelledby="hed" aria-describedby="desc">
+    <h3 class="ph-hed" id="hed">What’s still ahead</h3>
+    <p class="ph-dek">Phase 1 is approved but still needs public votes and permits. Phases 2 and 3 would face more steps, ending with approval by a single city official.</p>
+    <div class="ph-body" aria-hidden="true"></div>
+    <p class="ph-sr-only ph-desc" id="desc">Flowchart of the approvals still ahead. Phase 1, on 22 acres north of the canal, was approved in December 2025 and is exempt from the moratorium. It still needs three things: a public vote of the City Council, sitting as the Pittsburg Power Company board, on four agreements including the Energy Services Agreement; approval of the water system by Delta Diablo and the state; and permits for its 37 diesel generators from the Bay Area Air Quality Management District, decided by the district’s executive officer. Phases 2 and 3, on 54 acres south of the canal, would face the 45-day moratorium; an easement across the canal approved by the Contra Costa Water District’s elected board and the U.S. Bureau of Reclamation; federal environmental review; and approval of the buildings by the zoning administrator, a single city official, under the specific plan. The Center for Biological Diversity can still oppose those phases.</p>
+    <figcaption class="ph-source">Sources: City Manager Darin Gale; Delta Diablo; Bay Area Air Quality Management District; Contra Costa Water District letters; City of Pittsburg; Pittsburg Technology Park Specific Plan environmental report</figcaption>
+  </figure>
+  <script type="module">import('../../shared/kit.js?v=' + window.PH_V).then((kit) => kit.standalone());</script>
+</body>
+</html>

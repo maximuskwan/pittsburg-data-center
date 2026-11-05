@@ -1,6 +1,6 @@
 # Putting the interactive in the Scot Scoop (SNO) article
 
-The interactive is hosted outside SNO, so the article only needs to embed it with one iframe. There are no plugins and no scripts in the post.
+The interactive and the graphics are hosted on GitHub Pages and load straight into the story page, with no iframes. The post needs no plugins: each piece is one Custom HTML block with a placeholder and a one-line script. The graphics' blocks, and where each goes, are in [`embed/sno/`](../embed/sno/README.md).
 
 ## Steps
 
@@ -8,7 +8,8 @@ The interactive is hosted outside SNO, so the article only needs to embed it wit
 2. Make the **first block** of the story a **Custom HTML** block containing everything in `embed/sno-embed.html`. It loads the intro straight into the story page (no iframe) via `embed/mount.js`, so the map pins with the page's own scrolling, as on the standalone site. The plain iframe in `kit/embed.html` is still the one for republishers.
 
 3. In the article body, include the intro's text as regular paragraphs (from `kit/intro-text.html`). Search engines, email newsletters, RSS readers and text-only republishers then get it even if they drop the iframe. Readers who saw the interactive will see the same sentences again. Rephrase those paragraphs into the lede if you like: the article body isn't bound by the interactive's wording.
-4. Preview on a phone and on a laptop before publishing.
+4. Paste each graphic's block from `embed/sno/` at its spot in the text (the table in `embed/sno/README.md`). The blocks share one loader, `shared/mount.js`, which the browser loads once.
+5. Preview on a phone and on a laptop before publishing, in macOS Safari, iPadOS and iOS as well as Chrome.
 
 ## If SNO strips the iframe
 

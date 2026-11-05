@@ -1,0 +1,6 @@
+/* Recycled-water priority diagram. Shared frame: shared/graphic.css */
+.wp-diagram { width: 100%; height: auto; }
+.wp-title { font: 700 14.5px var(--sans); }
+.wp-detail { font: 500 13px var(--sans); }
+.wp-head { font: 800 11.5px var(--sans); }
+.wp-num { font: 800 12px var(--sans); }

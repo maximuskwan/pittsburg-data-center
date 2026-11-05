@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CalEnviroScreen around the plan area | Power hungry</title>
+  <meta name="robots" content="noindex">
+  <link rel="icon" href="data:,">
+  <script>
+    window.PH_V = Date.now().toString(36);
+    for (const f of ['../../shared/tokens.css', '../../shared/graphic.css', 'graphic.css']) {
+      document.write('<link rel="stylesheet" href="' + f + '?v=' + window.PH_V + '">');
+    }
+  </script>
+  <noscript><link rel="stylesheet" href="../../shared/tokens.css"><link rel="stylesheet" href="../../shared/graphic.css"><link rel="stylesheet" href="graphic.css"></noscript>
+</head>
+<body class="ph-page">
+  <!-- Section: "From Black Diamond to data hub". Numbers: data/pollution-map.csv (npm run fetch:calenviroscreen) -->
+  <figure class="ph-root" data-graphic="pollution-map" aria-labelledby="hed" aria-describedby="desc">
+    <h3 class="ph-hed" id="hed">Some of California’s most burdened neighborhoods are nearby</h3>
+    <p class="ph-dek">Two Pittsburg census tracts within 1.5 miles of the plan area rank among California’s 10% most burdened in CalEnviroScreen, which weighs pollution and residents’ vulnerability to it.</p>
+    <div class="ph-body" aria-hidden="true"></div>
+    <p class="ph-sr-only ph-desc" id="desc">Map of census tracts around the former Delta View Golf Course in Pittsburg, labeled with their statewide CalEnviroScreen 5.0 percentiles. The plan area, just south of Highway 4, sits in tracts at the 44th and 46th percentiles. Two Pittsburg tracts to its north and east, 0.8 and 1.4 miles away, are at the 92nd percentile, among the 10% most burdened in California. So is a tract in neighboring Antioch, at the 90th.</p>
+    <figcaption class="ph-source">Source: CalEnviroScreen 5.0, California Office of Environmental Health Hazard Assessment, July 2026. Contra Costa County tracts shown. Roads and water: U.S. Census Bureau. Plan area: City of Pittsburg.</figcaption>
+  </figure>
+  <script type="module">import('../../shared/kit.js?v=' + window.PH_V).then((kit) => kit.standalone());</script>
+</body>
+</html>

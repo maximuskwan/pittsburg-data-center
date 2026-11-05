@@ -1,0 +1,7 @@
+id,label,low,high,per_year,note,source
+city-manager,What the city manager says AVAIO expects,4000,6000,,,"City Manager Darin Gale, interview with Scot Scoop (transcript p. 5, 07:30): ""about 4-6,000 gallons a day"""
+engineers,What AVAIO’s engineers told Delta Diablo,58407,58407,,,"Kimley-Horn water and sewer demand memo to Delta Diablo, Feb. 1, 2024 (p. 2: recycled water demand 58,407 gallons a day)"
+engineers-cooling,Of that: cooling the data halls,41177,41177,,About 70% of the engineers’ estimate (70.5%),"Kimley-Horn water and sewer demand memo to Delta Diablo, Feb. 1, 2024 (p. 3, Table 2: data halls 41,177 of 58,407 gallons a day)"
+contract,What the recycled water contract allows,58630,58630,21400000,21.4 million gallons a year,"Recycled water service agreement, Pittsburg Data Hub LLC and Delta Diablo, 2024 (p. 2, §3: 21,400,000 gallons a year)"
+golf-course,What the golf course used when it was green,267800,267800,,About 300 acre-feet a year,"Water Supply Assessment, May 2024, Draft EIR Appendix L (p. 10, §2.2: ""approximately 300 AFY of recycled water""; 325,851 gallons per acre-foot)"
+ultimate,What a 2019 city agreement said the project would “ultimately require”,5000000,5000000,,,"Pittsburg Technology Park development agreement, Operating Memorandum No. 1 (p. 2): ""approximately five (5) million gallons of water per day"""

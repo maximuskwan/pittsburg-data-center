@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>How much water would the data center use? | Power hungry</title>
+  <meta name="robots" content="noindex">
+  <link rel="icon" href="data:,">
+  <script>
+    // Our own CSS with a per-visit query string, as on the intro (index.html).
+    window.PH_V = Date.now().toString(36);
+    for (const f of ['../../shared/tokens.css', '../../shared/graphic.css', 'graphic.css']) {
+      document.write('<link rel="stylesheet" href="' + f + '?v=' + window.PH_V + '">');
+    }
+  </script>
+  <noscript><link rel="stylesheet" href="../../shared/tokens.css"><link rel="stylesheet" href="../../shared/graphic.css"><link rel="stylesheet" href="graphic.css"></noscript>
+</head>
+<body class="ph-page">
+  <!-- Section: "First to be curtailed". Numbers: data/water-use.csv -->
+  <figure class="ph-root" data-graphic="water-use" aria-labelledby="hed" aria-describedby="desc">
+    <h3 class="ph-hed" id="hed">How much water would the data center use?</h3>
+    <p class="ph-dek">Estimates of the project’s daily water use range from 4,000 gallons to 5 million.</p>
+    <div class="ph-body" aria-hidden="true"></div>
+    <p class="ph-sr-only ph-desc" id="desc">Bar charts of daily water use, shown at three scales. The city manager says AVAIO expects to use 4,000 to 6,000 gallons a day and that the water would mostly go to landscaping. AVAIO’s engineers told Delta Diablo, the wastewater agency, about 58,000 gallons a day, and their February 2024 memo put 70% of that toward cooling the data halls. The golf course used roughly 270,000 gallons a day on average when it was green. A 2019 city agreement anticipated the project would ultimately require about 5 million gallons a day.</p>
+    <figcaption class="ph-source">Sources: City Manager Darin Gale, interview with Scot Scoop; Kimley-Horn water demand memo to Delta Diablo, February 2024; city’s 2024 water supply assessment; 2019 Pittsburg Technology Park agreement (Operating Memorandum No. 1)</figcaption>
+  </figure>
+  <script type="module">import('../../shared/kit.js?v=' + window.PH_V).then((kit) => kit.standalone());</script>
+</body>
+</html>

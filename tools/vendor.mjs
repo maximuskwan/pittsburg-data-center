@@ -5,6 +5,7 @@
 import { copyFileSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { build } from 'esbuild';
 import { feature } from 'topojson-client';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -21,6 +22,9 @@ const copies = [
   ['scrollama/LICENSE', 'vendor/scrollama/LICENSE'],
   ['@fontsource-variable/montserrat/files/montserrat-latin-wght-normal.woff2', 'vendor/fonts/montserrat-latin-wght-normal.woff2'],
   ['@fontsource-variable/montserrat/LICENSE', 'vendor/fonts/LICENSE-montserrat.txt'],
+  ['d3/LICENSE', 'vendor/d3/LICENSE'],
+  ['@observablehq/plot/LICENSE', 'vendor/plot/LICENSE'],
+  ['topojson-client/LICENSE', 'vendor/topojson-client/LICENSE'],
 ];
 for (const [from, to] of copies) {
   mkdirSync(dirname(out(to)), { recursive: true });
@@ -31,6 +35,23 @@ for (const [from, to] of copies) {
     if (!from.includes('LICENSE')) throw err;
   }
 }
+
+// --- D3, Observable Plot and topojson-client as single ES modules, so the
+// graphics can import them by URL with no build step. Plot imports D3 from
+// ../d3/d3.mjs rather than carrying its own copy.
+const esm = (entry, outfile, plugins = []) => build({
+  stdin: { contents: entry, resolveDir: root, loader: 'js' },
+  bundle: true, format: 'esm', minify: true, legalComments: 'eof', target: 'es2020',
+  outfile: out(outfile), plugins, logLevel: 'warning',
+});
+const d3External = {
+  name: 'd3-external',
+  setup(b) { b.onResolve({ filter: /^d3$/ }, () => ({ path: '../d3/d3.mjs', external: true })); },
+};
+const pkg = (p) => JSON.parse(readFileSync(nm(`${p}/package.json`))).version;
+await esm(`export * from 'd3'; export const version = '${pkg('d3')}';`, 'vendor/d3/d3.mjs');
+await esm("export * from '@observablehq/plot';", 'vendor/plot/plot.mjs', [d3External]);
+await esm("export * from 'topojson-client';", 'vendor/topojson-client/topojson-client.mjs');
 
 // --- Boundaries (US Census cartographic boundaries via us-atlas; public domain)
 const round = (digits) => {

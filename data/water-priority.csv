@@ -1,0 +1,11 @@
+id,order,label,detail,source
+supply,0,Delta Diablo’s recycled water,"The wastewater agency for Pittsburg, Antioch and Bay Point","Delta Diablo wastewater request email (Jason Yun, June 15, 2026)"
+calpine,1,Two Calpine power plants,First rights,"Delta Diablo–Kimley-Horn emails, p. 2 (Nick Steiner, Feb. 8, 2024)"
+others,2,Other customers,Share what is left,"Delta Diablo–Kimley-Horn emails, p. 2 (Steiner, Feb. 8, 2024)"
+avaio,3,AVAIO’s data center,"The last customer to come online, so it “would also be the first to be curtailed”","Delta Diablo–AVAIO recycled water emails, p. 9 (Steiner, March 13, 2026); recycled water service agreement, p. 2, §3 (“interruptible service”)"
+shortage,,When shortages come,"A handful of the hottest summer days, when the cooling system would use the most water","Delta Diablo–Kimley-Horn emails, p. 2 (Steiner, Feb. 8, 2024); Delta Diablo–AVAIO emails, p. 10 (Steiner, March 12, 2026); Kimley-Horn demand memo, p. 12, Attachment E"
+tank,,The site’s old storage tank,"About 15 days’ supply, plumbed for drinking water too; the golf course switched to it when recycled water ran short","Delta Diablo–AVAIO emails, pp. 8 and 10 (Steiner, March 12-13, 2026); Delta Diablo–Kimley-Horn emails, p. 2"
+fallback-1,1,Another district’s recycled water,,"Pittsburg Technology Park agreement, Operating Memorandum No. 1, pp. 2-3 (Central Contra Costa Sanitary District)"
+fallback-2,2,Raw water from the canal,,"Operating Memorandum No. 1, pp. 2-3 (Contra Costa Water District)"
+fallback-3,3,The city’s own municipal supply,,"Operating Memorandum No. 1, pp. 2-3"
+settlement,,The settlement’s rule,"100% recycled water for cooling and landscaping, “absent a disruption” in supply","Settlement agreement, PDF p. 15, §2.8"

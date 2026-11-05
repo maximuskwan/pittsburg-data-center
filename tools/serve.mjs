@@ -1,5 +1,7 @@
 // Tiny static file server for previewing locally: `npm start`, then open
-// http://localhost:8080. Also used by tools/record.mjs.
+// http://localhost:8080. Also used by tools/record.mjs, tools/snapshot.mjs and
+// tools/mock-sno.mjs. Like GitHub Pages, it sends Access-Control-Allow-Origin: *,
+// which shared/mount.js needs when another page (the SNO story) loads from it.
 import { createServer } from 'node:http';
 import { readFile, stat } from 'node:fs/promises';
 import { dirname, extname, join, normalize } from 'node:path';
@@ -10,14 +12,16 @@ const TYPES = {
   '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '.mjs': 'text/javascript', '.css': 'text/css',
   '.json': 'application/json', '.geojson': 'application/geo+json', '.woff2': 'font/woff2', '.jpg': 'image/jpeg',
   '.png': 'image/png', '.svg': 'image/svg+xml', '.mp4': 'video/mp4', '.webm': 'video/webm', '.txt': 'text/plain; charset=utf-8',
+  '.csv': 'text/csv; charset=utf-8', '.topojson': 'application/json', '.md': 'text/plain; charset=utf-8',
 };
+const CORS = { 'Access-Control-Allow-Origin': '*' };
 
 export function serve(port = 8080) {
   const server = createServer(async (req, res) => {
     let path = decodeURIComponent(new URL(req.url, 'http://x').pathname);
     if (path.endsWith('/')) path += 'index.html';
     const file = normalize(join(root, path));
-    if (!file.startsWith(root)) return res.writeHead(403).end();
+    if (!file.startsWith(root)) return res.writeHead(403, CORS).end();
     try {
       const s = await stat(file);
       const type = TYPES[extname(file)] || 'application/octet-stream';
@@ -26,13 +30,13 @@ export function serve(port = 8080) {
       if (range) { // browsers need range support to play video
         const start = Number(range[1] || 0);
         const end = range[2] ? Number(range[2]) : s.size - 1;
-        res.writeHead(206, { 'Content-Type': type, 'Content-Range': `bytes ${start}-${end}/${s.size}`, 'Accept-Ranges': 'bytes', 'Content-Length': end - start + 1 });
+        res.writeHead(206, { ...CORS, 'Content-Type': type, 'Content-Range': `bytes ${start}-${end}/${s.size}`, 'Accept-Ranges': 'bytes', 'Content-Length': end - start + 1 });
         return res.end(body.subarray(start, end + 1));
       }
-      res.writeHead(200, { 'Content-Type': type, 'Content-Length': s.size, 'Accept-Ranges': 'bytes' });
+      res.writeHead(200, { ...CORS, 'Content-Type': type, 'Content-Length': s.size, 'Accept-Ranges': 'bytes' });
       res.end(body);
     } catch {
-      res.writeHead(404).end('Not found');
+      res.writeHead(404, CORS).end('Not found');
     }
   });
   return new Promise((resolve) => server.listen(port, () => resolve(server)));

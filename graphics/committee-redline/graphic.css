@@ -1,0 +1,25 @@
+/* Committee email redline. Shared frame: shared/graphic.css */
+.rl-email { border: 1px solid var(--ink); background: #fff; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08); }
+.rl-head { padding: 10px 12px; border-bottom: 1px solid var(--gray-light); background: var(--gray-wash); }
+.rl-head p { margin: 0; font: 500 12.5px/1.5 var(--sans); color: var(--ink); }
+.rl-head span { display: inline-block; width: 42px; font-weight: 700; color: var(--muted); }
+.rl-part { padding: 12px 12px 14px; }
+.rl-part + .rl-part { border-top: 1px dashed var(--gray-light); }
+.rl-label { margin: 0 0 8px; font: 800 12px/1.2 var(--sans); letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink); }
+.rl-pair { display: grid; gap: 10px; }
+.rl-tag { margin: 0 0 3px; font: 700 11px/1.2 var(--sans); color: var(--muted); }
+.rl-words { margin: 0; font: 400 15px/1.45 var(--serif); color: var(--ink); }
+.rl-draft del { color: var(--red-dark); text-decoration: line-through 2px var(--red); background: var(--red-wash); padding: 0 2px; }
+.rl-reply { padding-left: 10px; border-left: 3px solid var(--blue); }
+.rl-reply ins, .rl-after ins { text-decoration: none; background: #e7f1fb; box-shadow: inset 0 -2px 0 var(--blue); padding: 0 2px; }
+.rl-note { margin: 12px 0 16px; padding-left: 10px; border-left: 3px solid var(--ink); font: 700 14px/1.4 var(--sans); color: var(--ink); }
+.rl-after-title { margin: 0 0 6px; font: 800 12px/1.2 var(--sans); letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink); }
+.rl-after { list-style: none; margin: 0; padding: 0; }
+.rl-after li { display: grid; grid-template-columns: 62px 1fr; gap: 8px; margin: 0 0 6px; font: 400 15px/1.45 var(--serif); color: var(--ink); }
+.rl-when { font: 700 12px/1.9 var(--sans); color: var(--muted); }
+
+@container (min-width: 560px) {
+  .rl-pair { grid-template-columns: 1fr 1.6fr; gap: 16px; align-items: start; }
+  .rl-part { padding: 14px 16px 16px; }
+  .rl-head { padding: 10px 16px; }
+}

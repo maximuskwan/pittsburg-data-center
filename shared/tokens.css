@@ -1,0 +1,36 @@
+/* Fonts and colors shared by the intro (css/story.css) and every graphic in
+   graphics/. Loaded into the page on its own, or into each shadow root by
+   shared/mount.js (which moves the @font-face up to the host page, because
+   some browsers ignore fonts declared inside a shadow root). */
+@font-face {
+  font-family: 'PH Montserrat'; /* unique name: Scot Scoop's theme has its own Montserrat */
+  src: url('../vendor/fonts/montserrat-latin-wght-normal.woff2') format('woff2-variations');
+  font-weight: 100 900;
+  font-display: swap;
+}
+
+:root, :host {
+  --bg: #ffffff;
+  --ink: #121212;
+  --muted: #5a5a5a;
+  --rule: #121212;
+  --card: #ffffff;
+  --red: #c8102e;
+  --red-dark: #8a0b20;
+  --tk: #ffe066;
+  /* Georgia isn't on Android or Linux; those readers get the closest serif they have. */
+  --serif: Georgia, 'Times New Roman', Times, serif;
+  --sans: 'PH Montserrat', 'Helvetica Neue', Arial, sans-serif;
+  color-scheme: light;
+
+  /* Graphics (the intro's map colors live in js/story.js) */
+  --red-light: #f6d9de;
+  --red-wash: #fdf2f4;
+  --gray-dark: #3d3d3d;
+  --gray: #8a8a8a;
+  --gray-light: #d6d6d6;
+  --gray-wash: #efeeea;
+  --water: #d6e8f5;
+  --canal: #9cc8e6;
+  --blue: #1f6fb2;
+}
