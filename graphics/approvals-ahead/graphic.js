@@ -74,12 +74,27 @@ export default async function draw(ctx) {
     phase1, phases23);
   ctx.flagDrafts();
 
-  // The bracket runs from the first node to the last, whatever the labels' heights.
+  // Every line in the bracket is placed from the nodes' measured centers, so the
+  // stubs, the bracket's ends and the outgoing line meet exactly, however the
+  // labels wrap. The outgoing line leaves level with the middle node, so the
+  // three stubs read as one join, not a line that just misses one of them.
   const fan = ctx.$('.ap-fan'), bracket = ctx.$('.ap-bracket'), items = ctx.$$('.ap-par .ap-item');
-  ctx.onResize(() => {
-    const top = items[0].offsetTop + 8, bottom = items[items.length - 1].offsetTop + 8;
-    bracket.style.top = `${top}px`;
-    bracket.style.height = `${bottom - top}px`;
-    fan.style.setProperty('--mid', `${(top + bottom) / 2}px`);
-  });
+  const layout = () => {
+    const fanTop = fan.getBoundingClientRect().top;
+    const ys = items.map((item) => {
+      const n = item.querySelector('.ap-node').getBoundingClientRect();
+      const y = n.top + n.height / 2;
+      item.style.setProperty('--stub', `${y - item.getBoundingClientRect().top - 1}px`); // a 2px line centered on y
+      return y - fanTop;
+    });
+    const top = ys[0], bottom = ys[ys.length - 1];
+    const mid = ys.length % 2 ? ys[(ys.length - 1) / 2] : (top + bottom) / 2;
+    bracket.style.top = `${top - 1}px`;
+    bracket.style.height = `${bottom - top + 2}px`;
+    bracket.style.setProperty('--arm', `${mid - top}px`);
+    fan.style.setProperty('--mid', `${mid}px`);
+  };
+  ctx.onResize(layout);
+  // Labels rewrap when the web font arrives; place the lines again then.
+  ctx.fontsReady().then(layout);
 }

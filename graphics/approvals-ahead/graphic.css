@@ -25,14 +25,14 @@
 .ap-end { margin: 0; font: 700 12.5px/1.2 var(--sans); color: var(--muted); white-space: nowrap; }
 
 /* Phase 1: nodes stacked, a bracket joining them on the right, then the end
-   of the track. graphic.js sets the bracket's top and height to run node to node. */
+   of the track. graphic.js measures the nodes and sets --stub, --arm and --mid, so every line meets. */
 .ap-fan { position: relative; padding-right: 130px; }
 .ap-par { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
 .ap-par .ap-item { display: grid; grid-template-columns: 14px minmax(0, 1fr); gap: 10px; align-items: start; position: relative; }
 /* A stub from each item's node line into the bracket. */
-.ap-par .ap-item::after { content: ''; position: absolute; right: -24px; top: 7px; width: 14px; border-top: 2px solid var(--ink); }
+.ap-par .ap-item::after { content: ''; position: absolute; right: -24px; top: var(--stub, 7px); width: 14px; border-top: 2px solid var(--ink); }
 .ap-bracket { position: absolute; right: 104px; width: 0; border-right: 2px solid var(--ink); }
-.ap-bracket::after { content: ''; position: absolute; left: 0; top: 50%; width: 14px; border-top: 2px solid var(--ink); }
+.ap-bracket::after { content: ''; position: absolute; left: 0; top: var(--arm, 50%); width: 14px; border-top: 2px solid var(--ink); }
 .ap-fan .ap-end { position: absolute; right: 0; width: 88px; top: var(--mid, 50%); transform: translateY(-50%); }
 
 /* Phases 2-3: a vertical track on phones. */
