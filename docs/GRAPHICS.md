@@ -76,7 +76,7 @@ Copy a folder in `graphics/` (the redline is the simplest), rename it, and keep 
 
 **2. Deal timeline.** It has 27 entries, from August 2017 to the Oct. 26, 2026, moratorium, with Dec. 8–16, 2025, in a day-by-day box. Each entry names its record, page included, in the CSV's `source` column. An entry links to the record when the CSV's `url` column has one. Five do now: CEQAnet, the notice of determination (two entries), AVAIO's press release and the city's moratorium release. Fill in the rest (for example, DocumentCloud links) and the links appear. Scrollama highlights the entry at mid-screen. Reduced motion leaves the highlight off.
 
-**4. Committee redline.** Only "advise City Council" is quoted from the draft's purpose line (p. 41 of the advisory committee emails), so it's shown as "…advise City Council…" and marked TK. Paste the full line into `data/committee-redline.csv` (`purpose-draft`), clear its `tk` cell and re-run the snapshot. The replies are quoted as typed, and the draft is attributed as the story attributes it.
+**4. Committee redline.** The draft's full purpose line (p. 41 of the advisory committee emails) is struck through, with the replies typed into the email beside it, quoted as typed. The draft is attributed as the story attributes it.
 
 **5. Water-use chart.** The same four estimates are shown at three scales (up to 60,000, 300,000 and 5 million gallons a day), so the small numbers stay visible as it zooms out. The golf course figure is 300 acre-feet a year (≈267,800 gallons a day), shown as "roughly 270,000". The cooling share is 41,177 of 58,407 gallons, or 70.5%, labeled "about 70%" to match the story.
 
@@ -99,5 +99,4 @@ Once they're up, put their URLs in `data/deal-timeline.csv` too.
 
 - [ ] Someone other than the builder checks every graphic against the story text (the CSVs list each number's source).
 - [ ] Test each graphic in SNO on macOS Safari, iPadOS and iOS. The water-use chart goes first, per the plan.
-- [ ] Resolve the redline's TK, then run `npm run snapshot -- committee-redline`.
 - [ ] Decide the CalEnviroScreen wording (see the map notes above).

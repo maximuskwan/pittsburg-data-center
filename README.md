@@ -76,7 +76,7 @@ Plain-English requests work well in Claude Code: "the California zoom is too fas
 3. **Search engines:** delete the `<meta name="robots" content="noindex">` line near the top of `index.html` (marked "TK: remove at publication").
 4. **Videos and stills for the kit and the no-map version:** run `npm run record`. It needs [ffmpeg](https://ffmpeg.org) and, the first time, `npx playwright install chromium`. It writes `media/intro.mp4`, `media/stills/*.jpg`, `kit/media/intro-captioned.mp4` and `kit/media/hero.jpg` (drone photo 02). Run it last, after every text or map change.
 5. **Optional:** the exact spot photo 07 was taken from, for the pin (`popFrom` in `js/config.js`).
-6. **Graphics:** the checklist at the end of [docs/GRAPHICS.md](docs/GRAPHICS.md) (story check, Safari/iOS tests in SNO, one TK in the redline, the CalEnviroScreen wording).
+6. **Graphics:** the checklist at the end of [docs/GRAPHICS.md](docs/GRAPHICS.md) (story check, Safari/iOS tests in SNO, the CalEnviroScreen wording).
 
 ## The site and the model
 

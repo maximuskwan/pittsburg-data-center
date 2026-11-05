@@ -46,7 +46,7 @@ export default async function draw(ctx) {
       h('p', {}, h('span', { text: 'From' }), draft.who),
       h('p', {}, h('span', { text: 'To' }), 'City Manager Darin Gale'),
       h('p', {}, h('span', { text: 'Sent' }), `${draft.when}, hours before the council meeting`)),
-    pair('purpose-draft', 'purpose-reply', true),
+    pair('purpose-draft', 'purpose-reply', false),
     pair('term-draft', 'term-reply', false, became));
 
   ctx.$('.ph-body').replaceChildren(email);
