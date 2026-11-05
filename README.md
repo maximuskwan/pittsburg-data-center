@@ -2,18 +2,23 @@
 
 The opening interactive for Maximus Kwan's investigation into the AVAIO "Perseus" data center in Pittsburg, Calif., first published by Scot Scoop. Readers scroll and the map flies from the national data center boom to California, the Bay Area, Carlmont, Pittsburg and the former Delta View Golf Course. It ends on an illustrative 3D model of Phase 1 and drone photos of the site.
 
-It's a standalone static page (MapLibre GL JS + Scrollama) with no build step, no API keys and no CMS dependency. Scot Scoop and every republisher embed the same URL in an iframe. Outlets that can't use iframes get an MP4, stills and plain text from `kit/`.
+It's a standalone static page (MapLibre GL JS + Scrollama) with no build step, no API keys and no CMS dependency. Scot Scoop loads it straight into the story page (`embed/sno-embed.html`); republishers embed the same URL in an iframe. Outlets that can't use iframes get an MP4, stills and plain text from `kit/`.
+
+The repo also holds the story's six other graphics (a CalEnviroScreen map, the deal timeline, the committee email redline, the water-use chart, the recycled-water fallback and the approvals still ahead). Each loads into the SNO story the same way. See **[docs/GRAPHICS.md](docs/GRAPHICS.md)**.
 
 ```
 index.html          ← ALL chapter text lives here
 js/config.js        ← camera moves, layers and labels for each chapter
-css/story.css       ← look and feel
-data/               ← map data (GeoJSON; site-local.json is the traced project site)
+css/story.css       ← look and feel (fonts and colors: shared/tokens.css)
+data/               ← map data (GeoJSON; site-local.json is the traced project site) and the graphics' CSVs
+graphics/           ← the story's other graphics, one folder each (docs/GRAPHICS.md)
+shared/             ← fonts and colors, the graphics' frame and kit, and mount.js, which loads everything into SNO
+embed/              ← the SNO blocks: sno-embed.html (intro) and sno/ (one per graphic)
 media/              ← drone photos, audio, recorded intro video, chapter stills
 kit/                ← republication kit (embed code, text, video, guide)
 docs/SNO.md         ← how to put it in the SNO article, and questions for SNO support
-tools/              ← scripts (preview server, data fetch, site tracing, video recorder, kit builder)
-vendor/             ← MapLibre, Scrollama and fonts, copied in so nothing loads from a CDN
+tools/              ← scripts (preview server, mock SNO page, data fetch, site tracing, video recorder, kit builder, graphics snapshots and checks)
+vendor/             ← MapLibre, Scrollama, D3, Observable Plot and fonts, copied in so nothing loads from a CDN
 ```
 
 ## Preview it
@@ -32,6 +37,8 @@ Useful URLs while previewing:
 | `localhost:8080` | The full interactive |
 | `localhost:8080/?static` | The no-map version (what reduced-motion users and narrow iframes get) |
 | `localhost:8080/docs/embed-test.html` | The interactive inside an iframe on a fake article page |
+| `localhost:8081` (with `npm run mock`) | The intro and every graphic pasted into a mock SNO story, served from another port |
+| `localhost:8080/graphics/water-use/` | One graphic on its own page (any folder in `graphics/`) |
 | `localhost:8080/?offline` | Map without remote tiles or imagery (for testing if a tile server is down) |
 | `localhost:8080/?calibrate` | Line the traced site up with the aerial imagery |
 
@@ -69,6 +76,7 @@ Plain-English requests work well in Claude Code: "the California zoom is too fas
 3. **Search engines:** delete the `<meta name="robots" content="noindex">` line near the top of `index.html` (marked "TK: remove at publication").
 4. **Videos and stills for the kit and the no-map version:** run `npm run record`. It needs [ffmpeg](https://ffmpeg.org) and, the first time, `npx playwright install chromium`. It writes `media/intro.mp4`, `media/stills/*.jpg`, `kit/media/intro-captioned.mp4` and `kit/media/hero.jpg` (drone photo 02). Run it last, after every text or map change.
 5. **Optional:** the exact spot photo 07 was taken from, for the pin (`popFrom` in `js/config.js`).
+6. **Graphics:** the checklist at the end of [docs/GRAPHICS.md](docs/GRAPHICS.md) (story check, Safari/iOS tests in SNO, the CalEnviroScreen wording).
 
 ## The site and the model
 
@@ -112,6 +120,7 @@ For SNO, see **[docs/SNO.md](docs/SNO.md)**. For republishers, see **[kit/REPUBL
 | Story text and graphics | © Maximus Kwan, licensed CC BY-ND 4.0 (see `CONTENT-LICENSE.md`). Scot Scoop publishes under a license from the author. |
 | Drone photos | © Cara Esten Hurtle, licensed CC BY-ND 4.0. Credit her by name wherever they run. |
 | Map data | © OpenStreetMap contributors (ODbL), OpenFreeMap / OpenMapTiles. Boundaries: U.S. Census Bureau (public domain); site boundaries traced from City of Pittsburg public records. Imagery: USGS The National Map (public domain). The attribution sits in the map corner, so republishers inherit it automatically. |
-| MapLibre GL JS (BSD-3), Scrollama (MIT), Montserrat (SIL OFL) | Their licenses are in `vendor/`. Body text uses Georgia, which ships with Mac, Windows and iOS; Android and Linux readers get their default serif. |
+| CalEnviroScreen map data | CalEnviroScreen 5.0, California Office of Environmental Health Hazard Assessment; roads and water: U.S. Census Bureau TIGER/Line (public domain). |
+| MapLibre GL JS (BSD-3), Scrollama (MIT), D3 and Observable Plot (ISC), topojson-client (ISC), Montserrat (SIL OFL) | Their licenses are in `vendor/`. Body text uses Georgia, which ships with Mac, Windows and iOS; Android and Linux readers get their default serif. |
 
 To switch to sharper Esri imagery at the parcel zoom, set `aerial: 'esri'` in the config and update the imagery credit in `index.html`. Esri requires attribution, and its terms are less simple than USGS's public-domain imagery.

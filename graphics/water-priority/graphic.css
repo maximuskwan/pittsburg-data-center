@@ -1,0 +1,25 @@
+/* Recycled-water fallback. Shared frame: shared/graphic.css.
+   Typographic on purpose: no boxes, fills or eyebrows. Red is AVAIO's row. */
+.wp-head { margin: 0 0 6px; font: 700 14px/1.3 var(--sans); color: var(--ink); }
+.wp-text { margin: 0; font: var(--type-body); color: var(--ink); text-wrap: pretty; }
+.wp-text--lead { margin-bottom: 14px; }
+
+.wp-rank { list-style: none; margin: 0 0 12px; padding: 0; }
+.wp-rank__row { display: grid; grid-template-columns: 22px 1fr; gap: 8px; align-items: baseline; padding: 6px 0; border-bottom: 1px solid var(--gray-light); }
+.wp-rank__row:first-child { border-top: 1px solid var(--gray-light); }
+.wp-num { font: 800 15px/1 var(--sans); color: var(--muted); }
+.wp-line { margin: 0; font: var(--type-body); color: var(--ink); }
+.wp-line b { font-family: var(--sans); font-size: 14px; font-weight: 700; }
+.wp-rank__row--avaio .wp-num, .wp-rank__row--avaio b { color: var(--red); }
+
+.wp-rule { margin: 16px 0 14px; border: 0; border-top: 1px solid var(--ink); }
+
+.wp-cols { display: grid; gap: 14px; }
+.wp-chain { margin: 0; padding: 0 0 0 1.4em; font: var(--type-body); color: var(--ink); }
+.wp-chain li { padding-left: 2px; }
+.wp-chain li::marker { font: 700 13px var(--sans); color: var(--muted); }
+.wp-chain li:last-child { font-weight: 700; }
+
+@container (min-width: 560px) {
+  .wp-cols { grid-template-columns: 1fr 1fr; gap: 24px; }
+}

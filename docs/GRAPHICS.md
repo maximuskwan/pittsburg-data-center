@@ -1,0 +1,105 @@
+# Graphics for the story
+
+The seven multimedia elements in the plan (Claude Doc "Power hungry", tab "Multimedia plan"). Six are built here. The seventh, the key-record embeds, lives on DocumentCloud and is embedded natively in SNO (see [Key-record embeds](#key-record-embeds)). The story text stays native in SNO. Each graphic loads straight into the story page, with no iframe, at its spot in the text.
+
+| # | Graphic | Folder | Goes in | Data |
+|---|---|---|---|---|
+| 1 | CalEnviroScreen map | `graphics/pollution-map/` | "From Black Diamond to data hub" | `data/pollution-map.csv`, `data/pollution-map.topojson` |
+| 2 | Deal timeline | `graphics/deal-timeline/` | "The city's stake" (replaces the table) | `data/deal-timeline.csv` |
+| 3 | Key-record embeds | DocumentCloud, not in the repo | Where each record is quoted | |
+| 4 | Committee email redline | `graphics/committee-redline/` | "A committee by design" | `data/committee-redline.csv` |
+| 5 | Water-use chart | `graphics/water-use/` | "First to be curtailed" | `data/water-use.csv` |
+| 6 | Recycled-water fallback | `graphics/water-priority/` | "First to be curtailed" | `data/water-priority.csv` |
+| 7 | Approvals still ahead | `graphics/approvals-ahead/` | "What's left to decide" | `data/approvals-ahead.csv` |
+
+Open any graphic on its own at `localhost:8080/graphics/<folder>/` (after `npm start`), or on GitHub Pages at the same path.
+
+## How it fits together
+
+```
+graphics/<name>/index.html    the frame: headline, one-line explainer, screen-reader description, source line
+graphics/<name>/graphic.js    draws into the frame; exports default function (ctx)
+graphics/<name>/graphic.css   its own styles
+graphics/<name>/png/          PNG fallbacks at phone and desktop widths (npm run snapshot)
+shared/tokens.css             fonts and colors, shared with the intro (moved out of css/story.css)
+shared/graphic.css            the common frame
+shared/kit.js                 the context each graphic draws with, and the rules below
+shared/mount.js               loads the intro and every graphic into the SNO page
+embed/sno/<name>.html         the Custom HTML block to paste into SNO for each graphic
+data/*.csv                    every number and quote a graphic shows, with a source column
+vendor/d3, vendor/plot        D3 7.9 and Observable Plot 0.6 as single ES modules (npm run vendor)
+```
+
+**In SNO**, each graphic is one Custom HTML block: a placeholder (`<div class="ph-graphic" data-graphic="water-use">`), a PNG of the graphic inside it, a text caption under it, and the same one-line import of `shared/mount.js`. All the blocks import through `window.PH_MOUNT_URL`, so the browser loads `mount.js` once, however many blocks there are. It gives each placeholder its own shadow root and loads the graphic when it's about a screen away. The PNG shows only where the graphic can't run: no JavaScript (RSS, email, some reader views), or a graphic that failed to load. The caption is plain SNO text, so the story still reads if the graphic doesn't load.
+
+**The intro** now loads through `shared/mount.js` too. `embed/mount.js` forwards to it, so the intro block already pasted into SNO keeps working unchanged. After the move, the intro was checked in headless Chromium, standalone and mounted in a mock SNO page, at phone and desktop sizes, in map and no-map modes. Every element's computed style matched the version before the move, and screenshots differed no more than two runs of the old version differ from each other (map rendering noise). That check doesn't cover Safari or iOS: test those on SNO.
+
+## Design rules (shared/tokens.css, shared/graphic.css)
+
+- Every headline states the finding in one line at desktop width.
+- The footer always runs **Note:** (optional), **Source:** or **Sources:**, then "Graphic by Maximus Kwan / Scot Scoop."
+- Red has one job: the thing to look at. Blue is for water only. Inserted or quoted words get the neutral `--mark` highlight. Underlines mean links, and only links.
+- Controls that only work live (buttons, toggles) get `.ph-interactive`, so the PNG fallbacks leave them out.
+- Section labels are letterspaced caps (`.ph-label`). Boxes use `--box-border` with square corners.
+- Type comes from the named roles in `tokens.css` (`--type-hed`, `--type-dek`, `--type-body`, `--type-data`, `--type-label`, `--type-small`, `--type-source`). Serif is for prose and quoted records; sans is for labels and data.
+
+## The rules (shared/kit.js; `npm run check` enforces them)
+
+1. Find elements through the container (`ctx.$`, `ctx.$$`), never through `document`. In SNO, `document` is the story page.
+2. Load files with `ctx.csv()`, `ctx.json()`, `ctx.text()` or `ctx.asset()`, with paths from the site root (`'data/water-use.csv'`), never relative paths or `fetch()`.
+3. Redraw when the container's width changes (`ctx.onResize`), not the window's.
+4. With reduced motion on, show the final state with no animation (`ctx.reducedMotion`). The shared frame turns off CSS transitions too.
+5. Size full-screen layers with `lvh`.
+6. Hide screen-reader-only text with `.ph-sr-only` (the visually-hidden pattern), never by offsetting it.
+
+`npm run check` also confirms each graphic has its frame, a CSV with a source column, both PNGs and an SNO block with a caption.
+
+## Commands
+
+| Command | What it does |
+|---|---|
+| `npm start` | Preview server on :8080 (sends the CORS header GitHub Pages sends) |
+| `npm run mock` | The site on :8080 plus a mock SNO story on :8081 with the intro and every block pasted in, from a different port, as SNO is |
+| `npm run check` | The rules above |
+| `npm run snapshot` | PNGs of every graphic, phone (375 px page) and desktop (760 px page) at 2x, in the final state. `npm run snapshot -- water-use` for one. Needs `npx playwright install chromium` once, or `CHROMIUM_PATH` set to a Chrome binary |
+| `npm run fetch:calenviroscreen` | Rebuilds the map data from OEHHA and the Census Bureau (~55 MB download, cached in `node_modules/.cache`) |
+| `npm run vendor` | Rebuilds `vendor/` from `node_modules` (now also D3, Plot and topojson-client) |
+
+Run `npm run snapshot` after any change to a graphic, its data or the shared frame. Then run `npm run check`.
+
+## Adding a graphic
+
+Copy a folder in `graphics/` (the redline is the simplest), rename it, and keep `data-graphic` in `index.html` matching the folder name. Put its numbers in a CSV in `data/` with a `source` column. Copy one of the `embed/sno/` blocks and change the name, caption and alt text. Then run `npm run snapshot -- <name>` and `npm run check`. Wrap anything unconfirmed in `<mark class="tk">` (or give its CSV row a `tk` note, as the redline does). It's highlighted, and the graphic shows a yellow DRAFT strip until it's resolved.
+
+## Notes on each graphic
+
+**1. CalEnviroScreen map.** It uses CalEnviroScreen **5.0**, OEHHA's current version, final since July 1, 2026, rather than 4.0 as the plan said. 5.0 replaced 4.0 and uses 2020 census tracts. It shows the **overall CalEnviroScreen percentile**, the score OEHHA ranks communities by, because no tract near the site reaches the 90th percentile for pollution burden alone in either version. Two Pittsburg tracts 0.8 and 1.4 miles from the plan area are at the 92nd percentile overall (92.6 and 92.2; pollution burden 87.4 and 79.9). A tract in neighboring Antioch is at the 90th. The tracts the plan area sits in are at the 44th and 46th. To show pollution burden instead, change `MEASURE` in `graphic.js` to `'pollution_burden_percentile'`; the CSV has both. Only Contra Costa tracts are shaded. Land outside the county, such as the Solano County tract across the river (Suisun Marsh, 90th percentile), is white with gray edges, so it can't be read as the lightest shade. The explainer says the two 92nd-percentile tracts are *partly* within 1.5 miles, because the ring only clips them. A marker shows the homes on Golf Club Road about 800 feet east of the planned data center (the intro's homes photo), placed 245 m east of the building's east wall from `data/site-local.json`; it's approximate at this scale. Labels show the percentile rounded down, so no tract is shown above a threshold it doesn't meet.
+
+**2. Deal timeline.** It has 27 entries, from August 2017 to the Oct. 26, 2026, moratorium, with Dec. 8–16, 2025, in a day-by-day box. Each entry names its record, page included, in the CSV's `source` column. An entry links to the record when the CSV's `url` column has one. 25 of 27 do. The other two stay unlinked on purpose: Dec. 8, 2025 (the CEC's answers to Scot Scoop) and around May 20, 2026 (the Perkins interview transcript) won't be published, so their entries name the source without a link. Records stay hidden until the reader presses the one "Show records" button above the list (they always print). Scrollama highlights the entry at mid-screen. Reduced motion leaves the highlight off.
+
+**4. Committee email.** Each part (Purpose, Length of service) runs in three columns: the draft (p. 41 of the advisory committee emails), the reply typed into the email, and what it became, all quoted as typed. There's no strikethrough, because the record shows replies typed into the email, not anyone crossing the draft out, and no highlight behind the quotes. The draft is attributed as the story attributes it. Purpose's "What it became" quotes the city's news release: "The committee will review and discuss research and advise the City Manager on matters related to data center policy development." It is the draft's line with the City Manager in place of the City Council.
+
+**5. Water-use chart.** The same four estimates are shown at three scales (axes to 90,000, 400,000 and 7.5 million gallons a day, so every value sits just after its bar), so the small numbers stay visible as it zooms out. Each label names its scope from the CSV's `scope` column: the city manager's and engineers' figures are Phase 1, and the 2019 figure is the whole park, all phases. The red cooling share is labeled in every panel. The golf course figure is 300 acre-feet a year (≈267,800 gallons a day), shown as "roughly 270,000". The cooling share is 41,177 of 58,407 gallons, or 70.5%, labeled "about 70%" to match the story.
+
+**6. Recycled-water fallback.** Its headline is the finding: if recycled water runs short, the data center could fall back on drinking water (the settlement's "absent a disruption" clause, the tank plumbed for drinking water, and the 2019 promise ending at the city's own supply). "Last in line" is the mechanism, shown as a plain numbered list with AVAIO's row in red and Steiner named as the speaker of "would also be the first to be curtailed." It's deliberately typographic, with no boxes: the records give the priority order but not the amounts, and equal boxes would imply equal shares. If Delta Diablo's total supply and Calpine's allocation turn up, redraw it as a proportional bar, one for a normal day and one for a hot day, with AVAIO's segment falling off the end.
+
+**7. Approvals still ahead.** One track per part of the site. Each approval is a node: filled for a public vote, open for a decision made without one, which is the headline's claim and the only legend. Phase 1's three approvals fan into a bracket because they're parallel. Phases 2–3 run in order (left to right in wide frames, top to bottom on phones), starting with the moratorium as a hatched span with its dates. The canal crossing is three steps, in order: the water district board's consent (a public vote), federal environmental review, then the Bureau of Reclamation's easement. CCWD applies to the bureau only after its board consents (Jewel Jacobson's pre-application email), only the bureau can grant an easement (Michael Inthavong, May 18, 2026), and the review is required for the easement (CCWD letters). The zoning administrator is the one red node and carries the one annotation, with Gale's caveat under it. The Center for Biological Diversity line is the footer's Note. The moratorium's Dec. 10 expiration comes from the ordinance's §7: effective immediately on Oct. 26, in effect for 45 days unless extended.
+
+## Key-record embeds
+
+These are DocumentCloud documents, embedded with SNO's own embed. They aren't built in this repo. Upload them, note a highlight for the quoted passage, and paste DocumentCloud's embed code where each is quoted:
+
+| Record | Quote | Section |
+|---|---|---|
+| [Delta Diablo–Kimley-Horn emails](https://www.documentcloud.org/documents/28867505-email-correspondence-delta-diablo-kimley-horn-emails/), p. 4 (Ryan Bernal, Feb. 7, 2024) | "will be a data center" | "'Will be a data center'" |
+| [FPPC advice letter A-25-154](https://www.documentcloud.org/documents/28867506-final-a-25-154-fppc-advice-letter/) (Feb. 27, 2026) | "in any manner" | "Nine days in December" |
+| [FPPC advice request emails](https://www.documentcloud.org/documents/28867509-fw-fair-political-practices-commission-advice-request-25-154/), p. 4 (Donna Mooney, Dec. 10, 2025) | "For business reasons…" | "Nine days in December" |
+| [Delta Diablo–AVAIO recycled water emails](https://www.documentcloud.org/documents/28867513-data-center-recycled-water-discussion-delta-diablo-avaio-emails/), p. 9 (Nick Steiner, March 13, 2026) | "would also be the first to be curtailed" | "First to be curtailed" |
+
+All four are on DocumentCloud; paste each one's embed code from DocumentCloud into SNO.
+
+## Before it counts as done
+
+- [ ] Someone other than the builder checks every graphic against the story text (the CSVs list each number's source).
+- [ ] Test each graphic in SNO on macOS Safari, iPadOS and iOS. The water-use chart goes first, per the plan.
+- [ ] Decide the CalEnviroScreen wording (see the map notes above).

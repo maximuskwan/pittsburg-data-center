@@ -1,0 +1,7 @@
+/* Water-use chart. Shared frame: shared/graphic.css */
+.wu-panel { margin: 0 0 22px; }
+.wu-panel:last-child { margin-bottom: 4px; }
+.wu-kicker { margin: 0 0 3px; }
+.wu-title { margin: 0 0 2px; font: 600 14.5px/1.35 var(--sans); color: var(--ink); }
+.wu-scale { margin: 0 0 10px; font: var(--type-small); font-size: 12px; color: var(--muted); }
+.wu-panel svg { display: block; width: 100%; height: auto; }

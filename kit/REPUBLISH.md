@@ -12,6 +12,10 @@ Thank you for running this investigation by Maximus Kwan, first published by Sco
 
 In every case, also include the intro text from `intro-text.html` (or `intro-text.txt`) as the first paragraphs of the story, so the intro's content reaches every reader.
 
+## The graphics
+
+Each of the story's graphics has a PNG at phone and desktop widths in `graphics/<name>/png/` in the repository (for example, `https://maximuskwan.github.io/pittsburg-data-center/graphics/water-use/png/water-use-desktop.png`). Run each one where it appears in the story, with its caption from `embed/sno/<name>.html`. The sources are on the image.
+
 ## Required credit
 
 Put this at the top or bottom of the story:

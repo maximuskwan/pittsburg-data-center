@@ -1,24 +1,8 @@
-@font-face {
-  font-family: 'PH Montserrat'; /* unique name: Scot Scoop's theme has its own Montserrat */
-  src: url('../vendor/fonts/montserrat-latin-wght-normal.woff2') format('woff2-variations');
-  font-weight: 100 900;
-  font-display: swap;
-}
+/* Fonts and colors live in shared/tokens.css, loaded just before this file
+   (by index.html, and by shared/mount.js when the intro is in the SNO story). */
 
 :root, :host {
-  --bg: #ffffff;
-  --ink: #121212;
-  --muted: #5a5a5a;
-  --rule: #121212;
-  --card: #ffffff;
-  --red: #c8102e;
-  --red-dark: #8a0b20;
-  --tk: #ffe066;
-  /* Georgia isn't on Android or Linux; those readers get the closest serif they have. */
-  --serif: Georgia, 'Times New Roman', Times, serif;
-  --sans: 'PH Montserrat', 'Helvetica Neue', Arial, sans-serif;
   --card-w: 400px;
-  color-scheme: light;
 }
 
 * { box-sizing: border-box; }

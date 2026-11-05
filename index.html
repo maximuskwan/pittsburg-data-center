@@ -18,9 +18,10 @@
     // with a per-visit query string so every visit gets the latest version.
     // (MapLibre, fonts and photos are left cacheable; they rarely change.)
     window.STORY_V = Date.now().toString(36);
+    document.write('<link rel="stylesheet" href="shared/tokens.css?v=' + window.STORY_V + '">');
     document.write('<link rel="stylesheet" href="css/story.css?v=' + window.STORY_V + '">');
   </script>
-  <noscript><link rel="stylesheet" href="css/story.css"></noscript>
+  <noscript><link rel="stylesheet" href="shared/tokens.css"><link rel="stylesheet" href="css/story.css"></noscript>
   <link rel="modulepreload" href="vendor/maplibre-gl/maplibre-gl.mjs">
   <script>
     // Choose the mode before first paint so there's no flash of the wrong layout.
