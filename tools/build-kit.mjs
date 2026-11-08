@@ -19,7 +19,7 @@ const paragraphs = [];
 for (const step of doc.querySelectorAll('.step')) {
   if (step.getAttribute('data-chapter') === 'opener') continue;
   for (const p of step.querySelectorAll('.card p')) {
-    if (p.classList.contains('source') || p.classList.contains('scroll-cue')) continue;
+    if (p.closest('.ph-foot')) continue; // the card's Note/Source/credit footer
     paragraphs.push(p.innerHTML.replace(/<mark class="tk">(.*?)<\/mark>/g, '[$1]').trim());
   }
 }

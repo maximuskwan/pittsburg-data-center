@@ -72,7 +72,7 @@ if (mount) {
 for (const step of steps) {
   if (!step.dataset.alt) continue;
   const p = document.createElement('p');
-  p.className = 'sr-only';
+  p.className = 'ph-sr-only';
   p.textContent = `${config.chapters[step.dataset.chapter]?.photo ? 'Photo' : 'Map'}: ${step.dataset.alt}`;
   step.querySelector('.card').prepend(p);
 }
@@ -163,19 +163,31 @@ function buildSite(local, anchor) {
 }
 
 // ── Map style ─────────────────────────────────────────────────────────────────
+// Colors come from shared/tokens.css and css/story.css (--map-*), so the map
+// matches the graphics. The fallbacks are the same values, in case the styles
+// haven't applied yet.
+const cssVars = getComputedStyle(root);
+const tok = (name, fallback) => cssVars.getPropertyValue(name).trim() || fallback;
 const C = {
-  land: '#efeeea', // outside the U.S.
-  us: '#ffffff',
-  water: '#d6e8f5',
-  stateLine: '#b3b3b3',
-  county: '#c2c2c2',
-  road: '#e4e4e4',
-  roadMajor: '#cdcdcd',
-  red: '#c8102e',
-  redDark: '#8a0b20',
-  redLight: '#f6d9de',
-  canal: '#9cc8e6',
-  ink: '#121212',
+  land: tok('--gray-wash', '#efeeea'), // outside the U.S.
+  us: tok('--bg', '#ffffff'),
+  water: tok('--water', '#d6e8f5'),
+  stateLine: tok('--map-state-line', '#b3b3b3'),
+  county: tok('--map-county', '#c2c2c2'),
+  road: tok('--map-road', '#e4e4e4'),
+  roadMajor: tok('--map-road-major', '#cdcdcd'),
+  placeText: tok('--muted', '#5a5a5a'),
+  red: tok('--red', '#c8102e'),
+  redDark: tok('--red-dark', '#8a0b20'),
+  redLight: tok('--red-light', '#f6d9de'),
+  redWash: tok('--red-wash', '#fdf2f4'),
+  canal: tok('--canal', '#9cc8e6'),
+  blue: tok('--blue', '#1f6fb2'),
+  ink: tok('--ink', '#121212'),
+  generator: tok('--map-generator', '#4a0510'),
+  yard: tok('--map-yard', '#a3a3a3'),
+  substation: tok('--map-substation', '#9e9e9e'),
+  substationPad: tok('--map-substation-pad', '#bdbdbd'),
 };
 const fade = { duration: 900, delay: 0 };
 
@@ -191,7 +203,7 @@ function buildLayers() {
   };
 
   add('states', { 'fill-opacity': 1 }, { id: 'states-fill', type: 'fill', source: 'states', paint: { 'fill-color': C.us } });
-  add('california', { 'fill-opacity': 1 }, { id: 'ca-fill', type: 'fill', source: 'states', filter: ['==', ['get', 'name'], 'California'], paint: { 'fill-color': '#fdf2f4' } });
+  add('california', { 'fill-opacity': 1 }, { id: 'ca-fill', type: 'fill', source: 'states', filter: ['==', ['get', 'name'], 'California'], paint: { 'fill-color': C.redWash } });
   add('contra-costa', { 'fill-opacity': 0.12 }, { id: 'cc-fill', type: 'fill', source: 'counties', filter: ['==', ['get', 'name'], 'Contra Costa'], paint: { 'fill-color': C.red } });
   if (!offline) {
     add('basemap', { 'fill-opacity': 1 }, { id: 'bm-water', type: 'fill', source: 'openmaptiles', 'source-layer': 'water', paint: { 'fill-color': C.water } });
@@ -218,7 +230,7 @@ function buildLayers() {
         ['in', ['get', 'class'], ['literal', ['city', 'town']]],
         ['!', ['in', ['get', 'name'], ['literal', ['Pittsburg', 'Santa Clara', 'Belmont']]]]],
       layout: { 'text-field': ['coalesce', ['get', 'name:en'], ['get', 'name']], 'text-font': ['Noto Sans Regular'], 'text-size': 12 },
-      paint: { 'text-color': '#6b6b6b', 'text-halo-color': '#fff', 'text-halo-width': 1.4 },
+      paint: { 'text-color': C.placeText, 'text-halo-color': C.us, 'text-halo-width': 1.4 },
     });
   }
   add('datacenters', { 'circle-opacity': 0.18 }, {
@@ -227,7 +239,7 @@ function buildLayers() {
   });
   add('datacenters', { 'circle-opacity': 1, 'circle-stroke-opacity': 1 }, {
     id: 'dc-dot', type: 'circle', source: 'datacenters',
-    paint: { 'circle-color': C.red, 'circle-radius': ['interpolate', ['linear'], ['zoom'], 3, 2.6, 8, 5], 'circle-stroke-color': '#fff', 'circle-stroke-width': 0.6 },
+    paint: { 'circle-color': C.red, 'circle-radius': ['interpolate', ['linear'], ['zoom'], 3, 2.6, 8, 5], 'circle-stroke-color': C.us, 'circle-stroke-width': 0.6 },
   });
   add('sites', { 'circle-opacity': 0.2 }, {
     id: 'sites-glow', type: 'circle', source: 'sites',
@@ -235,7 +247,7 @@ function buildLayers() {
   });
   add('sites', { 'circle-opacity': 1, 'circle-stroke-opacity': 1 }, {
     id: 'sites-dot', type: 'circle', source: 'sites',
-    paint: { 'circle-color': ['match', ['get', 'id'], 'perseus', C.red, C.redDark], 'circle-radius': 6, 'circle-stroke-color': '#fff', 'circle-stroke-width': 1.5 },
+    paint: { 'circle-color': ['match', ['get', 'id'], 'perseus', C.red, C.redDark], 'circle-radius': 6, 'circle-stroke-color': C.us, 'circle-stroke-width': 1.5 },
   });
   add('route', { 'line-opacity': 1 }, {
     id: 'route-line', type: 'line', source: 'route', filter: ['==', ['geometry-type'], 'LineString'],
@@ -243,7 +255,7 @@ function buildLayers() {
   });
   add('route', { 'circle-opacity': 1, 'circle-stroke-opacity': 1 }, {
     id: 'route-end', type: 'circle', source: 'route', filter: ['==', ['geometry-type'], 'Point'],
-    paint: { 'circle-color': C.ink, 'circle-radius': 5, 'circle-stroke-color': '#fff', 'circle-stroke-width': 1.5 },
+    paint: { 'circle-color': C.ink, 'circle-radius': 5, 'circle-stroke-color': C.us, 'circle-stroke-width': 1.5 },
   });
   // The canal comes from OpenStreetMap so it sits exactly on the real water. The
   // line traced from the city's map is only a fallback (offline) and a reference
@@ -260,7 +272,7 @@ function buildLayers() {
     id: 'canal-line', type: 'line', source: 'canal', layout: { 'line-cap': 'round', 'line-join': 'round' },
     paint: offline
       ? { 'line-color': C.canal, 'line-width': canalWidth }
-      : { 'line-color': '#1f6fb2', 'line-width': 2, 'line-dasharray': [2, 2] },
+      : { 'line-color': C.blue, 'line-width': 2, 'line-dasharray': [2, 2] },
   });
   add('plan', { 'fill-opacity': 0.22 }, { id: 'plan-fill', type: 'fill', source: 'plan', filter: ['==', ['get', 'phase'], 1], paint: { 'fill-color': C.red } });
   add('plan', { 'fill-opacity': 0.07 }, { id: 'plan-fill-future', type: 'fill', source: 'plan', filter: ['>', ['get', 'phase'], 1], paint: { 'fill-color': C.red } });
@@ -277,11 +289,11 @@ function buildLayers() {
     paint: {
       'fill-extrusion-color': ['match', ['get', 'kind'],
         'building', C.red,
-        'generator', '#4a0510',
-        'substation-pad', '#bdbdbd',
-        'yard', '#a3a3a3',
-        'house-generator', '#121212',
-        'substation-building', '#9e9e9e',
+        'generator', C.generator,
+        'substation-pad', C.substationPad,
+        'yard', C.yard,
+        'house-generator', C.ink,
+        'substation-building', C.substation,
         C.redDark],
       'fill-extrusion-height': ['get', 'height'],
       'fill-extrusion-base': ['get', 'base'],

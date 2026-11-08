@@ -42,6 +42,7 @@ vendor/d3, vendor/plot        D3 7.9 and Observable Plot 0.6 as single ES module
 - Controls that only work live (buttons, toggles) get `.ph-interactive`, so the PNG fallbacks leave them out.
 - Section labels are letterspaced caps (`.ph-label`). Boxes use `--box-border` with square corners.
 - Type comes from the named roles in `tokens.css` (`--type-hed`, `--type-dek`, `--type-body`, `--type-data`, `--type-label`, `--type-small`, `--type-source`). Serif is for prose and quoted records; sans is for labels and data.
+- The intro (`css/story.css`) follows the same rules. Each chapter card is a square box with an even 1px ink border and no shadow, and the same footer (`.ph-foot`: **Note:**, **Source(s):**, then the photo credit). The intro's own type roles (`--type-story`, `--type-byline`) are in `tokens.css`. Its map colors come from `tokens.css` plus the `--map-*` colors at the top of `story.css`, which `js/story.js` reads, so there are no raw hex values in the map code.
 
 ## The rules (shared/kit.js; `npm run check` enforces them)
 
