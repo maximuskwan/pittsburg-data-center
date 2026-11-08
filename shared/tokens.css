@@ -43,6 +43,10 @@
   --type-small: 500 12.5px/1.4 var(--sans);
   --type-source: 400 12px/1.45 var(--sans);
   --label-spacing: 0.08em;
+  /* The intro's roles: chapter prose on the map cards, and the byline. */
+  --type-story: 400 19px/1.55 var(--serif);
+  --type-story-phone: 400 17px/1.5 var(--serif);
+  --type-byline: 500 15px/1.4 var(--sans);
   --red-light: #f6d9de;
   --red-wash: #fdf2f4;
   --gray-dark: #3d3d3d;
