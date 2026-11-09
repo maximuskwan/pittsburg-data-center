@@ -1,47 +1,63 @@
 # Republishing "Power Hungry"
 
-Thank you for running this investigation by Maximus Kwan, first published by Scot Scoop. The author holds the copyright, and the story is licensed under **[Creative Commons Attribution-NoDerivatives 4.0 (CC BY-ND 4.0)](https://creativecommons.org/licenses/by-nd/4.0/)**. You may republish it free, in full and unchanged, with credit.
+You can republish this investigation by Maximus Kwan, first published by Scot Scoop, free of charge. The author holds the copyright and licenses the story under [Creative Commons Attribution-NoDerivatives 4.0 (CC BY-ND 4.0)](https://creativecommons.org/licenses/by-nd/4.0/). Run it in full, unchanged, and with credit.
 
-## The interactive intro: pick whichever your CMS supports
+## Add the interactive intro
 
-**1. Embed (best).** Paste the code from `embed.html` at the top of the story. It works in WordPress (Custom HTML block), Ghost (HTML card), Squarespace (Code block), Arc and most others. It needs no scripts on your page, and the map credits travel with it.
+Choose the first option that your CMS supports:
 
-**2. Video.** If your CMS strips iframes, use `media/intro-captioned.mp4`. It's the same map sequence with the chapter text on screen, about 45 seconds, silent, 1080p. Run it as an autoplaying muted loop or a regular video player.
+1. **Embed.** Paste the code from `embed.html` at the top of the story. The embed works in WordPress (Custom HTML block), Ghost (HTML card), Squarespace (Code block), Arc, and most other CMSs. It needs no scripts on your page, and it carries the map credits.
+2. **Video.** If your CMS strips iframes, use `media/intro-captioned.mp4`. It shows the same map sequence with the chapter text on screen. The video is about 45 seconds long, silent, and 1080p. Run it as a muted autoplay loop or in a standard video player.
+3. **Image.** If your CMS can't run video, use `media/hero.jpg`, a drone photo of the site, as the lead image. The alt text is in `media/hero-alt.txt`.
 
-**3. Image.** If you can't run video, use `media/hero.jpg` (a drone photo of the site) as the lead image. The alt text is in `media/hero-alt.txt`.
+With every option, add the intro text from `intro-text.html` or `intro-text.txt` as the first paragraphs of the story. The text reaches readers who can't see the interactive.
 
-In every case, also include the intro text from `intro-text.html` (or `intro-text.txt`) as the first paragraphs of the story, so the intro's content reaches every reader.
+## Add the graphics
 
-## The graphics
+Each graphic has PNGs at phone and desktop widths in the repository's `graphics/NAME/png/` folder. For example:
 
-Each of the story's graphics has a PNG at phone and desktop widths in `graphics/<name>/png/` in the repository (for example, `https://maximuskwan.github.io/pittsburg-data-center/graphics/water-use/png/water-use-desktop.png`). Run each one where it appears in the story, with its caption from `embed/sno/<name>.html`. The sources are on the image.
+```
+https://maximuskwan.github.io/pittsburg-data-center/graphics/water-use/png/water-use-desktop.png
+```
 
-## Required credit
+Place each graphic where it appears in the story, with its caption from `embed/sno/NAME.html` in the repository. The sources are printed on each image.
 
-Put this at the top or bottom of the story:
+## Credit the story
+
+Add this credit at the top or bottom of the story, and link to the original article URL:
 
 > This story by Maximus Kwan was originally published by [Scot Scoop](https://scotscoop.com/), the student newsroom of Carlmont High School in Belmont, Calif. It is republished under a Creative Commons BY-ND 4.0 license.
 
-Please link to the original article URL.
+## Follow the NoDerivatives terms
 
-## What "NoDerivatives" means here
+You can do the following:
 
-- ✅ You can: run the full text unchanged, write your own headline and dek, fix house style (e.g., AP vs. Chicago), update time references ("last week" → a date), and add a note at the top about local relevance.
-- ❌ You can't: cut or reorder paragraphs, change quotes or findings, or sell the story separately.
-- Photos and graphics come under the same license and need the credits shown with them.
+- Run the full text unchanged.
+- Write your own headline and dek.
+- Apply your house style, such as AP or Chicago.
+- Update time references, such as changing "last week" to a date.
+- Add a note at the top about local relevance.
 
-## Photos
+You can't do the following:
 
-The drone photos are © Cara Esten Hurtle and licensed by her under CC BY-ND 4.0, the same as the story. Run them unchanged (no cropping that alters meaning, no edits) with the credit "Photo: Cara Esten Hurtle."
+- Cut or reorder paragraphs.
+- Change quotes or findings.
+- Sell the story separately.
 
-## Contents of this kit
+The photos and graphics use the same license, and they need the credits that appear with them.
 
-| File | What it is |
+## Credit the photos
+
+The drone photos are © Cara Esten Hurtle, and she licenses them under CC BY-ND 4.0, the same license as the story. Run them unchanged, with no edits and no cropping that alters their meaning. Use the credit "Photo: Cara Esten Hurtle."
+
+## Kit contents
+
+| File | Description |
 |---|---|
 | `embed.html` | Iframe code for the interactive |
-| `intro-text.html` / `intro-text.txt` | The interactive's text as plain paragraphs |
-| `media/intro-captioned.mp4` (+ `.webm`) | The map sequence as video, text on screen |
-| `media/hero.jpg` + `media/hero-alt.txt` | Lead image and alt text |
-| `CREDITS.txt` | Credits and license lines to copy |
+| `intro-text.html`, `intro-text.txt` | The interactive's text as plain paragraphs |
+| `media/intro-captioned.mp4`, `media/intro-captioned.webm` | The map sequence as video, with text on screen |
+| `media/hero.jpg`, `media/hero-alt.txt` | The lead image and its alt text |
+| `CREDITS.txt` | Credit and license lines to copy |
 
-Questions: TK (contact email)
+For questions, contact TK (contact email).
