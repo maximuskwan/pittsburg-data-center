@@ -99,7 +99,7 @@ The following work is complete and on `main`:
 - The SNO embed test.
 - The statistics fact check.
 - The photo license: CC BY-ND 4.0 from Cara Esten Hurtle.
-- The graphics story check and the SNO tests in macOS Safari, iPadOS, and iOS.
+- The graphics story check, the SNO tests in macOS Safari, iPadOS, and iOS, and the CalEnviroScreen wording, which uses the overall score.
 
 The "close to home" chapter is hidden. It contains the Carlmont–Pittsburg line, the 40-mile label, and the MagicSchool text. The section is commented out in `index.html`, and its map settings remain in `js/config.js`. To restore it, delete the comment markers around the section.
 
@@ -107,7 +107,6 @@ The following tasks remain:
 
 1. **Search indexing.** In `index.html`, delete the `<meta name="robots" content="noindex">` line, which is marked `TK: remove at publication`.
 2. **Video and stills.** Run `npm run record` after every text or map change, as the last step. For details, see [Record the video and stills](#record-the-video-and-stills).
-3. **Graphics.** Decide the CalEnviroScreen wording. For details, see the checklist in [Graphics for the story](docs/GRAPHICS.md#check-before-publishing).
 
 If the article URL changes, set `storyUrl` in `js/config.js`, and then rebuild the kit:
 

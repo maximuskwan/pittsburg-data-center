@@ -121,6 +121,7 @@ To flag anything unconfirmed, wrap it in `<mark class="tk">`, or add a `tk` note
   - Two Pittsburg tracts, 0.8 and 1.4 miles from the plan area, are at the 92nd percentile overall (92.6 and 92.2). Their pollution burden percentiles are 87.4 and 79.9.
   - A tract in neighboring Antioch is at the 90th percentile.
   - The tracts that contain the plan area are at the 44th and 46th percentiles.
+- **Wording.** Because the map shows the overall score, describe the tracts as "most burdened" or name both pollution and residents' vulnerability to it. Don't call them "most polluted" or say they're in the top 10% for pollution; their pollution burden percentiles don't support that.
 - **Switching measures.** To show pollution burden instead, set `MEASURE` in `graphic.js` to `'pollution_burden_percentile'`. The CSV contains both measures.
 - **Shading.** The map shades only Contra Costa tracts. Land outside the county, such as the Solano County tract across the river (Suisun Marsh, 90th percentile), is white with gray edges, so readers can't mistake it for the lightest shade.
 - **Ring wording.** The explainer says the two 92nd-percentile tracts are *partly* within 1.5 miles, because the ring only clips them.
@@ -193,4 +194,4 @@ To embed a record, do the following:
 
 - [x] Someone other than the builder checks every graphic against the story text. The CSVs list each number's source.
 - [x] Test each graphic in SNO on macOS Safari, iPadOS, and iOS, starting with the water-use chart.
-- [ ] Decide the CalEnviroScreen wording. For context, see [1. CalEnviroScreen map](#1-calenviroscreen-map).
+- [x] Decide the CalEnviroScreen wording. The map and the story use the overall score. For context, see [1. CalEnviroScreen map](#1-calenviroscreen-map).
