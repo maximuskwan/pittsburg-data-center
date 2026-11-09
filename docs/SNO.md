@@ -1,24 +1,31 @@
-# Putting the interactive in the Scot Scoop (SNO) article
+# Add the interactive to the SNO story
 
-The interactive and the graphics are hosted on GitHub Pages and load straight into the story page, with no iframes. The post needs no plugins: each piece is one Custom HTML block with a placeholder and a one-line script. The graphics' blocks, and where each goes, are in [`embed/sno/`](../embed/sno/README.md).
+The intro and the graphics are hosted on GitHub Pages and load directly into the Scot Scoop story page, without iframes. The story needs no plugins. Each piece is one Custom HTML block that contains a placeholder and a one-line script.
 
-## Steps
+## Before you begin
 
-1. Use SNO's long-form / immersive story template so a block can run full width.
-2. Make the **first block** of the story a **Custom HTML** block containing everything in `embed/sno-embed.html`. It loads the intro straight into the story page (no iframe) via `embed/mount.js`, so the map pins with the page's own scrolling, as on the standalone site. The plain iframe in `kit/embed.html` is still the one for republishers.
+- Choose SNO's long-form or immersive story template, so that a block can run full width.
+- Make sure the site is live on GitHub Pages. For details, see [Publish on GitHub Pages](../README.md#publish-on-github-pages).
 
-3. In the article body, include the intro's text as regular paragraphs (from `kit/intro-text.html`). Search engines, email newsletters, RSS readers and text-only republishers then get it even if they drop the iframe. Readers who saw the interactive will see the same sentences again. Rephrase those paragraphs into the lede if you like: the article body isn't bound by the interactive's wording.
-4. Paste each graphic's block from `embed/sno/` at its spot in the text (the table in `embed/sno/README.md`). The blocks share one loader, `shared/mount.js`, which the browser loads once.
-5. Preview on a phone and on a laptop before publishing, in macOS Safari, iPadOS and iOS as well as Chrome.
+## Add the intro and graphics
 
-## If SNO strips the iframe
+1. Make the first block of the story a **Custom HTML** block, and paste the full contents of `embed/sno-embed.html` into it.
 
-Use **Flourish** (it's on SNO's approved embed list) to host a simpler version: a Flourish "Story" built from the chapter stills in `media/stills/` with the chapter text. Readers on Scot Scoop lose the cinematic zoom, but the GitHub Pages URL stays the canonical interactive for republishers, judges and national outlets. Alternatively, embed `media/intro.mp4` as a video block with the text beneath.
+   The block loads the intro into the story page through `embed/mount.js`. The map pins as the page scrolls, the same as on the standalone site. Republishers use the iframe in `kit/embed.html` instead.
 
-## Questions to send SNO support
+2. In the article body, add the intro's text from `kit/intro-text.html` as regular paragraphs.
 
-Get these answered in writing well before November:
+   Search engines, email newsletters, RSS readers, and text-only republishers then get the text even if they drop the interactive. Readers who saw the interactive see the same sentences again, so you can rephrase these paragraphs into the lede. The article body doesn't need to match the interactive's wording.
 
-1. "Does the Custom HTML block pass through `<iframe>` tags for editor/student roles, including inline `style` attributes? If not, is there an allowlist I can add a GitHub Pages domain (`maximuskwan.github.io`) to?"
-2. "Which story template lets a Custom HTML block run full-width (edge to edge) above the headline or as the first block of the body?"
-3. "Is there any supported way to add a small amount of custom CSS to a single story? I'd use it for a full-bleed iframe, and to hide the fallback link once the frame loads."
+3. Paste each graphic's block from `embed/sno/` at its spot in the text. For the placement of each block, see [SNO blocks for the graphics](../embed/sno/README.md).
+
+   All the blocks share one loader, `shared/mount.js`, which the browser loads once.
+
+4. Preview the story before you publish it. Check it in Chrome and in macOS Safari, iPadOS, and iOS, on both a phone and a laptop.
+
+## Troubleshoot
+
+If SNO strips the script or the intro doesn't load, use one of these fallbacks:
+
+- **Flourish.** Flourish is on SNO's approved embed list. Build a Flourish "Story" from the chapter stills in `media/stills/` and the chapter text. Scot Scoop readers lose the zoom animation, but the GitHub Pages URL remains the canonical interactive for republishers, judges, and national outlets.
+- **Video.** Embed `media/intro.mp4` as a video block, with the intro text below it.
