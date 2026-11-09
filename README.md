@@ -107,8 +107,7 @@ The following tasks remain:
 
 1. **Search indexing.** In `index.html`, delete the `<meta name="robots" content="noindex">` line, which is marked `TK: remove at publication`.
 2. **Video and stills.** Run `npm run record` after every text or map change, as the last step. For details, see [Record the video and stills](#record-the-video-and-stills).
-3. **Photo pin (optional).** Set `popFrom` in `js/config.js` to the exact spot where photo 07 was taken.
-4. **Graphics.** Decide the CalEnviroScreen wording. For details, see the checklist in [Graphics for the story](docs/GRAPHICS.md#check-before-publishing).
+3. **Graphics.** Decide the CalEnviroScreen wording. For details, see the checklist in [Graphics for the story](docs/GRAPHICS.md#check-before-publishing).
 
 If the article URL changes, set `storyUrl` in `js/config.js`, and then rebuild the kit:
 
