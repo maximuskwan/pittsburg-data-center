@@ -26,7 +26,7 @@ Place each graphic where it appears in the story, with its caption from `embed/s
 
 Add this credit at the top or bottom of the story, and link to the original article URL:
 
-> This story by Maximus Kwan was originally published by [Scot Scoop](https://scotscoop.com/), the student newsroom of Carlmont High School in Belmont, Calif. It is republished under a Creative Commons BY-ND 4.0 license.
+> This story by Maximus Kwan was originally published by [Scot Scoop](https://scotscoop.com/power-hungry-one-bay-area-citys-fight-against-the-ai-data-center-boom), the student newsroom of Carlmont High School in Belmont, Calif. It is republished under a Creative Commons BY-ND 4.0 license.
 
 ## Follow the NoDerivatives terms
 
@@ -60,4 +60,4 @@ The drone photos are © Cara Esten Hurtle, and she licenses them under CC BY-ND 
 | `media/hero.jpg`, `media/hero-alt.txt` | The lead image and its alt text |
 | `CREDITS.txt` | Credit and license lines to copy |
 
-For questions, contact TK (contact email).
+For questions, contact Maximus Kwan at maximuskwan@proton.me.

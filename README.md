@@ -92,7 +92,9 @@ The following work is complete and on `main`:
 - The Phase 1 model, traced from AVAIO's landscape plans, with the 37 generators on the squares that the plans mark. For details, see [How the site and model are built](#how-the-site-and-model-are-built).
 - 1,730 U.S. data centers from OpenStreetMap, fetched with `npm run fetch:datacenters` on Oct. 15, 2026.
 - Drone photos by Cara Esten Hurtle, 2400 px wide, resized from the 4000 px originals. They pop out of the map and expand to full screen.
-- Scale bars, a Carlmont–Pittsburg distance label, and a **Listen** button that appears when the audio file exists.
+- Scale bars and a Carlmont–Pittsburg distance label.
+- The audio recording (`media/audio/power-hungry.mp3`, 30:58) and its **Listen** button.
+- The article URL (`storyUrl` in `js/config.js`) and the kit files built from it.
 - Credits and licenses that name Maximus Kwan as copyright holder, with Scot Scoop publishing under license.
 - The SNO embed test.
 - The statistics fact check.
@@ -103,12 +105,16 @@ The "close to home" chapter is hidden. It contains the Carlmont–Pittsburg line
 
 The following tasks remain:
 
-1. **Audio.** Save the recording as `media/audio/power-hungry.mp3`. The **Listen** button appears and shows the recording length. For details, see [Add the audio](#add-the-audio).
-2. **Article URL.** After the Scot Scoop story has its link, set `storyUrl` in `js/config.js`, and then run `npm run kit`.
-3. **Search indexing.** In `index.html`, delete the `<meta name="robots" content="noindex">` line, which is marked `TK: remove at publication`.
-4. **Video and stills.** Run `npm run record` after every text or map change, as the last step. For details, see [Record the video and stills](#record-the-video-and-stills).
-5. **Photo pin (optional).** Set `popFrom` in `js/config.js` to the exact spot where photo 07 was taken.
-6. **Graphics.** Decide the CalEnviroScreen wording. For details, see the checklist in [Graphics for the story](docs/GRAPHICS.md#check-before-publishing).
+1. **Search indexing.** In `index.html`, delete the `<meta name="robots" content="noindex">` line, which is marked `TK: remove at publication`.
+2. **Video and stills.** Run `npm run record` after every text or map change, as the last step. For details, see [Record the video and stills](#record-the-video-and-stills).
+3. **Photo pin (optional).** Set `popFrom` in `js/config.js` to the exact spot where photo 07 was taken.
+4. **Graphics.** Decide the CalEnviroScreen wording. For details, see the checklist in [Graphics for the story](docs/GRAPHICS.md#check-before-publishing).
+
+If the article URL changes, set `storyUrl` in `js/config.js`, and then rebuild the kit:
+
+```bash
+npm run kit
+```
 
 ## Record the video and stills
 
@@ -136,11 +142,11 @@ The recorder writes the following files:
 - `kit/media/intro-captioned.mp4` and `kit/media/intro-captioned.webm`
 - `kit/media/hero.jpg`, which is drone photo 02
 
-## Add the audio
+## Replace the audio
 
-The **Listen** button under the byline plays `media/audio/power-hungry.mp3`. The `audio` setting in `js/config.js` sets the path. The button stays hidden until the file loads. It then reads "Listen · 29:50", using the file's actual length, and "Pause" with the time left during playback.
+The **Listen** button under the byline plays `media/audio/power-hungry.mp3`. The `audio` setting in `js/config.js` sets the path. The button stays hidden until the file loads. It then reads "Listen · 30:58", using the file's actual length, and "Pause" with the time left during playback.
 
-Export the recording as a mono MP3 at 64–96 kbps. A 30-minute file is about 15–20 MB.
+To replace the recording, export an MP3 at 64–96 kbps and save it over `media/audio/power-hungry.mp3`. The current file is 64 kbps and 14.9 MB.
 
 ## How the site and model are built
 
