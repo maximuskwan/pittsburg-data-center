@@ -27,7 +27,8 @@ export default async function draw(ctx) {
   const label = (r) => h('div', { class: 'ap-label' },
     h('p', { class: 'ap-title' }, sr(r), r.title),
     h('p', { class: 'ap-who', text: r.who }),
-    r.detail ? h('p', { class: 'ap-detail', text: r.detail }) : null);
+    r.detail ? h('p', { class: 'ap-detail', text: r.detail }) : null,
+    r.status ? h('p', { class: 'ap-detail', text: r.status }) : null);
 
   // Phase 1: parallel. Three nodes stacked, joined by a bracket, then the end.
   const p1 = rows.filter((r) => r.lane === 'phase1');
@@ -63,7 +64,7 @@ export default async function draw(ctx) {
         h('div', { class: 'ap-label' },
           h('p', { class: 'ap-title', text: 'Moratorium' }),
           h('p', { class: 'ap-who' }, 'Oct.\u00a026 to ', tk(m, 'Dec.\u00a010')),
-          h('p', { class: 'ap-detail' }, `${m.title.replace(/ on new data centers$/, '')}, adopted unanimously. `, tk(m, 'Ends Dec.\u00a010 unless extended.')))),
+          h('p', { class: 'ap-detail' }, `${m.title.replace(/ on new data centers$/, '')}, adopted 4-0, with the mayor recused. `, tk(m, 'Ends Dec.\u00a010 unless extended.')))),
       ...steps.map(item),
       h('li', { class: 'ap-endstep' }, h('p', { class: 'ap-end', text: 'Construction' }))));
 

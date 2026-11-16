@@ -3,6 +3,7 @@
 .wp-head { margin: 0 0 6px; font: 700 14px/1.3 var(--sans); color: var(--ink); }
 .wp-text { margin: 0; font: var(--type-body); color: var(--ink); text-wrap: pretty; }
 .wp-text--lead { margin-bottom: 14px; }
+.wp-reply { margin-top: 14px; }
 
 .wp-rank { list-style: none; margin: 0 0 12px; padding: 0; }
 .wp-rank__row { display: grid; grid-template-columns: 22px 1fr; gap: 8px; align-items: baseline; padding: 6px 0; border-bottom: 1px solid var(--gray-light); }

@@ -24,7 +24,7 @@ export default async function draw(ctx) {
       h('p', { class: 'ph-label rl-label', text: name }),
       h('div', { class: 'rl-cols' },
         col('The draft', h('p', { class: 'rl-words rl-words--draft' }, words(draft, quote(draft)))),
-        col('Reply typed into the email', h('p', { class: 'rl-words' }, words(reply, quote(reply)))),
+        col('Gale’s reply, typed into the email', h('p', { class: 'rl-words' }, words(reply, quote(reply)))),
         col('What it became', ...became)));
   };
 

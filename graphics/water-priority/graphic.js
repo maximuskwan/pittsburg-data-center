@@ -38,5 +38,6 @@ export default async function draw(ctx) {
       h('div', { class: 'wp-col' },
         h('p', { class: 'wp-head', text: promise.label }),
         h('ol', { class: 'wp-chain' }, ['fallback-1', 'fallback-2', 'fallback-3'].map((id) => h('li', { text: row(id).label }))))),
+    h('p', { class: 'wp-text wp-reply', text: row('avaio-reply').detail }),
     h('p', { class: 'ph-caveat', text: 'The records don’t say whether the tank or the city’s promise would come first.' })));
 }

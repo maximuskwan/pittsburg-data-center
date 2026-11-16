@@ -8,7 +8,7 @@
 const NINE = { first: '2025-12-08', last: '2025-12-16' };
 const SHORT = { // labels for the day-by-day strip
   '2025-12-08': 'Generators exempted',
-  '2025-12-10': 'FPPC pressed',
+  '2025-12-10': 'Ethics advice pressed',
   '2025-12-11': 'Design approved, suit paused',
   '2025-12-15': 'Loan rewritten',
   '2025-12-16': 'Settlement filed',
@@ -55,7 +55,7 @@ export default async function draw(ctx) {
     if (nine.length) {
       section.append(h('div', { class: 'tl-nine' },
         h('p', { class: 'tl-nine__title', text: 'Nine days in December' }),
-        h('p', { class: 'tl-nine__dek', text: 'The generator exemption, the design approval, the loan rewrite and the lawsuit settlement all came within nine days, the month Gale took over as city manager.' }),
+        h('p', { class: 'tl-nine__dek', text: 'The generator exemption, the design approval, the loan rewrite and the lawsuit settlement all came within nine days in December 2025, the month Gale took over as city manager.' }),
         strip,
         h('ol', { class: 'tl-list' }, nine.map(entry))));
     }
