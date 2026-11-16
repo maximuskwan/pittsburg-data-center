@@ -189,9 +189,3 @@ To embed a record, do the following:
 | [FPPC advice letter A-25-154](https://www.documentcloud.org/documents/28867506-final-a-25-154-fppc-advice-letter/) (Feb. 27, 2026) | "in any manner" | "Nine days in December" |
 | [FPPC advice request emails](https://www.documentcloud.org/documents/28867509-fw-fair-political-practices-commission-advice-request-25-154/), p. 4 (Donna Mooney, Dec. 10, 2025) | "For business reasons…" | "Nine days in December" |
 | [Delta Diablo–AVAIO recycled water emails](https://www.documentcloud.org/documents/28867513-data-center-recycled-water-discussion-delta-diablo-avaio-emails/), p. 9 (Nick Steiner, March 13, 2026) | "would also be the first to be curtailed" | "First to be curtailed" |
-
-## Check before publishing
-
-- [x] Someone other than the builder checks every graphic against the story text. The CSVs list each number's source.
-- [x] Test each graphic in SNO on macOS Safari, iPadOS, and iOS, starting with the water-use chart.
-- [x] Decide the CalEnviroScreen wording. The map and the story use the overall score. For context, see [1. CalEnviroScreen map](#1-calenviroscreen-map).

@@ -17,7 +17,7 @@ The repository also holds the story's six other graphics: a CalEnviroScreen map,
 | `graphics/` | The story's other graphics, one folder each |
 | `shared/` | Fonts, colors, the graphics' frame and kit, and `mount.js`, which loads everything into SNO |
 | `embed/` | The SNO blocks: `sno-embed.html` for the intro, and `sno/` for the graphics |
-| `media/` | Drone photos, audio, the recorded intro video, and chapter stills |
+| `media/` | Drone photos, the recorded intro video, and chapter stills |
 | `kit/` | The republication kit: embed code, text, video, and a guide |
 | `docs/` | Guides for the graphics ([GRAPHICS.md](docs/GRAPHICS.md)) and for SNO ([SNO.md](docs/SNO.md)) |
 | `tools/` | Scripts for the preview server, mock SNO page, data fetches, site tracing, video recording, kit building, and graphics snapshots and checks |
@@ -83,36 +83,15 @@ To add a chapter, do the following:
 2. Set a new `data-chapter="name"` attribute on the copy.
 3. In `js/config.js`, add a matching `name: { … }` entry.
 
-## Check the project status
-
-The following work is complete and on `main`:
-
-- All chapter text. No TK items remain, so the DRAFT banner doesn't appear.
-- The site position on the map, set in `site.anchor` in `js/config.js` with `?calibrate` and **Snap to canal**.
-- The Phase 1 model, traced from AVAIO's landscape plans, with the 37 generators on the squares that the plans mark. For details, see [How the site and model are built](#how-the-site-and-model-are-built).
-- 1,730 U.S. data centers from OpenStreetMap, fetched with `npm run fetch:datacenters` on Oct. 15, 2026.
-- Drone photos by Cara Esten Hurtle, 2400 px wide, resized from the 4000 px originals. They pop out of the map and expand to full screen.
-- Scale bars and a Carlmont–Pittsburg distance label.
-- The audio recording (`media/audio/power-hungry.mp3`, 30:58) and its **Listen** button.
-- The article URL (`storyUrl` in `js/config.js`) and the kit files built from it.
-- Credits and licenses that name Maximus Kwan as copyright holder, with Scot Scoop publishing under license.
-- The SNO embed test.
-- The statistics fact check.
-- The photo license: CC BY-ND 4.0 from Cara Esten Hurtle.
-- The graphics story check, the SNO tests in macOS Safari, iPadOS, and iOS, and the CalEnviroScreen wording, which uses the overall score.
-
 The "close to home" chapter is hidden. It contains the Carlmont–Pittsburg line, the 40-mile label, and the MagicSchool text. The section is commented out in `index.html`, and its map settings remain in `js/config.js`. To restore it, delete the comment markers around the section.
-
-The following tasks remain:
-
-1. **Search indexing.** In `index.html`, delete the `<meta name="robots" content="noindex">` line, which is marked `TK: remove at publication`.
-2. **Video and stills.** Run `npm run record` after every text or map change, as the last step. For details, see [Record the video and stills](#record-the-video-and-stills).
 
 If the article URL changes, set `storyUrl` in `js/config.js`, and then rebuild the kit:
 
 ```bash
 npm run kit
 ```
+
+After any text or map change, run `npm run record` as the last step. For details, see [Record the video and stills](#record-the-video-and-stills).
 
 ## Record the video and stills
 
@@ -139,12 +118,6 @@ The recorder writes the following files:
 - `media/stills/*.jpg`
 - `kit/media/intro-captioned.mp4` and `kit/media/intro-captioned.webm`
 - `kit/media/hero.jpg`, which is drone photo 02
-
-## Replace the audio
-
-The **Listen** button under the byline plays `media/audio/power-hungry.mp3`. The `audio` setting in `js/config.js` sets the path. The button stays hidden until the file loads. It then reads "Listen · 30:58", using the file's actual length, and "Pause" with the time left during playback.
-
-To replace the recording, export an MP3 at 64–96 kbps and save it over `media/audio/power-hungry.mp3`. The current file is 64 kbps and 14.9 MB.
 
 ## How the site and model are built
 

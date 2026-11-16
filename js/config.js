@@ -29,10 +29,9 @@ export default {
   siteUrl: 'https://maximuskwan.github.io/pittsburg-data-center/',
   storyUrl: 'https://scotscoop.com/power-hungry-one-bay-area-citys-fight-against-the-ai-data-center-boom',
 
-  // Audio version of the story. Drop the file at this path; the button under
-  // the byline appears once the file loads and shows its length. MP3 works
-  // everywhere; keep it mono, 64–96 kbps.
-  audio: 'media/audio/power-hungry.mp3',
+  // Audio version of the story: none for now. To add one, set
+  // audio: 'media/audio/power-hungry.mp3' (mono MP3, 64–96 kbps); the Listen
+  // button under the byline appears once the file loads.
 
   // Map tiles. OpenFreeMap needs no key and has no usage caps.
   vectorTiles: 'https://tiles.openfreemap.org/planet',
